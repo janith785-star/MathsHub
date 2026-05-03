@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🌈 Numbers Fun - 1 to 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FF8E53; --c3: #FFD93D; --c4: #6BCB77;
+    --c5: #4D96FF; --c6: #A855F7; --c7: #EC4899; --c8: #06B6D4;
+    --c9: #F97316; --c10: #10B981;
+    --bg: #0f0c29; --card: rgba(255,255,255,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+  }
+
+  /* WhatsApp Banner */
+  .wa-banner {
+    background: linear-gradient(90deg, #25D366, #128C7E, #25D366);
+    background-size: 200%;
+    animation: waBg 3s linear infinite;
+    padding: 10px 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(37,211,102,0.4);
+  }
+  @keyframes waBg { 0%{background-position:0%} 100%{background-position:200%} }
+  .wa-banner a {
+    color: white; text-decoration: none;
+    background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px;
+    border: 1.5px solid white; transition: all 0.2s;
+  }
+  .wa-banner a:hover { background: white; color: #25D366; }
+  .wa-icon { font-size: 20px; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+  /* Stars background */
+  .stars { position: fixed; top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0; }
+  .star {
+    position: absolute; background: white; border-radius: 50%;
+    animation: twinkle var(--d,2s) ease-in-out infinite;
+  }
+  @keyframes twinkle { 0%,100%{opacity:0.2;transform:scale(1)} 50%{opacity:1;transform:scale(1.5)} }
+
+  /* Header */
+  header {
+    position: relative; z-index: 1;
+    text-align: center; padding: 20px 16px 10px;
+  }
+  .app-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(28px, 8vw, 52px);
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B, #A855F7, #4D96FF);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titlePulse 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(255,217,61,0.5));
+  }
+  @keyframes titlePulse { 0%,100%{filter:drop-shadow(0 0 20px rgba(255,217,61,0.4))} 50%{filter:drop-shadow(0 0 35px rgba(255,107,107,0.8))} }
+  .subtitle { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+  /* Navigation */
+  nav {
+    display: flex; justify-content: center; gap: 8px;
+    padding: 12px 16px; flex-wrap: wrap; position: relative; z-index: 1;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3);
+    color: white; padding: 8px 18px; border-radius: 25px;
+    font-family: 'Fredoka One', cursive; font-size: 15px;
+    cursor: pointer; transition: all 0.3s; backdrop-filter: blur(10px);
+  }
+  .nav-btn.active, .nav-btn:hover {
+    background: linear-gradient(135deg, #FF6B6B, #A855F7);
+    border-color: transparent; transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(168,85,247,0.5);
+  }
+
+  /* Main Content */
+  main { position: relative; z-index: 1; padding: 10px 16px 80px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ===== LEARN SECTION ===== */
+  .learn-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    max-width: 500px; margin: 0 auto;
+  }
+  .num-card {
+    border-radius: 20px; padding: 18px 12px;
+    text-align: center; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    border: 3px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    position: relative; overflow: hidden;
+    animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .num-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .num-card:hover::before, .num-card:active::before { opacity: 1; }
+  .num-card:hover { transform: scale(1.08) rotate(-2deg); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .num-card:active { transform: scale(0.95); }
+  @keyframes cardIn { from{opacity:0;transform:scale(0.5) rotate(-10deg)} to{opacity:1;transform:scale(1) rotate(0)} }
+
+  .big-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(52px, 14vw, 80px);
+    line-height: 1; text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+  }
+  .num-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px; margin-top: 4px; text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .num-objects { font-size: clamp(18px, 5vw, 26px); margin: 8px 0 4px; letter-spacing: 2px; }
+  .sound-btn {
+    background: rgba(255,255,255,0.25); border: none; color: white;
+    padding: 6px 14px; border-radius: 15px; font-size: 13px;
+    cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700;
+    margin-top: 6px; transition: all 0.2s;
+  }
+  .sound-btn:hover { background: rgba(255,255,255,0.45); transform: scale(1.1); }
+
+  /* ===== QUIZ SECTION ===== */
+  .quiz-container { max-width: 420px; margin: 0 auto; }
+  .score-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.1); border-radius: 15px; padding: 12px 18px;
+    margin-bottom: 16px; backdrop-filter: blur(10px);
+  }
+  .score-item { text-align: center; }
+  .score-val { font-family: 'Fredoka One', cursive; font-size: 28px; }
+  .score-lbl { font-size: 11px; color: rgba(255,255,255,0.7); }
+  .star-row { color: #FFD93D; font-size: 22px; }
+
+  .quiz-card {
+    background: rgba(255,255,255,0.1); border-radius: 24px; padding: 24px 20px;
+    text-align: center; backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .quiz-question { font-size: 18px; color: rgba(255,255,255,0.85); margin-bottom: 16px; font-weight: 700; }
+  .quiz-objects { font-size: clamp(30px, 10vw, 50px); margin-bottom: 20px; letter-spacing: 4px; word-break: break-all; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quiz-opt {
+    background: rgba(255,255,255,0.15); border: 3px solid rgba(255,255,255,0.25);
+    color: white; padding: 16px 8px; border-radius: 18px;
+    font-family: 'Fredoka One', cursive; font-size: 22px;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .quiz-opt:hover { transform: scale(1.05); background: rgba(255,255,255,0.25); }
+  .quiz-opt.correct { background: #6BCB77!important; border-color: #6BCB77!important; animation: correctPop 0.5s; }
+  .quiz-opt.wrong { background: #FF6B6B!important; border-color: #FF6B6B!important; animation: shake 0.4s; }
+  @keyframes correctPop { 0%{transform:scale(1)} 50%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+  .feedback {
+    margin-top: 16px; font-family: 'Fredoka One', cursive; font-size: 22px;
+    min-height: 36px; animation: fadeIn 0.3s;
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+  .next-btn {
+    margin-top: 16px; background: linear-gradient(135deg, #FF6B6B, #A855F7);
+    border: none; color: white; padding: 14px 36px; border-radius: 30px;
+    font-family: 'Fredoka One', cursive; font-size: 18px; cursor: pointer;
+    transition: all 0.3s; display: none; box-shadow: 0 4px 20px rgba(168,85,247,0.4);
+  }
+  .next-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(168,85,247,0.6); }
+  .next-btn.show { display: inline-block; }
+
+  /* ===== DRAG & DROP SECTION ===== */
+  .drag-container { max-width: 480px; margin: 0 auto; }
+  .drag-title { text-align: center; font-family: 'Fredoka One', cursive; font-size: 20px; margin-bottom: 16px; color: #FFD93D; }
+  .drag-numbers {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    padding: 16px; background: rgba(255,255,255,0.08); border-radius: 20px;
+    margin-bottom: 20px; min-height: 80px;
+    border: 2px dashed rgba(255,255,255,0.3);
+  }
+  .drag-item {
+    width: 54px; height: 54px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka One', cursive; font-size: 24px;
+    cursor: grab; user-select: none; transition: all 0.3s;
+    border: 3px solid rgba(255,255,255,0.3);
+    touch-action: none;
+  }
+  .drag-item:active { cursor: grabbing; transform: scale(1.2) rotate(5deg); z-index: 10; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .drag-item.dragging { opacity: 0.5; }
+
+  .drop-zones { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .drop-zone {
+    width: 54px; height: 54px; border-radius: 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border: 3px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.05);
+    transition: all 0.3s; position: relative;
+  }
+  .drop-zone .zone-label {
+    font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 700; letter-spacing: 0.5px;
+  }
+  .drop-zone.over { border-color: #FFD93D; background: rgba(255,217,61,0.15); transform: scale(1.1); }
+  .drop-zone.correct-drop { border-color: #6BCB77; background: rgba(107,203,119,0.2); animation: correctPop 0.5s; }
+  .drop-zone.wrong-drop { border-color: #FF6B6B; background: rgba(255,107,107,0.2); animation: shake 0.4s; }
+  .drop-zone .placed-num { font-family: 'Fredoka One', cursive; font-size: 22px; }
+
+  .drag-score {
+    text-align: center; margin: 16px 0;
+    font-family: 'Fredoka One', cursive; font-size: 18px; color: #FFD93D;
+  }
+  .drag-reset {
+    display: block; margin: 10px auto;
+    background: linear-gradient(135deg, #FF8E53, #FF6B6B);
+    border: none; color: white; padding: 12px 30px; border-radius: 25px;
+    font-family: 'Fredoka One', cursive; font-size: 16px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+  }
+  .drag-reset:hover { transform: scale(1.05); }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed; top: -10px; border-radius: 3px;
+    animation: confettiFall linear forwards;
+    pointer-events: none; z-index: 999;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Floating numbers bg */
+  .float-num {
+    position: fixed; font-family: 'Fredoka One', cursive;
+    color: rgba(255,255,255,0.04); pointer-events: none; z-index: 0;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp { from{transform:translateY(100vh) rotate(0deg)} to{transform:translateY(-100px) rotate(360deg)} }
+
+  /* Home link */
+  .home-link {
+    display: flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.6); text-decoration: none;
+    font-size: 13px; padding: 8px 0;
+    transition: color 0.2s; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .home-link:hover { color: #FFD93D; }
+
+  /* Progress bar */
+  .progress-wrap { background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; margin-bottom: 16px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #FFD93D, #FF6B6B, #A855F7); transition: width 0.5s ease; }
+
+  /* Responsive */
+  @media(max-width: 360px) { .learn-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Floating numbers background -->
+<div id="floatNums"></div>
+
+<!-- WhatsApp Banner -->
+<div class="wa-banner">
+  <span class="wa-icon">💬</span>
+  <span>අලුත්ම පාඩම් දැනගන්න!</span>
+  <a href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank" rel="noopener">Join WhatsApp Group</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="app-title">🌈 Numbers Fun!</div>
+  <div class="subtitle">1 සිට 10 දක්වා ගණන් ඉගෙනගනිමු</div>
+  <a href="#" class="home-link" onclick="showSection('learn');return false;">🏠 ආරම්භක පිටුව</a>
+</header>
+
+<!-- Navigation -->
+<nav>
+  <button class="nav-btn active" onclick="showSection('learn')">📚 ඉගෙන ගනිමු</button>
+  <button class="nav-btn" onclick="showSection('quiz')">🎯 ප්‍රශ්නාවලිය</button>
+  <button class="nav-btn" onclick="showSection('drag')">🎮 ගෙනයාමේ ක්‍රීඩාව</button>
+</nav>
+
+<main>
+
+<!-- LEARN SECTION -->
+<section id="learn" class="section active">
+  <div class="learn-grid" id="learnGrid"></div>
+</section>
+
+<!-- QUIZ SECTION -->
+<section id="quiz" class="section">
+  <div class="quiz-container">
+    <div class="score-bar">
+      <div class="score-item">
+        <div class="score-val" id="qScore">0</div>
+        <div class="score-lbl">ලකුණු</div>
+      </div>
+      <div class="score-item">
+        <div class="star-row" id="qStars">☆☆☆☆☆</div>
+        <div class="score-lbl">තරු</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" id="qStreak">0</div>
+        <div class="score-lbl">සම්බන්ධ</div>
+      </div>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="quizProgress" style="width:0%"></div></div>
+    <div class="quiz-card">
+      <div class="quiz-question" id="qQuestion"></div>
+      <div class="quiz-objects" id="qObjects"></div>
+      <div class="quiz-options" id="qOptions"></div>
+      <div class="feedback" id="qFeedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">ඊළඟ ➡️</button>
+    </div>
+  </div>
+</section>
+
+<!-- DRAG SECTION -->
+<section id="drag" class="section">
+  <div class="drag-container">
+    <div class="drag-title">🔢 ගණන් සම්බන්ධ කරන්න!</div>
+    <p style="text-align:center;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:12px;">ගණන සහ එහි නම ගෙනවිත් ගළපන්න</p>
+    <div class="drag-numbers" id="dragItems"></div>
+    <div class="drop-zones" id="dropZones"></div>
+    <div class="drag-score" id="dragScore">0 / 10 ✅</div>
+    <button class="drag-reset" onclick="initDrag()">🔄 නැවත ක්‍රීඩා කරමු</button>
+  </div>
+</section>
+
+</main>
+
+<script>
+const numbers = [
+  { n:1, name:'ONE',   emoji:'🍎', color:'#FF6B6B', objs:'🍎' },
+  { n:2, name:'TWO',   emoji:'🐟', color:'#FF8E53', objs:'🐟🐟' },
+  { n:3, name:'THREE', emoji:'⭐', color:'#FFD93D', objs:'⭐⭐⭐' },
+  { n:4, name:'FOUR',  emoji:'🦋', color:'#6BCB77', objs:'🦋🦋🦋🦋' },
+  { n:5, name:'FIVE',  emoji:'🌸', color:'#4D96FF', objs:'🌸🌸🌸🌸🌸' },
+  { n:6, name:'SIX',   emoji:'🎈', color:'#A855F7', objs:'🎈🎈🎈🎈🎈🎈' },
+  { n:7, name:'SEVEN', emoji:'🌈', color:'#EC4899', objs:'🌈🌈🌈🌈🌈🌈🌈' },
+  { n:8, name:'EIGHT', emoji:'🏆', color:'#06B6D4', objs:'🏆🏆🏆🏆🏆🏆🏆🏆' },
+  { n:9, name:'NINE',  emoji:'🦄', color:'#F97316', objs:'🦄🦄🦄🦄🦄🦄🦄🦄🦄' },
+  { n:10,name:'TEN',   emoji:'🎉', color:'#10B981', objs:'🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉' }
+];
+
+// ===== AUDIO ENGINE =====
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let actx;
+
+function ensureAudio() {
+  if (!actx) actx = new AudioContext();
+  if (actx.state === 'suspended') actx.resume();
+}
+
+function playTone(freq, type='sine', duration=0.3, vol=0.3) {
+  ensureAudio();
+  const o = actx.createOscillator();
+  const g = actx.createGain();
+  o.connect(g); g.connect(actx.destination);
+  o.type = type; o.frequency.setValueAtTime(freq, actx.currentTime);
+  g.gain.setValueAtTime(vol, actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + duration);
+  o.start(); o.stop(actx.currentTime + duration);
+}
+
+function playSuccess() {
+  [523,659,784,1047].forEach((f,i) => setTimeout(()=>playTone(f,'sine',0.25,0.3), i*80));
+}
+
+function playWrong() {
+  [300,250].forEach((f,i) => setTimeout(()=>playTone(f,'sawtooth',0.2,0.2), i*100));
+}
+
+function playClick() { playTone(800,'sine',0.1,0.15); }
+
+function speakNumber(name) {
+  ensureAudio();
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(name);
+    u.rate = 0.85; u.pitch = 1.3; u.volume = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+  // Also play a fun chord
+  const freqMap = {ONE:261,TWO:294,THREE:330,FOUR:349,FIVE:392,SIX:440,SEVEN:494,EIGHT:523,NINE:587,TEN:659};
+  if (freqMap[name]) {
+    playTone(freqMap[name],'sine',0.5,0.3);
+    setTimeout(()=>playTone(freqMap[name]*1.25,'sine',0.4,0.2),100);
+  }
+}
+
+// ===== STARS BACKGROUND =====
+function createStars() {
+  const c = document.getElementById('stars');
+  for(let i=0;i<60;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const size = Math.random()*3+1;
+    s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*3+1}s;animation-delay:${Math.random()*3}s`;
+    c.appendChild(s);
+  }
+}
+
+function createFloatNums() {
+  const c = document.getElementById('floatNums');
+  [1,2,3,4,5,6,7,8,9,10].forEach((n,i) => {
+    const el = document.createElement('div');
+    el.className='float-num';
+    el.textContent=n;
+    el.style.cssText=`left:${i*10+5}%;font-size:${40+Math.random()*40}px;animation-duration:${15+Math.random()*15}s;animation-delay:${Math.random()*10}s`;
+    c.appendChild(el);
+  });
+}
+
+// ===== SECTION SWITCHING =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const navMap={learn:0,quiz:1,drag:2};
+  document.querySelectorAll('.nav-btn')[navMap[id]].classList.add('active');
+  playClick();
+  if(id==='quiz') initQuiz();
+  if(id==='drag') initDrag();
+}
+
+// ===== LEARN SECTION =====
+function buildLearn() {
+  const g = document.getElementById('learnGrid');
+  numbers.forEach((d,i) => {
+    const card = document.createElement('div');
+    card.className='num-card';
+    card.style.cssText=`background:linear-gradient(135deg,${d.color}cc,${d.color}66);animation-delay:${i*0.07}s`;
+    card.innerHTML=`
+      <div class="big-num">${d.n}</div>
+      <div class="num-objects">${d.objs}</div>
+      <div class="num-name">${d.name}</div>
+      <button class="sound-btn" onclick="speakNumber('${d.name}');event.stopPropagation()">🔊 ශබ්ද</button>
+    `;
+    card.addEventListener('click', ()=>{
+      speakNumber(d.name);
+      card.style.transform='scale(1.12) rotate(-3deg)';
+      setTimeout(()=>card.style.transform='',400);
+    });
+    g.appendChild(card);
+  });
+}
+
+// ===== QUIZ SECTION =====
+let qScore=0, qStreak=0, qAsked=0, qAns=-1, qAnswered=false, qStarsCount=0;
+const feedbacks={correct:['🎉 නිවැරදියි!','⭐ කදිමයි!','🏆 Excellent!','🌟 Super!','✨ Great!'],wrong:['😊 නැවත උත්සාහ කරන්න!','💪 Don\'t give up!','🤔 Try again!']};
+
+function initQuiz() {
+  qScore=0; qStreak=0; qAsked=0; qStarsCount=0;
+  updateScoreBar();
+  nextQuestion();
+}
+
+function nextQuestion() {
+  qAnswered=false;
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('qFeedback').textContent='';
+  document.querySelectorAll('.quiz-opt').forEach(o=>{o.classList.remove('correct','wrong');o.disabled=false;});
+
+  const d = numbers[Math.floor(Math.random()*10)];
+  qAns = d.n;
+  qAsked++;
+  document.getElementById('quizProgress').style.width = Math.min((qAsked/20)*100,100)+'%';
+
+  // Random question type
+  const type = Math.floor(Math.random()*3);
+  const qQ = document.getElementById('qQuestion');
+  const qO = document.getElementById('qObjects');
+
+  if(type===0) {
+    qQ.textContent = 'කොපමණ ද? Count the objects!';
+    qO.textContent = d.objs;
+  } else if(type===1) {
+    qQ.textContent = `"${d.name}" යනු කුමන ගණනද?`;
+    qO.textContent = d.emoji + ' ?';
+  } else {
+    qQ.textContent = `${d.n} ගණනේ නම කුමක්ද?`;
+    qO.textContent = d.n.toString();
+  }
+
+  // Options
+  const opts = [d.n];
+  while(opts.length<4) {
+    const r=Math.floor(Math.random()*10)+1;
+    if(!opts.includes(r)) opts.push(r);
+  }
+  opts.sort(()=>Math.random()-0.5);
+
+  const oEl = document.getElementById('qOptions');
+  oEl.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='quiz-opt';
+    b.innerHTML = type===1 ? o.toString() : (type===2 ? numbers[o-1].name : o.toString());
+    b.onclick=()=>checkAnswer(b,o,type);
+    oEl.appendChild(b);
+  });
+}
+
+function checkAnswer(btn, chosen, type) {
+  if(qAnswered) return;
+  qAnswered=true;
+  const correct = chosen===qAns;
+
+  if(correct) {
+    btn.classList.add('correct');
+    qScore+=10+(qStreak*2);
+    qStreak++;
+    qStarsCount = Math.min(5, Math.floor(qStreak/2)+1);
+    playSuccess();
+    const fb=feedbacks.correct;
+    document.getElementById('qFeedback').textContent=fb[Math.floor(Math.random()*fb.length)];
+    if(qStreak>=3) launchConfetti();
+    speakNumber(numbers[qAns-1].name);
+  } else {
+    btn.classList.add('wrong');
+    // Show correct
+    document.querySelectorAll('.quiz-opt').forEach(b=>{
+      const bVal = type===2 ? numbers.find(x=>x.name===b.textContent)?.n : parseInt(b.textContent);
+      if(bVal===qAns) b.classList.add('correct');
+    });
+    qStreak=0;
+    playWrong();
+    const fb=feedbacks.wrong;
+    document.getElementById('qFeedback').textContent=fb[Math.floor(Math.random()*fb.length)];
+  }
+  document.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+  updateScoreBar();
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function updateScoreBar() {
+  document.getElementById('qScore').textContent=qScore;
+  document.getElementById('qStreak').textContent=qStreak;
+  const stars='⭐'.repeat(qStarsCount)+'☆'.repeat(5-qStarsCount);
+  document.getElementById('qStars').textContent=stars;
+}
+
+// ===== DRAG & DROP =====
+let dragScore=0, dragItem=null, touchDragging=null, ghostEl=null;
+
+function initDrag() {
+  dragScore=0;
+  updateDragScore();
+  const items = document.getElementById('dragItems');
+  const zones = document.getElementById('dropZones');
+  items.innerHTML=''; zones.innerHTML='';
+
+  // Shuffle numbers
+  const shuffled = [...numbers].sort(()=>Math.random()-0.5);
+  
+  shuffled.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='drag-item';
+    el.draggable=true;
+    el.dataset.num=d.n;
+    el.style.background=`linear-gradient(135deg,${d.color}cc,${d.color}66)`;
+    el.textContent=d.n;
+    el.addEventListener('dragstart',e=>{dragItem=el;el.classList.add('dragging');e.dataTransfer.setData('text/plain',d.n);});
+    el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+    // Touch support
+    el.addEventListener('touchstart',onTouchStart,{passive:false});
+    el.addEventListener('touchmove',onTouchMove,{passive:false});
+    el.addEventListener('touchend',onTouchEnd);
+    items.appendChild(el);
+  });
+
+  numbers.forEach(d=>{
+    const z=document.createElement('div');
+    z.className='drop-zone';
+    z.dataset.num=d.n;
+    z.style.borderColor=d.color+'88';
+    z.innerHTML=`<span class="zone-label">${d.name}</span>`;
+    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over');});
+    z.addEventListener('dragleave',()=>z.classList.remove('over'));
+    z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');handleDrop(z,parseInt(e.dataTransfer.getData('text/plain')));});
+    zones.appendChild(z);
+  });
+}
+
+function handleDrop(zone, num) {
+  const zNum=parseInt(zone.dataset.num);
+  if(zNum===num) {
+    zone.classList.add('correct-drop');
+    zone.innerHTML=`<span class="placed-num">${numbers[num-1].emoji}</span><span class="zone-label">${numbers[num-1].name}</span>`;
+    // Remove from source
+    document.querySelectorAll('.drag-item').forEach(it=>{if(parseInt(it.dataset.num)===num){it.remove();}});
+    dragScore++;
+    updateDragScore();
+    playSuccess();
+    speakNumber(numbers[num-1].name);
+    if(dragScore>=10) { setTimeout(()=>{launchConfetti();alert('🎉 සාධු! ඔබ සියල්ල නිවැරදිව ගළපා ගත්තා!');},300); }
+  } else {
+    zone.classList.add('wrong-drop');
+    setTimeout(()=>zone.classList.remove('wrong-drop'),600);
+    playWrong();
+  }
+}
+
+function updateDragScore() {
+  document.getElementById('dragScore').textContent=`${dragScore} / 10 ✅`;
+}
+
+// Touch drag & drop
+let touchStartEl=null, touchOffX=0, touchOffY=0;
+function onTouchStart(e) {
+  e.preventDefault();
+  touchStartEl=e.currentTarget;
+  const t=e.touches[0];
+  const r=touchStartEl.getBoundingClientRect();
+  touchOffX=t.clientX-r.left; touchOffY=t.clientY-r.top;
+  ghostEl=touchStartEl.cloneNode(true);
+  ghostEl.style.cssText=`position:fixed;width:54px;height:54px;opacity:0.85;pointer-events:none;z-index:9999;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:24px;transform:scale(1.2);background:${touchStartEl.style.background};color:white;`;
+  ghostEl.textContent=touchStartEl.textContent;
+  document.body.appendChild(ghostEl);
+  moveGhost(t.clientX,t.clientY);
+}
+function onTouchMove(e) {
+  e.preventDefault();
+  if(!ghostEl) return;
+  const t=e.touches[0];
+  moveGhost(t.clientX,t.clientY);
+}
+function moveGhost(x,y) {
+  if(!ghostEl) return;
+  ghostEl.style.left=(x-27)+'px';
+  ghostEl.style.top=(y-27)+'px';
+}
+function onTouchEnd(e) {
+  if(!ghostEl||!touchStartEl) return;
+  const t=e.changedTouches[0];
+  ghostEl.remove(); ghostEl=null;
+  const el=document.elementFromPoint(t.clientX,t.clientY);
+  const zone=el?.closest('.drop-zone');
+  if(zone) handleDrop(zone,parseInt(touchStartEl.dataset.num));
+  touchStartEl=null;
+}
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const colors=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#A855F7','#FF8E53'];
+  for(let i=0;i<60;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');
+      c.className='confetti-piece';
+      const w=Math.random()*10+6, h=Math.random()*8+4;
+      c.style.cssText=`width:${w}px;height:${h}px;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*2+2}s;animation-delay:0s;transform:rotate(${Math.random()*360}deg)`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),4000);
+    },i*30);
+  }
+}
+
+// ===== INIT =====
+createStars();
+createFloatNums();
+buildLearn();
+</script>
+</body>
+</html>

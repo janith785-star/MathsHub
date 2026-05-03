@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🌳 Parts of a Tree - ගසක කොටස්</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --sky: #87CEEB; --grass: #4CAF50; --trunk: #8B4513;
+  --leaf: #2E7D32; --yellow: #FFD700; --red: #FF4444;
+  --purple: #9C27B0; --blue: #2196F3; --orange: #FF9800;
+  --pink: #E91E63; --teal: #009688; --brown: #795548;
+}
+
+body {
+  font-family: 'Baloo 2', cursive;
+  background: linear-gradient(180deg, #1a0533 0%, #2d1b69 40%, #0d3b2e 100%);
+  min-height: 100vh; overflow-x: hidden; color: white;
+}
+
+/* WhatsApp Banner */
+.wa-banner {
+  background: linear-gradient(90deg, #075E54, #25D366, #075E54);
+  background-size: 300%; animation: waBg 4s linear infinite;
+  padding: 10px 12px; text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 3px 15px rgba(37,211,102,0.5);
+  flex-wrap: wrap;
+}
+@keyframes waBg { 0%{background-position:0%} 100%{background-position:300%} }
+.wa-banner span { font-size: 13px; font-weight: 700; }
+.wa-banner a {
+  color: white; text-decoration: none; font-size: 12px; font-weight: 800;
+  background: rgba(255,255,255,0.25); padding: 5px 14px; border-radius: 20px;
+  border: 2px solid white; white-space: nowrap; transition: all 0.2s;
+}
+.wa-banner a:hover { background: white; color: #075E54; }
+.wa-icon { font-size: 20px; animation: waBounce 1s ease infinite; }
+@keyframes waBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+/* Header */
+header {
+  text-align: center; padding: 16px 12px 8px;
+  position: relative; z-index: 1;
+}
+.title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(22px, 7vw, 42px);
+  background: linear-gradient(135deg, #FFD700, #FF6B35, #FF1493, #00E5FF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px rgba(255,215,0,0.5));
+  animation: glow 2s ease-in-out infinite;
+}
+@keyframes glow { 0%,100%{filter:drop-shadow(0 0 15px rgba(255,215,0,0.3))} 50%{filter:drop-shadow(0 0 30px rgba(255,107,53,0.8))} }
+.subtitle { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+.home-link {
+  display: inline-block; color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 12px; padding: 4px 12px; border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 15px; margin-top: 6px; transition: all 0.2s;
+}
+.home-link:hover { color: #FFD700; border-color: #FFD700; }
+
+/* Nav */
+nav {
+  display: flex; justify-content: center; gap: 8px;
+  padding: 10px 12px; position: relative; z-index: 1;
+}
+.nav-btn {
+  background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.25);
+  color: white; padding: 8px 16px; border-radius: 25px;
+  font-family: 'Fredoka One', cursive; font-size: 14px;
+  cursor: pointer; transition: all 0.3s; backdrop-filter: blur(8px);
+}
+.nav-btn.active, .nav-btn:hover {
+  background: linear-gradient(135deg, #FF6B35, #FF1493);
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(255,107,53,0.5);
+  transform: scale(1.05);
+}
+
+main { position: relative; z-index: 1; padding: 8px 12px 60px; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ===== LEARN SECTION ===== */
+.learn-intro {
+  text-align: center; background: rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 12px; margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 14px; color: rgba(255,255,255,0.8);
+}
+
+/* SVG Tree container */
+.tree-scene {
+  position: relative; max-width: 480px; margin: 0 auto;
+  background: linear-gradient(180deg, #87CEEB 0%, #87CEEB 60%, #4CAF50 60%, #388E3C 100%);
+  border-radius: 20px; overflow: hidden; border: 3px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.tree-svg-wrap { position: relative; }
+.tree-svg-wrap svg { display: block; width: 100%; }
+
+/* Part labels on tree */
+.part-label {
+  position: absolute; background: white; color: #1a1a2e;
+  border-radius: 10px; padding: 4px 10px;
+  font-family: 'Fredoka One', cursive; font-size: 13px;
+  white-space: nowrap; cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  transition: all 0.3s; border: 2px solid transparent;
+  animation: labelPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  display: flex; flex-direction: column; align-items: center; line-height: 1.2;
+}
+.part-label .en { font-size: 13px; font-weight: 900; }
+.part-label .si { font-size: 10px; color: #555; }
+.part-label:hover { transform: scale(1.12); border-color: #FF6B35; box-shadow: 0 5px 15px rgba(255,107,53,0.4); }
+@keyframes labelPop { from{opacity:0;transform:scale(0.5)} to{opacity:1;transform:scale(1)} }
+
+/* Cards for parts */
+.parts-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  max-width: 480px; margin: 14px auto 0;
+}
+.part-card {
+  border-radius: 16px; padding: 14px 10px; text-align: center;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  border: 2px solid rgba(255,255,255,0.15);
+  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes cardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.part-card:hover, .part-card:active { transform: scale(1.06); }
+.part-card .emoji { font-size: 36px; }
+.part-card .en-name { font-family: 'Fredoka One', cursive; font-size: 18px; margin-top: 6px; }
+.part-card .si-name { font-size: 13px; opacity: 0.85; }
+.part-card .desc { font-size: 11px; opacity: 0.7; margin-top: 4px; line-height: 1.3; }
+.sound-btn {
+  background: rgba(255,255,255,0.2); border: none; color: white;
+  padding: 5px 12px; border-radius: 12px; font-size: 12px;
+  cursor: pointer; margin-top: 6px; font-family: 'Baloo 2', cursive; font-weight: 700;
+  transition: all 0.2s;
+}
+.sound-btn:hover { background: rgba(255,255,255,0.4); }
+
+/* ===== GAME SECTION - DRAG & DROP ===== */
+.game-container { max-width: 500px; margin: 0 auto; }
+
+.game-score {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.1); border-radius: 14px; padding: 10px 16px;
+  margin-bottom: 12px; backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.gscore { font-family: 'Fredoka One', cursive; font-size: 22px; }
+.glabel { font-size: 11px; color: rgba(255,255,255,0.6); }
+.gstars { color: #FFD700; font-size: 18px; }
+
+.game-instructions {
+  background: rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 14px;
+  text-align: center; font-size: 13px; color: rgba(255,255,255,0.8);
+  margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Tree with drop zones */
+.tree-game-area {
+  position: relative; background: linear-gradient(180deg, #87CEEB 0%, #87CEEB 65%, #4CAF50 65%, #388E3C 100%);
+  border-radius: 20px; overflow: visible;
+  border: 3px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  margin-bottom: 16px;
+}
+.tree-game-area svg { display: block; width: 100%; }
+
+/* Drop zones positioned over tree */
+.drop-zone {
+  position: absolute; border: 3px dashed rgba(255,255,255,0.5);
+  border-radius: 12px; min-width: 80px; padding: 5px 8px;
+  text-align: center; background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.drop-zone.over { border-color: #FFD700; background: rgba(255,215,0,0.2); transform: scale(1.05); }
+.drop-zone.correct { border-color: #4CAF50; background: rgba(76,175,80,0.3); animation: correctPop 0.5s; }
+.drop-zone.wrong { border-color: #FF4444; background: rgba(255,68,68,0.3); animation: shake 0.4s; }
+.drop-zone .zone-hint { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 700; }
+.drop-zone .placed { font-family: 'Fredoka One', cursive; font-size: 13px; color: white; }
+.drop-zone .placed-si { font-size: 10px; color: rgba(255,255,255,0.8); }
+
+/* Connector line (drawn by JS/CSS) */
+.connector-line {
+  position: absolute; pointer-events: none;
+  border-top: 2px solid rgba(255,255,255,0.4);
+  transform-origin: left center;
+}
+
+/* Drag labels pool */
+.labels-pool {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  padding: 14px; background: rgba(255,255,255,0.08);
+  border-radius: 16px; border: 2px dashed rgba(255,255,255,0.2);
+  min-height: 60px; margin-bottom: 12px;
+}
+.drag-label {
+  background: white; color: #1a1a2e; border-radius: 10px;
+  padding: 7px 14px; font-family: 'Fredoka One', cursive; font-size: 15px;
+  cursor: grab; user-select: none; touch-action: none;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 3px solid transparent;
+  display: flex; flex-direction: column; align-items: center;
+}
+.drag-label .dl-en { font-size: 14px; font-weight: 900; }
+.drag-label .dl-si { font-size: 10px; color: #555; }
+.drag-label:active { cursor: grabbing; transform: scale(1.15) rotate(3deg); box-shadow: 0 8px 20px rgba(0,0,0,0.4); z-index: 100; }
+.drag-label.dragging { opacity: 0.4; }
+
+/* Ghost element */
+#drag-ghost {
+  position: fixed; pointer-events: none; z-index: 9999;
+  background: white; color: #1a1a2e; border-radius: 10px;
+  padding: 7px 14px; font-family: 'Fredoka One', cursive; font-size: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5); transform: scale(1.1) rotate(3deg);
+  display: none; flex-direction: column; align-items: center;
+}
+
+.reset-btn {
+  display: block; margin: 0 auto;
+  background: linear-gradient(135deg, #FF6B35, #FF1493);
+  border: none; color: white; padding: 12px 32px; border-radius: 25px;
+  font-family: 'Fredoka One', cursive; font-size: 16px;
+  cursor: pointer; transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+}
+.reset-btn:hover { transform: scale(1.05); }
+
+/* Feedback */
+.feedback-msg {
+  text-align: center; font-family: 'Fredoka One', cursive; font-size: 20px;
+  min-height: 32px; animation: fadeUp 0.3s ease;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+
+@keyframes correctPop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+/* Confetti */
+.conf { position:fixed; border-radius:3px; pointer-events:none; z-index:9998; animation:confFall linear forwards; }
+@keyframes confFall { from{transform:translateY(-10px) rotate(0)} to{transform:translateY(100vh) rotate(720deg); opacity:0} }
+
+/* Stars bg */
+.star-bg { position:fixed; top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0; }
+.sb { position:absolute; background:white; border-radius:50%; animation:twink var(--d,2s) ease-in-out infinite; }
+@keyframes twink { 0%,100%{opacity:0.1} 50%{opacity:0.8} }
+
+/* Sun animation */
+@keyframes sunPulse { 0%,100%{filter:drop-shadow(0 0 8px #FFD700)} 50%{filter:drop-shadow(0 0 20px #FF8C00)} }
+</style>
+</head>
+<body>
+
+<div class="star-bg" id="starBg"></div>
+
+<!-- WhatsApp Banner -->
+<div class="wa-banner">
+  <span class="wa-icon">💬</span>
+  <span>අලුත්ම පාඩම් දැනගන්න!</span>
+  <a href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank">Join WhatsApp Group 🌿</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="title">🌳 ගසක කොටස්</div>
+  <div class="subtitle">Parts of a Tree | Grade 1 Science</div>
+  <a href="#" class="home-link" onclick="showSection('learn');return false;">🏠 ආරම්භ</a>
+</header>
+
+<!-- Nav -->
+<nav>
+  <button class="nav-btn active" onclick="showSection('learn')">📖 ඉගෙනගනිමු</button>
+  <button class="nav-btn" onclick="showSection('game')">🎮 ක්‍රීඩාව</button>
+</nav>
+
+<main>
+
+<!-- LEARN SECTION -->
+<section id="learn" class="section active">
+  <div class="learn-intro">🌿 ගසේ කොටස් බලන්න - ශබ්ද කරන්න - ඉගෙනගන්න! 🌿</div>
+
+  <!-- Tree SVG with labels -->
+  <div class="tree-scene" style="max-width:480px;margin:0 auto;">
+    <svg viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sky -->
+      <rect width="400" height="290" fill="#87CEEB"/>
+      <!-- Ground -->
+      <rect y="290" width="400" height="80" fill="#4CAF50"/>
+      <rect y="340" width="400" height="110" fill="#795548"/>
+      <!-- Clouds -->
+      <ellipse cx="60" cy="50" rx="40" ry="22" fill="white" opacity="0.9"/>
+      <ellipse cx="90" cy="40" rx="30" ry="18" fill="white" opacity="0.9"/>
+      <ellipse cx="320" cy="60" rx="35" ry="20" fill="white" opacity="0.9"/>
+      <ellipse cx="345" cy="50" rx="25" ry="16" fill="white" opacity="0.9"/>
+      <!-- Sun -->
+      <circle cx="340" cy="35" r="28" fill="#FFD700" opacity="0.95" style="animation:sunPulse 2s ease-in-out infinite"/>
+      <line x1="340" y1="0" x2="340" y2="10" stroke="#FF8C00" stroke-width="3" stroke-linecap="round"/>
+      <line x1="368" y1="7" x2="362" y2="15" stroke="#FF8C00" stroke-width="3" stroke-linecap="round"/>
+      <line x1="378" y1="33" x2="368" y2="35" stroke="#FF8C00" stroke-width="3" stroke-linecap="round"/>
+      <!-- Roots underground -->
+      <line x1="200" y1="380" x2="140" y2="420" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+      <line x1="200" y1="380" x2="260" y2="425" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+      <line x1="200" y1="380" x2="200" y2="440" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+      <line x1="140" y1="420" x2="110" y2="445" stroke="#5D4037" stroke-width="5" stroke-linecap="round"/>
+      <line x1="260" y1="425" x2="290" y2="448" stroke="#5D4037" stroke-width="5" stroke-linecap="round"/>
+      <!-- Root label area -->
+      <text x="200" y="375" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle" font-family="Baloo 2">ROOT ZONE</text>
+      <!-- Trunk -->
+      <rect x="183" y="230" width="34" height="110" rx="5" fill="#6D4C41"/>
+      <rect x="188" y="235" width="8" height="100" rx="3" fill="#8D6E63" opacity="0.5"/>
+      <!-- Main canopy -->
+      <ellipse cx="200" cy="155" rx="95" ry="85" fill="#2E7D32"/>
+      <ellipse cx="200" cy="145" rx="80" ry="72" fill="#388E3C"/>
+      <ellipse cx="200" cy="138" rx="65" ry="58" fill="#43A047"/>
+      <!-- Highlight on canopy -->
+      <ellipse cx="175" cy="120" rx="30" ry="22" fill="#66BB6A" opacity="0.4"/>
+      <!-- Branches visible -->
+      <line x1="200" y1="235" x2="130" y2="185" stroke="#5D4037" stroke-width="10" stroke-linecap="round"/>
+      <line x1="200" y1="235" x2="270" y2="180" stroke="#5D4037" stroke-width="10" stroke-linecap="round"/>
+      <line x1="200" y1="220" x2="200" y2="160" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+      <!-- Flower -->
+      <circle cx="250" cy="110" r="8" fill="#FFEB3B"/>
+      <circle cx="250" cy="100" r="5" fill="#FF80AB"/>
+      <circle cx="258" cy="107" r="5" fill="#FF80AB"/>
+      <circle cx="255" cy="118" r="5" fill="#FF80AB"/>
+      <circle cx="243" cy="118" r="5" fill="#FF80AB"/>
+      <circle cx="241" cy="107" r="5" fill="#FF80AB"/>
+      <!-- Fruits -->
+      <circle cx="155" cy="160" r="14" fill="#FF5252"/>
+      <circle cx="155" cy="160" r="10" fill="#FF1744"/>
+      <ellipse cx="155" cy="147" rx="3" ry="5" fill="#2E7D32"/>
+      <circle cx="175" cy="175" r="11" fill="#FF5252"/>
+      <!-- Leaves detail -->
+      <ellipse cx="130" cy="130" rx="18" ry="10" fill="#4CAF50" transform="rotate(-30 130 130)"/>
+      <ellipse cx="270" cy="140" rx="18" ry="10" fill="#4CAF50" transform="rotate(20 270 140)"/>
+      <ellipse cx="220" cy="100" rx="15" ry="9" fill="#4CAF50" transform="rotate(-10 220 100)"/>
+    </svg>
+
+    <!-- Floating labels with lines -->
+    <div style="position:absolute;top:8px;left:12px;display:flex;flex-direction:column;gap:6px;">
+      <div class="part-label" style="animation-delay:0.1s" onclick="speakPart('FLOWER','මල්')">
+        <span class="en">🌸 FLOWER</span><span class="si">මල්</span>
+      </div>
+      <div class="part-label" style="animation-delay:0.2s" onclick="speakPart('FRUIT','ගෙඩි')">
+        <span class="en">🍎 FRUIT</span><span class="si">ගෙඩි</span>
+      </div>
+      <div class="part-label" style="animation-delay:0.3s" onclick="speakPart('LEAVES','කොළ')">
+        <span class="en">🍃 LEAVES</span><span class="si">කොළ</span>
+      </div>
+    </div>
+    <div style="position:absolute;top:8px;right:12px;display:flex;flex-direction:column;gap:6px;">
+      <div class="part-label" style="animation-delay:0.4s" onclick="speakPart('BRANCH','අතු')">
+        <span class="en">🌿 BRANCH</span><span class="si">අතු</span>
+      </div>
+      <div class="part-label" style="animation-delay:0.5s" onclick="speakPart('TRUNK','කඳ')">
+        <span class="en">🪵 TRUNK</span><span class="si">කඳ</span>
+      </div>
+      <div class="part-label" style="animation-delay:0.6s" onclick="speakPart('ROOTS','මුල්')">
+        <span class="en">🌱 ROOTS</span><span class="si">මුල්</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part cards -->
+  <div class="parts-grid">
+    <!-- FLOWER -->
+    <div class="part-card" style="background:linear-gradient(135deg,#E91E63cc,#E91E6366);animation-delay:0.1s" onclick="speakPart('FLOWER','මල්')">
+      <div class="emoji">🌸</div>
+      <div class="en-name">FLOWER</div>
+      <div class="si-name">මල් (Mal)</div>
+      <div class="desc">ගසේ ලස්සන කොටස. ගෙඩි හට ගන්නවා.</div>
+      <button class="sound-btn">🔊 ශබ්ද කරන්න</button>
+    </div>
+    <!-- FRUIT -->
+    <div class="part-card" style="background:linear-gradient(135deg,#FF5252cc,#FF525266);animation-delay:0.15s" onclick="speakPart('FRUIT','ගෙඩි')">
+      <div class="emoji">🍎</div>
+      <div class="en-name">FRUIT</div>
+      <div class="si-name">ගෙඩි (Gedi)</div>
+      <div class="desc">ගසේ ඵල. කාන්නත් පුළුවන්.</div>
+      <button class="sound-btn">🔊 ශබ්ද කරන්න</button>
+    </div>
+    <!-- LEAVES -->
+    <div class="part-card" style="background:linear-gradient(135deg,#4CAF50cc,#4CAF5066);animation-delay:0.2s" onclick="speakPart('LEAVES','කොළ')">
+      <div class="emoji">🍃</div>
+      <div class="en-name">LEAVES</div>
+      <div class="si-name">කොළ (Kola)</div>
+      <div class="desc">කොළ ආහාර හදනවා. හරිත වර්ණය.</div>
+      <button class="sound-btn">🔊 ශබ්ද කරන්න</button>
+    </div>
+    <!-- BRANCH -->
+    <div class="part-card" style="background:linear-gradient(135deg,#2196F3cc,#2196F366);animation-delay:0.25s" onclick="speakPart('BRANCH','අතු')">
+      <div class="emoji">🌿</div>
+      <div class="en-name">BRANCH</div>
+      <div class="si-name">අතු (Athu)</div>
+      <div class="desc">කඳෙන් ඇතිවෙන දිගු කොටස්.</div>
+      <button class="sound-btn">🔊 ශබ්ද කරන්න</button>
+    </div>
+    <!-- TRUNK -->
+    <div class="part-card" style="background:linear-gradient(135deg,#795548cc,#79554866);animation-delay:0.3s" onclick="speakPart('TRUNK','කඳ')">
+      <div class="emoji">🪵</div>
+      <div class="en-name">TRUNK</div>
+      <div class="si-name">කඳ (Kada)</div>
+      <div class="desc">ගසේ ශක්තිමත් ප්‍රධාන කොටස.</div>
+      <button class="sound-btn">🔊 ශබ්ද කරන්න</button>
+    </div>
+    <!-- ROOTS -->
+    <div class="part-card" style="background:linear-gradient(135deg,#FF9800cc,#FF980066);animation-delay:0.35s" onclick="speakPart('ROOTS','මුල්')">
+      <div class="emoji">🌱</div>
+      <div class="en-name">ROOTS</div>
+      <div class="si-name">මුල් (Mul)</div>
+      <div class="desc">පොළොවේ ඇති කොටස. ජලය ගන්නවා.</div>
+      <button class="sound-btn">🔊 ශබ්ด කරන්න</button>
+    </div>
+  </div>
+</section>
+
+<!-- GAME SECTION -->
+<section id="game" class="section">
+  <div class="game-container">
+    <!-- Score -->
+    <div class="game-score">
+      <div><div class="gscore" id="gScore">0</div><div class="glabel">ලකුණු</div></div>
+      <div><div class="gstars" id="gStars">☆☆☆☆☆☆</div></div>
+      <div><div class="gscore" id="gCorrect">0/6</div><div class="glabel">නිවැරදි</div></div>
+    </div>
+
+    <div class="game-instructions">
+      🎯 නාමය ගෙනවිත් ගසේ සලකුණු කළ ස්ථානයට දමන්න!<br>
+      <small>Drag the name to the correct part of the tree!</small>
+    </div>
+
+    <!-- Tree with drop zones -->
+    <div class="tree-game-area" id="treeGameArea">
+      <svg viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+        <rect width="400" height="290" fill="#87CEEB"/>
+        <rect y="290" width="400" height="80" fill="#4CAF50"/>
+        <rect y="340" width="400" height="120" fill="#795548"/>
+        <ellipse cx="60" cy="45" rx="40" ry="22" fill="white" opacity="0.9"/>
+        <ellipse cx="90" cy="35" rx="30" ry="18" fill="white" opacity="0.9"/>
+        <ellipse cx="320" cy="55" rx="35" ry="20" fill="white" opacity="0.9"/>
+        <circle cx="350" cy="35" r="26" fill="#FFD700"/>
+        <!-- Roots -->
+        <line x1="200" y1="385" x2="140" y2="430" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+        <line x1="200" y1="385" x2="260" y2="435" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+        <line x1="200" y1="385" x2="200" y2="450" stroke="#5D4037" stroke-width="8" stroke-linecap="round"/>
+        <line x1="140" y1="430" x2="110" y2="455" stroke="#5D4037" stroke-width="5" stroke-linecap="round"/>
+        <line x1="260" y1="435" x2="285" y2="458" stroke="#5D4037" stroke-width="5" stroke-linecap="round"/>
+        <!-- Trunk -->
+        <rect x="183" y="228" width="34" height="112" rx="5" fill="#6D4C41"/>
+        <rect x="188" y="233" width="8" height="102" rx="3" fill="#8D6E63" opacity="0.5"/>
+        <!-- Branches -->
+        <line x1="200" y1="235" x2="125" y2="180" stroke="#5D4037" stroke-width="10" stroke-linecap="round"/>
+        <line x1="200" y1="235" x2="275" y2="175" stroke="#5D4037" stroke-width="10" stroke-linecap="round"/>
+        <!-- Canopy -->
+        <ellipse cx="200" cy="150" rx="95" ry="88" fill="#2E7D32"/>
+        <ellipse cx="200" cy="140" rx="80" ry="74" fill="#388E3C"/>
+        <ellipse cx="200" cy="133" rx="65" ry="60" fill="#43A047"/>
+        <ellipse cx="175" cy="115" rx="30" ry="22" fill="#66BB6A" opacity="0.4"/>
+        <!-- Flower -->
+        <circle cx="255" cy="105" r="9" fill="#FFEB3B"/>
+        <circle cx="255" cy="94" r="6" fill="#FF80AB"/>
+        <circle cx="264" cy="103" r="6" fill="#FF80AB"/>
+        <circle cx="261" cy="116" r="6" fill="#FF80AB"/>
+        <circle cx="248" cy="116" r="6" fill="#FF80AB"/>
+        <circle cx="245" cy="103" r="6" fill="#FF80AB"/>
+        <!-- Fruits -->
+        <circle cx="152" cy="155" r="15" fill="#FF5252"/>
+        <circle cx="152" cy="155" r="11" fill="#FF1744"/>
+        <ellipse cx="152" cy="141" rx="3" ry="5" fill="#2E7D32"/>
+        <circle cx="174" cy="172" r="12" fill="#FF5252"/>
+        <!-- Leaves -->
+        <ellipse cx="125" cy="128" rx="20" ry="11" fill="#4CAF50" transform="rotate(-30 125 128)"/>
+        <ellipse cx="270" cy="140" rx="20" ry="11" fill="#4CAF50" transform="rotate(25 270 140)"/>
+        <ellipse cx="218" cy="96" rx="17" ry="10" fill="#4CAF50" transform="rotate(-10 218 96)"/>
+
+        <!-- Arrow lines from drop zones to parts -->
+        <!-- FLOWER arrow: right side top → flower -->
+        <line x1="310" y1="68" x2="260" y2="100" stroke="white" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+        <polygon points="260,100 255,92 267,96" fill="white" opacity="0.6"/>
+        <!-- FRUIT arrow: left side → fruit -->
+        <line x1="90" y1="130" x2="148" y2="155" stroke="white" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+        <polygon points="148,155 139,150 145,162" fill="white" opacity="0.6"/>
+        <!-- LEAVES arrow: left top → leaf -->
+        <line x1="90" y1="185" x2="140" y2="170" stroke="white" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+        <polygon points="140,170 131,166 137,177" fill="white" opacity="0.6"/>
+        <!-- BRANCH arrow: right → branch -->
+        <line x1="310" y1="185" x2="260" y2="195" stroke="white" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+        <polygon points="260,195 263,185 270,194" fill="white" opacity="0.6"/>
+        <!-- TRUNK arrow: right → trunk -->
+        <line x1="310" y1="262" x2="220" y2="262" stroke="white" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+        <polygon points="220,262 228,257 228,267" fill="white" opacity="0.6"/>
+        <!-- ROOTS arrow: right bottom → roots -->
+        <line x1="290" y1="400" x2="220" y2="390" stroke="white" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+        <polygon points="220,390 228,383 228,396" fill="white" opacity="0.6"/>
+      </svg>
+
+      <!-- Drop zones positioned absolutely -->
+      <!-- FLOWER - top right -->
+      <div class="drop-zone" id="dz-FLOWER" data-part="FLOWER"
+           style="top:4%;right:2%;width:82px;"
+           ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'FLOWER')">
+        <div class="zone-hint">🌸 ?</div>
+      </div>
+      <!-- FRUIT - left middle-top -->
+      <div class="drop-zone" id="dz-FRUIT" data-part="FRUIT"
+           style="top:22%;left:2%;width:78px;"
+           ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'FRUIT')">
+        <div class="zone-hint">🍎 ?</div>
+      </div>
+      <!-- LEAVES - left middle -->
+      <div class="drop-zone" id="dz-LEAVES" data-part="LEAVES"
+           style="top:37%;left:2%;width:82px;"
+           ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'LEAVES')">
+        <div class="zone-hint">🍃 ?</div>
+      </div>
+      <!-- BRANCH - right middle -->
+      <div class="drop-zone" id="dz-BRANCH" data-part="BRANCH"
+           style="top:37%;right:2%;width:82px;"
+           ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'BRANCH')">
+        <div class="zone-hint">🌿 ?</div>
+      </div>
+      <!-- TRUNK - right lower -->
+      <div class="drop-zone" id="dz-TRUNK" data-part="TRUNK"
+           style="top:54%;right:2%;width:78px;"
+           ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'TRUNK')">
+        <div class="zone-hint">🪵 ?</div>
+      </div>
+      <!-- ROOTS - right bottom -->
+      <div class="drop-zone" id="dz-ROOTS" data-part="ROOTS"
+           style="top:82%;right:2%;width:78px;"
+           ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'ROOTS')">
+        <div class="zone-hint">🌱 ?</div>
+      </div>
+    </div>
+
+    <!-- Labels pool -->
+    <div class="labels-pool" id="labelsPool"></div>
+
+    <div class="feedback-msg" id="gameFeedback"></div>
+    <button class="reset-btn" onclick="initGame()">🔄 නැවත ක්‍රීඩා කරමු</button>
+  </div>
+</section>
+
+</main>
+
+<!-- Ghost element for touch drag -->
+<div id="drag-ghost" style="display:none;position:fixed;pointer-events:none;z-index:9999;background:white;color:#1a1a2e;border-radius:10px;padding:7px 14px;font-family:'Fredoka One',cursive;font-size:14px;box-shadow:0 8px 25px rgba(0,0,0,0.5);transform:scale(1.1) rotate(3deg);flex-direction:column;align-items:center;"></div>
+
+<script>
+// ===== DATA =====
+const parts = {
+  FLOWER: { si: 'මල්', emoji: '🌸', color: '#E91E63' },
+  FRUIT:  { si: 'ගෙඩි', emoji: '🍎', color: '#FF5252' },
+  LEAVES: { si: 'කොළ', emoji: '🍃', color: '#4CAF50' },
+  BRANCH: { si: 'අතු', emoji: '🌿', color: '#2196F3' },
+  TRUNK:  { si: 'කඳ', emoji: '🪵', color: '#795548' },
+  ROOTS:  { si: 'මුල්', emoji: '🌱', color: '#FF9800' }
+};
+
+// ===== AUDIO =====
+let actx;
+function ensureAudio() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+}
+function playTone(freq, type='sine', dur=0.3, vol=0.3) {
+  ensureAudio();
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.connect(g); g.connect(actx.destination);
+  o.type=type; o.frequency.value=freq;
+  g.gain.setValueAtTime(vol, actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+dur);
+  o.start(); o.stop(actx.currentTime+dur);
+}
+function playSuccess() { [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',0.25,0.3),i*80)); }
+function playWrong() { [300,250].forEach((f,i)=>setTimeout(()=>playTone(f,'sawtooth',0.2,0.2),i*100)); }
+function playClick() { playTone(800,'sine',0.1,0.15); }
+
+function speakPart(en, si) {
+  ensureAudio();
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(en);
+    u.rate=0.85; u.pitch=1.3; u.volume=1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+  playTone(440,'sine',0.5,0.25);
+  setTimeout(()=>playTone(550,'sine',0.4,0.2),150);
+}
+
+// ===== STARS =====
+function createStars() {
+  const c=document.getElementById('starBg');
+  for(let i=0;i<50;i++){
+    const s=document.createElement('div'); s.className='sb';
+    const sz=Math.random()*3+1;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*3+1}s;animation-delay:${Math.random()*3}s`;
+    c.appendChild(s);
+  }
+}
+
+// ===== SECTION SWITCH =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn')[id==='learn'?0:1].classList.add('active');
+  playClick();
+  if(id==='game') initGame();
+}
+
+// ===== GAME =====
+let gScore=0, gCorrect=0, gDragItem=null, gDragPart=null, ghostEl;
+
+function initGame() {
+  gScore=0; gCorrect=0;
+  updateGameScore();
+  document.getElementById('gameFeedback').textContent='';
+
+  // Reset drop zones
+  Object.keys(parts).forEach(p=>{
+    const dz=document.getElementById('dz-'+p);
+    dz.className='drop-zone';
+    dz.innerHTML=`<div class="zone-hint">${parts[p].emoji} ?</div>`;
+    dz.ondragover=e=>{e.preventDefault();dz.classList.add('over');};
+    dz.ondragleave=()=>dz.classList.remove('over');
+    dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');dzDrop(e,p);};
+  });
+
+  // Build labels pool (shuffled)
+  const pool=document.getElementById('labelsPool');
+  pool.innerHTML='';
+  const shuffled=Object.keys(parts).sort(()=>Math.random()-0.5);
+  shuffled.forEach(p=>{
+    const el=document.createElement('div');
+    el.className='drag-label'; el.id='lbl-'+p; el.dataset.part=p;
+    el.draggable=true;
+    el.style.borderColor=parts[p].color+'88';
+    el.innerHTML=`<span class="dl-en">${parts[p].emoji} ${p}</span><span class="dl-si">${parts[p].si}</span>`;
+    el.addEventListener('dragstart',e=>{
+      gDragPart=p; gDragItem=el; el.classList.add('dragging');
+      e.dataTransfer.setData('text/plain',p);
+    });
+    el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+    // Touch
+    el.addEventListener('touchstart',touchStart,{passive:false});
+    el.addEventListener('touchmove',touchMove,{passive:false});
+    el.addEventListener('touchend',touchEnd);
+    pool.appendChild(el);
+  });
+}
+
+function dzOver(e) { e.preventDefault(); e.currentTarget.classList.add('over'); }
+function dzLeave(e) { e.currentTarget.classList.remove('over'); }
+function dzDrop(e, targetPart) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('over');
+  const dragged = e.dataTransfer ? e.dataTransfer.getData('text/plain') : gDragPart;
+  handleMatch(dragged, targetPart);
+}
+
+function handleMatch(dragged, targetPart) {
+  const dz=document.getElementById('dz-'+targetPart);
+  if(!dragged) return;
+  if(dragged===targetPart) {
+    dz.classList.add('correct');
+    dz.innerHTML=`<div class="placed">${parts[targetPart].emoji} ${targetPart}</div><div class="placed-si">${parts[targetPart].si}</div>`;
+    dz.ondragover=null; dz.ondrop=null;
+    const lbl=document.getElementById('lbl-'+dragged);
+    if(lbl) lbl.remove();
+    gCorrect++;
+    gScore+=15;
+    playSuccess();
+    speakPart(targetPart, parts[targetPart].si);
+    const msgs=['🎉 නිවැරදියි!','⭐ Excellent!','🌟 Super!','✨ Great!','🏆 Well done!'];
+    document.getElementById('gameFeedback').textContent=msgs[Math.floor(Math.random()*msgs.length)];
+    if(gCorrect>=3) launchConfetti();
+    if(gCorrect>=6) setTimeout(()=>{launchConfetti();document.getElementById('gameFeedback').textContent='🎊 සාධු! ඔබ සියල්ල නිවැරදිව ගළපා ගත්තා! 🎊';},400);
+  } else {
+    dz.classList.add('wrong');
+    setTimeout(()=>dz.classList.remove('wrong'),600);
+    playWrong();
+    gScore=Math.max(0,gScore-3);
+    document.getElementById('gameFeedback').textContent='😊 නැවත උත්සාහ කරන්න!';
+  }
+  updateGameScore();
+}
+
+function updateGameScore() {
+  document.getElementById('gScore').textContent=gScore;
+  document.getElementById('gCorrect').textContent=gCorrect+'/6';
+  const stars=Math.min(6,Math.floor(gCorrect));
+  document.getElementById('gStars').textContent='⭐'.repeat(stars)+'☆'.repeat(6-stars);
+}
+
+// ===== TOUCH DRAG =====
+let touchEl=null, ghostDiv=null;
+function touchStart(e) {
+  e.preventDefault();
+  touchEl=e.currentTarget;
+  gDragPart=touchEl.dataset.part;
+  const t=e.touches[0];
+  ghostDiv=document.getElementById('drag-ghost');
+  ghostDiv.style.display='flex';
+  ghostDiv.innerHTML=touchEl.innerHTML;
+  ghostDiv.style.borderColor=parts[gDragPart].color;
+  movGhost(t.clientX, t.clientY);
+}
+function touchMove(e) {
+  e.preventDefault();
+  if(!ghostDiv) return;
+  const t=e.touches[0];
+  movGhost(t.clientX, t.clientY);
+}
+function touchEnd(e) {
+  if(!ghostDiv) return;
+  ghostDiv.style.display='none';
+  const t=e.changedTouches[0];
+  const el=document.elementFromPoint(t.clientX, t.clientY);
+  const dz=el?.closest('.drop-zone');
+  if(dz) handleMatch(gDragPart, dz.dataset.part);
+  touchEl=null;
+}
+function movGhost(x,y) {
+  ghostDiv.style.left=(x-40)+'px';
+  ghostDiv.style.top=(y-25)+'px';
+}
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const cols=['#FF6B35','#FFD700','#4CAF50','#2196F3','#E91E63','#FF9800'];
+  for(let i=0;i<50;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div'); c.className='conf';
+      const w=Math.random()*10+5, h=Math.random()*8+4;
+      c.style.cssText=`width:${w}px;height:${h}px;left:${Math.random()*100}vw;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${Math.random()*2+2}s;border-radius:3px`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),4000);
+    },i*40);
+  }
+}
+
+// ===== INIT =====
+createStars();
+</script>
+</body>
+</html>
