@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>සතුන් ගේ ලෝකය 🐾</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+
+  :root {
+    --sky: #87CEEB;
+    --grass: #4CAF50;
+    --water: #1E90FF;
+    --sand: #F4D03F;
+    --orange: #FF8C00;
+    --pink: #FF69B4;
+    --purple: #9B59B6;
+    --red: #E74C3C;
+    --white: #FFFFFF;
+    --dark: #2C3E50;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Baloo 2', cursive;
+    background: linear-gradient(180deg, #87CEEB 0%, #b8f0b0 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== HOME SCREEN ===== */
+  #homeScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .home-clouds {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.85;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+  .cloud-1 { width: 120px; height: 40px; top: 40px; animation-duration: 25s; animation-delay: 0s; }
+  .cloud-1::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+  .cloud-1::after { width: 45px; height: 45px; top: -22px; left: 55px; }
+  .cloud-2 { width: 90px; height: 30px; top: 80px; animation-duration: 30s; animation-delay: -10s; }
+  .cloud-2::before { width: 45px; height: 45px; top: -22px; left: 15px; }
+  .cloud-2::after { width: 35px; height: 35px; top: -17px; left: 42px; }
+  .cloud-3 { width: 100px; height: 35px; top: 20px; animation-duration: 20s; animation-delay: -5s; }
+  .cloud-3::before { width: 50px; height: 50px; top: -25px; left: 18px; }
+  .cloud-3::after { width: 38px; height: 38px; top: -18px; left: 48px; }
+  @keyframes floatCloud {
+    from { left: -200px; }
+    to { left: calc(100% + 200px); }
+  }
+
+  .home-title-box {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D, #6BCB77, #4D96FF);
+    border-radius: 30px;
+    padding: 6px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    animation: titleBounce 2s ease-in-out infinite;
+  }
+  @keyframes titleBounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .home-title-inner {
+    background: white;
+    border-radius: 25px;
+    padding: 20px 40px;
+  }
+  .home-title-emoji {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 5px;
+    animation: spin 4s linear infinite;
+  }
+  @keyframes spin {
+    0%,40%,60%,100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(15deg) scale(1.2); }
+  }
+  .home-title {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FF6B6B, #4D96FF, #6BCB77);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+  .home-subtitle {
+    font-size: 20px;
+    color: #666;
+    margin-top: 5px;
+  }
+
+  .menu-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 480px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .menu-btn {
+    background: white;
+    border: none;
+    border-radius: 24px;
+    padding: 20px 15px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .menu-btn:hover, .menu-btn:active {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  }
+  .menu-btn .btn-emoji { font-size: 52px; }
+  .menu-btn .btn-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    text-align: center;
+    line-height: 1.2;
+  }
+  .menu-btn.shadow-game { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 3px solid #FFD93D; }
+  .menu-btn.food-game  { background: linear-gradient(135deg, #e8f9e8, #ccf2cc); border: 3px solid #6BCB77; }
+  .menu-btn.home-game  { background: linear-gradient(135deg, #e6f0ff, #cce0ff); border: 3px solid #4D96FF; }
+
+  .stars-row {
+    position: relative;
+    z-index: 1;
+    font-size: 26px;
+    letter-spacing: 4px;
+    animation: twinkle 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.5; } to { opacity: 1; } }
+
+  /* ===== GAME SCREEN ===== */
+  #gameScreen { display: none; }
+
+  .game-header {
+    background: linear-gradient(90deg, #4D96FF, #9B59B6);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .back-btn {
+    background: rgba(255,255,255,0.25);
+    border: none;
+    border-radius: 50%;
+    width: 44px; height: 44px;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.4); }
+  .game-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .score-box {
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.3);
+    height: 8px;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD93D, #FF6B6B);
+    border-radius: 0 4px 4px 0;
+    transition: width 0.4s ease;
+  }
+
+  .game-body {
+    padding: 20px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .question-card {
+    background: white;
+    border-radius: 28px;
+    padding: 30px 24px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    margin-bottom: 24px;
+    animation: slideIn 0.4s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-instruction {
+    font-size: 18px;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 16px;
+  }
+
+  .q-main-emoji {
+    font-size: 100px;
+    display: block;
+    margin: 10px auto;
+    animation: pop 0.5s ease;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+    cursor: default;
+    user-select: none;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  /* Shadow silhouette */
+  .shadow-animal {
+    font-size: 100px;
+    display: block;
+    margin: 10px auto;
+    filter: brightness(0) drop-shadow(0 6px 12px rgba(0,0,0,0.2));
+    animation: pop 0.5s ease;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .option-btn {
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    border: 3px solid #e0e0e0;
+    border-radius: 20px;
+    padding: 16px 10px;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .option-btn:hover:not(:disabled) {
+    transform: scale(1.04);
+    border-color: #4D96FF;
+    background: linear-gradient(135deg, #e6f0ff, #f0f7ff);
+    box-shadow: 0 6px 20px rgba(77,150,255,0.2);
+  }
+  .option-btn .opt-emoji { font-size: 40px; }
+  .option-btn .opt-label { font-size: 14px; text-align: center; line-height: 1.2; }
+
+  .option-btn.correct {
+    background: linear-gradient(135deg, #6BCB77, #4CAF50) !important;
+    border-color: #4CAF50 !important;
+    color: white !important;
+    transform: scale(1.06) !important;
+    animation: correctPop 0.4s ease;
+  }
+  @keyframes correctPop {
+    0%,100% { transform: scale(1.06); }
+    50% { transform: scale(1.15) rotate(3deg); }
+  }
+  .option-btn.wrong {
+    background: linear-gradient(135deg, #FF6B6B, #E74C3C) !important;
+    border-color: #E74C3C !important;
+    color: white !important;
+    animation: shake 0.4s ease;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .option-btn:disabled { cursor: default; }
+
+  /* Feedback popup */
+  .feedback-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: white;
+    border-radius: 30px;
+    padding: 30px 40px;
+    text-align: center;
+    z-index: 200;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    max-width: 320px;
+    width: 85%;
+  }
+  .feedback-popup.show { transform: translate(-50%, -50%) scale(1); }
+  .feedback-popup .fb-emoji { font-size: 70px; display: block; }
+  .feedback-popup .fb-title { font-size: 26px; font-weight: 800; margin: 8px 0 4px; }
+  .feedback-popup .fb-msg { font-size: 16px; color: #555; margin-bottom: 16px; }
+  .feedback-popup.correct-fb { border: 4px solid #6BCB77; }
+  .feedback-popup.wrong-fb { border: 4px solid #FF6B6B; }
+  .fb-next-btn {
+    background: linear-gradient(135deg, #4D96FF, #9B59B6);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Baloo 2', cursive;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .fb-next-btn:hover { transform: scale(1.05); }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 150;
+    display: none;
+  }
+  .overlay.show { display: block; }
+
+  /* ===== RESULTS SCREEN ===== */
+  #resultsScreen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .results-card {
+    background: white;
+    border-radius: 30px;
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideIn 0.5s ease;
+  }
+  .results-trophy { font-size: 80px; display: block; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  .results-title { font-size: 30px; font-weight: 800; color: var(--dark); margin: 10px 0; }
+  .results-score {
+    font-size: 60px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FFD93D, #FF6B6B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 10px 0;
+  }
+  .results-msg { font-size: 18px; color: #666; margin-bottom: 24px; }
+  .star-rating { font-size: 40px; letter-spacing: 6px; margin-bottom: 20px; }
+  .play-again-btn {
+    background: linear-gradient(135deg, #6BCB77, #4CAF50);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 40px;
+    font-size: 20px;
+    font-weight: 800;
+    font-family: 'Baloo 2', cursive;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(76,175,80,0.4);
+    transition: transform 0.2s;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .play-again-btn:hover { transform: scale(1.04); }
+  .home-again-btn {
+    background: linear-gradient(135deg, #4D96FF, #9B59B6);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Baloo 2', cursive;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.2s;
+  }
+  .home-again-btn:hover { transform: scale(1.04); }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    top: -20px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    z-index: 500;
+    pointer-events: none;
+  }
+  @keyframes confettiFall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* habitat tags */
+  .habitat-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+  .h-tag {
+    background: #e6f0ff;
+    border: 2px solid #4D96FF;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #2255aa;
+  }
+
+  .correct-answer-box {
+    background: linear-gradient(135deg, #fff3e6, #ffe8cc);
+    border: 2px solid #FF8C00;
+    border-radius: 16px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #cc5500;
+  }
+  .correct-answer-box span { font-size: 28px; }
+</style>
+</head>
+<body>
+
+<!-- HOME SCREEN -->
+<div id="homeScreen">
+  <div class="home-clouds">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <div class="home-title-box">
+    <div class="home-title-inner">
+      <span class="home-title-emoji">🐾</span>
+      <div class="home-title">මුල් පිටුව</div>
+      <div class="home-subtitle">සතුන් ගේ ලෝකය</div>
+    </div>
+  </div>
+
+  <div class="menu-grid">
+    <button class="menu-btn shadow-game" onclick="startGame('shadow')">
+      <span class="btn-emoji">🌑</span>
+      <span class="btn-label">සෙවනැල්ල හඳුනාගනිමු</span>
+    </button>
+    <button class="menu-btn food-game" onclick="startGame('food')">
+      <span class="btn-emoji">🍎</span>
+      <span class="btn-label">ආහාර තෝරාගනිමු</span>
+    </button>
+    <button class="menu-btn home-game" onclick="startGame('habitat')" style="grid-column: span 2;">
+      <span class="btn-emoji">🏡</span>
+      <span class="btn-label">සතා ජීවත් වන්නේ කොතනද?</span>
+    </button>
+  </div>
+
+  <div class="stars-row">⭐ ⭐ ⭐ ⭐ ⭐</div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen">
+  <div class="game-header">
+    <button class="back-btn" onclick="goHome()">🏠</button>
+    <div class="game-title" id="gameTitle">ක්‍රීඩාව</div>
+    <div class="score-box">⭐ <span id="scoreDisplay">0</span></div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+  </div>
+
+  <div class="game-body">
+    <div class="question-card" id="questionCard">
+      <!-- Filled by JS -->
+    </div>
+    <div class="options-grid" id="optionsGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="resultsScreen">
+  <div class="results-card">
+    <span class="results-trophy" id="resultsTrophy">🏆</span>
+    <div class="results-title">ඉතා හොඳයි!</div>
+    <div class="results-score"><span id="finalScore">0</span>/<span id="totalQ">0</span></div>
+    <div class="star-rating" id="starRating">⭐⭐⭐</div>
+    <div class="results-msg" id="resultsMsg">ඔබ ඉතා දක්ෂයි!</div>
+    <button class="play-again-btn" onclick="restartGame()">🔄 නැවත ක්‍රීඩා කරමු</button>
+    <button class="home-again-btn" onclick="goHome()">🏠 මුල් පිටුව</button>
+  </div>
+</div>
+
+<!-- Overlay + Feedback -->
+<div class="overlay" id="overlay"></div>
+<div class="feedback-popup" id="feedbackPopup">
+  <span class="fb-emoji" id="fbEmoji">🎉</span>
+  <div class="fb-title" id="fbTitle">හොඳයි!</div>
+  <div class="fb-msg" id="fbMsg"></div>
+  <div id="correctAnswerReveal"></div>
+  <button class="fb-next-btn" id="fbNextBtn" onclick="nextQuestion()">ඊළඟ ❯</button>
+</div>
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+
+const animals = [
+  { id:'elephant', emoji:'🐘', name:'අලියා',
+    food:'🌿', foodName:'තණකොළ / කොළ',  foodType:'grass',
+    habitat:['land'], habitatEmoji:'🌳', habitatName:'ගොඩ' },
+  { id:'fish', emoji:'🐟', name:'මාළුවා',
+    food:'🦐', foodName:'කෘමීන් / ජලජ ජීවීන්', foodType:'carnivore',
+    habitat:['water'], habitatEmoji:'🌊', habitatName:'දිය' },
+  { id:'lion', emoji:'🦁', name:'සිංහයා',
+    food:'🥩', foodName:'මස්', foodType:'meat',
+    habitat:['land'], habitatEmoji:'🌳', habitatName:'ගොඩ' },
+  { id:'eagle', emoji:'🦅', name:'රාජාලියා',
+    food:'🐍', foodName:'කෘමීන් / ගොරකා', foodType:'carnivore',
+    habitat:['sky'], habitatEmoji:'☁️', habitatName:'ගුවන්' },
+  { id:'cow', emoji:'🐄', name:'ගව්වා',
+    food:'🌾', foodName:'තණකොළ', foodType:'grass',
+    habitat:['land'], habitatEmoji:'🌳', habitatName:'ගොඩ' },
+  { id:'duck', emoji:'🦆', name:'ඩාෆ්',
+    food:'🌱', foodName:'ජල ශාක / කෘමීන්', foodType:'both',
+    habitat:['water','land'], habitatEmoji:'🌊🌳', habitatName:'දිය හා ගොඩ' },
+  { id:'butterfly', emoji:'🦋', name:'සමනළයා',
+    food:'🌸', foodName:'මල් රොන්', foodType:'nectar',
+    habitat:['sky','land'], habitatEmoji:'☁️🌳', habitatName:'ගුවන් හා ගොඩ' },
+  { id:'frog', emoji:'🐸', name:'ගෙම්බා',
+    food:'🦟', foodName:'කෘමීන්', foodType:'carnivore',
+    habitat:['water','land'], habitatEmoji:'🌊🌳', habitatName:'දිය හා ගොඩ' },
+  { id:'rabbit', emoji:'🐰', name:'හාවා',
+    food:'🥕', foodName:'කැරට් / කොළ', foodType:'grass',
+    habitat:['land'], habitatEmoji:'🌳', habitatName:'ගොඩ' },
+  { id:'shark', emoji:'🦈', name:'සෙල්ලෑ',
+    food:'🐟', foodName:'මාළු', foodType:'meat',
+    habitat:['water'], habitatEmoji:'🌊', habitatName:'දිය' },
+  { id:'monkey', emoji:'🐒', name:'වඳුරා',
+    food:'🍌', foodName:'කෙසෙල් / පලතුරු', foodType:'fruits',
+    habitat:['land'], habitatEmoji:'🌳', habitatName:'ගොඩ' },
+  { id:'parrot', emoji:'🦜', name:'කොටියා',
+    food:'🌾', foodName:'ඇට / ධාන්‍ය', foodType:'seeds',
+    habitat:['sky','land'], habitatEmoji:'☁️🌳', habitatName:'ගුවන් හා ගොඩ' },
+];
+
+// Food options pool
+const foodOptions = [
+  { emoji:'🌿', name:'කොළ' },
+  { emoji:'🍌', name:'කෙසෙල්' },
+  { emoji:'🥩', name:'මස්' },
+  { emoji:'🐟', name:'මාළු' },
+  { emoji:'🥕', name:'කැරට්' },
+  { emoji:'🌸', name:'මල් රොන්' },
+  { emoji:'🌾', name:'ධාන්‍ය' },
+  { emoji:'🍎', name:'ඇපල්' },
+  { emoji:'🦟', name:'කෘමීන්' },
+  { emoji:'🦐', name:'ඉස්සෝ' },
+  { emoji:'🌱', name:'ශාක' },
+];
+
+// Habitat options
+const habitatOptions = [
+  { emoji:'🌊', name:'දිය', key:'water' },
+  { emoji:'🌳', name:'ගොඩ', key:'land' },
+  { emoji:'☁️', name:'ගුවන්', key:'sky' },
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let currentGame = '';
+let questions = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+// ============================================================
+//  GAME SETUP
+// ============================================================
+
+function startGame(type) {
+  currentGame = type;
+  score = 0;
+  currentQ = 0;
+  answered = false;
+
+  const titles = {
+    shadow: '🌑 සෙවනැල්ල හඳුනාගනිමු',
+    food:   '🍎 ආහාර තෝරාගනිමු',
+    habitat:'🏡 සතා ජීවත් වන්නේ කොතනද?'
+  };
+  document.getElementById('gameTitle').textContent = titles[type];
+
+  questions = buildQuestions(type);
+
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  document.getElementById('scoreDisplay').textContent = 0;
+
+  renderQuestion();
+}
+
+function buildQuestions(type) {
+  // Shuffle animals
+  const shuffled = [...animals].sort(() => Math.random() - 0.5);
+  const pool = shuffled.slice(0, 8);
+  return pool.map(animal => makeQuestion(type, animal));
+}
+
+function makeQuestion(type, animal) {
+  if (type === 'shadow') {
+    // Choose 3 wrong animals
+    const others = animals.filter(a => a.id !== animal.id).sort(() => Math.random() - 0.5).slice(0, 3);
+    const opts = shuffle([animal, ...others]).map(a => ({
+      emoji: a.emoji, label: a.name, correct: a.id === animal.id
+    }));
+    return { type, animal, opts };
+  }
+  if (type === 'food') {
+    const correctFood = { emoji: animal.food, label: animal.foodName, correct: true };
+    // 3 wrong food items
+    const wrongFoods = foodOptions
+      .filter(f => f.emoji !== animal.food)
+      .sort(() => Math.random() - 0.5).slice(0, 3)
+      .map(f => ({ emoji: f.emoji, label: f.name, correct: false }));
+    const opts = shuffle([correctFood, ...wrongFoods]);
+    return { type, animal, opts };
+  }
+  if (type === 'habitat') {
+    // Build opts from the 3 habitat types
+    const primaryHabitat = animal.habitat[0];
+    const opts = habitatOptions.map(h => ({
+      emoji: h.emoji,
+      label: h.name,
+      correct: animal.habitat.includes(h.key)
+    }));
+    // Pad to 4 if needed with a dummy
+    while (opts.length < 4) opts.push({ emoji:'❓', label:'?', correct: false });
+    return { type, animal, opts: shuffle(opts) };
+  }
+}
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+// ============================================================
+//  RENDER
+// ============================================================
+function renderQuestion() {
+  answered = false;
+  const total = questions.length;
+  document.getElementById('progressBar').style.width = (currentQ / total * 100) + '%';
+
+  const q = questions[currentQ];
+  const card = document.getElementById('questionCard');
+  const grid = document.getElementById('optionsGrid');
+
+  // Question card
+  if (q.type === 'shadow') {
+    card.innerHTML = `
+      <div class="q-instruction">🌑 මේ සෙවනැල්ල කාගේද?</div>
+      <span class="shadow-animal">${q.animal.emoji}</span>
+    `;
+  } else if (q.type === 'food') {
+    card.innerHTML = `
+      <div class="q-instruction">🍽️ ${q.animal.name} කන්නේ කුමක්ද?</div>
+      <span class="q-main-emoji">${q.animal.emoji}</span>
+    `;
+  } else if (q.type === 'habitat') {
+    card.innerHTML = `
+      <div class="q-instruction">🏡 ${q.animal.name} ජීවත් වන්නේ කොතනද?</div>
+      <span class="q-main-emoji">${q.animal.emoji}</span>
+    `;
+  }
+
+  // Options
+  grid.innerHTML = '';
+  // For habitat, use 3 columns; otherwise 2
+  if (q.type === 'habitat') {
+    grid.style.gridTemplateColumns = '1fr 1fr 1fr';
+  } else {
+    grid.style.gridTemplateColumns = '1fr 1fr';
+  }
+
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-emoji">${opt.emoji}</span><span class="opt-label">${opt.label}</span>`;
+    btn.onclick = () => checkAnswer(btn, opt, q);
+    grid.appendChild(btn);
+  });
+}
+
+// ============================================================
+//  CHECK ANSWER
+// ============================================================
+function checkAnswer(btn, opt, q) {
+  if (answered) return;
+  answered = true;
+
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (opt.correct) {
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('scoreDisplay').textContent = score;
+    showFeedback(true, q);
+  } else {
+    btn.classList.add('wrong');
+    // highlight correct
+    allBtns.forEach(b => {
+      const idx = Array.from(allBtns).indexOf(b);
+      if (q.opts[idx] && q.opts[idx].correct) b.classList.add('correct');
+    });
+    showFeedback(false, q);
+  }
+}
+
+// ============================================================
+//  FEEDBACK POPUP
+// ============================================================
+function showFeedback(correct, q) {
+  const popup = document.getElementById('feedbackPopup');
+  const overlay = document.getElementById('overlay');
+  const fbEmoji = document.getElementById('fbEmoji');
+  const fbTitle = document.getElementById('fbTitle');
+  const fbMsg   = document.getElementById('fbMsg');
+  const reveal  = document.getElementById('correctAnswerReveal');
+
+  popup.className = 'feedback-popup ' + (correct ? 'correct-fb' : 'wrong-fb');
+  reveal.innerHTML = '';
+
+  if (correct) {
+    const corrects = ['ඉතා හොඳයි! 🎉','සාධු! 👏','නියමයි! 🌟','ආශ්චර්යමත්! ✨','දක්ෂ! 🏆'];
+    fbEmoji.textContent = '🎉';
+    fbTitle.textContent = corrects[Math.floor(Math.random() * corrects.length)];
+    fbMsg.textContent   = q.animal.name + ' ශරීරය ඔබ හඳුනා ගත්තේය!';
+    if (q.type === 'food') fbMsg.textContent = q.animal.name + ' ' + q.animal.foodName + ' කනවා!';
+    if (q.type === 'habitat') fbMsg.textContent = q.animal.name + ' ජීවත් වන්නේ ' + q.animal.habitatName + ' හිදීය!';
+  } else {
+    fbEmoji.textContent = '😢';
+    fbTitle.textContent = 'යළිත් උත්සාහ කරමු!';
+    let correctMsg = '';
+    if (q.type === 'shadow') correctMsg = `${q.animal.emoji} ${q.animal.name}`;
+    if (q.type === 'food')   correctMsg = `${q.animal.food} ${q.animal.foodName}`;
+    if (q.type === 'habitat') correctMsg = `${q.animal.habitatEmoji} ${q.animal.habitatName}`;
+    fbMsg.textContent = 'නිවැරදි පිළිතුර:';
+    reveal.innerHTML = `<div class="correct-answer-box"><span>${correctMsg}</span></div>`;
+  }
+
+  // Last button text
+  const isLast = currentQ >= questions.length - 1;
+  document.getElementById('fbNextBtn').textContent = isLast ? '🏆 ප්‍රතිඵල බලමු' : 'ඊළඟ ❯';
+
+  overlay.classList.add('show');
+  setTimeout(() => popup.classList.add('show'), 50);
+}
+
+function nextQuestion() {
+  document.getElementById('feedbackPopup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ============================================================
+//  RESULTS
+// ============================================================
+function showResults() {
+  document.getElementById('gameScreen').style.display = 'none';
+  const rs = document.getElementById('resultsScreen');
+  rs.style.display = 'flex';
+
+  const total = questions.length;
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('totalQ').textContent = total;
+
+  const pct = score / total;
+  let trophy, stars, msg;
+  if (pct >= 0.88)      { trophy='🏆'; stars='⭐⭐⭐'; msg='ඔබ ඉතා දක්ෂ දරුවෙකි!'; }
+  else if (pct >= 0.6)  { trophy='🥈'; stars='⭐⭐'; msg='ඉතා හොඳ! ';  }
+  else                  { trophy='😊'; stars='⭐'; msg='නැවත ක්‍රීඩා කළොත් තව හොඳ වෙයි!'; }
+
+  document.getElementById('resultsTrophy').textContent = trophy;
+  document.getElementById('starRating').textContent = stars;
+  document.getElementById('resultsMsg').textContent = msg;
+
+  if (pct >= 0.6) launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#FFD93D','#FF6B6B','#6BCB77','#4D96FF','#FF8C00','#9B59B6','#FF69B4'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `
+        left: ${Math.random()*100}vw;
+        background: ${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration: ${1.5 + Math.random()*2}s;
+        animation-delay: 0s;
+        width: ${8 + Math.random()*8}px;
+        height: ${8 + Math.random()*8}px;
+        transform: rotate(${Math.random()*360}deg);
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 40);
+  }
+}
+
+function restartGame() {
+  startGame(currentGame);
+}
+
+function goHome() {
+  document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById('homeScreen').style.display = 'flex';
+  document.getElementById('feedbackPopup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+</body>
+</html>

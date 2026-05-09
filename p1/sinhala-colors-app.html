@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>වර්ණ ඉගෙනගනිමු! 🌈</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0c29;
+    --card-bg: rgba(255,255,255,0.08);
+    --accent: #ff6bcb;
+    --text: #ffffff;
+    --correct: #00e676;
+    --wrong: #ff1744;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* FLOATING BUBBLES BG */
+  .bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  .bubble { position: absolute; border-radius: 50%; opacity: 0.15; animation: floatUp linear infinite; }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) scale(0.5); opacity: 0.1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 24px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-logo { font-family: 'Fredoka One', cursive; font-size: 1.5rem; background: linear-gradient(90deg, #ff6bcb, #ffdd57, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-btns { display: flex; gap: 10px; }
+  .nav-btn {
+    padding: 8px 20px; border-radius: 50px; border: none; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+    transition: all 0.25s; display: flex; align-items: center; gap: 6px;
+  }
+  .btn-home { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+  .btn-logout { background: linear-gradient(135deg, #f093fb, #f5576c); color: #fff; }
+  .nav-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    display: flex; background: rgba(255,255,255,0.12); border-radius: 50px; padding: 4px;
+  }
+  .lang-btn {
+    padding: 6px 18px; border-radius: 50px; border: none; cursor: pointer;
+    font-weight: 800; font-size: 0.85rem; transition: all 0.2s; background: transparent; color: rgba(255,255,255,0.6);
+  }
+  .lang-btn.active { background: linear-gradient(135deg, #ff6bcb, #ff8c42); color: #fff; box-shadow: 0 4px 12px rgba(255,107,203,0.4); }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; padding: 90px 20px 40px; position: relative; z-index: 1; }
+  .screen.active { display: block; }
+
+  /* HOME SCREEN */
+  #home { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+  .home-title {
+    font-family: 'Fredoka One', cursive; font-size: clamp(2.5rem, 8vw, 5rem);
+    background: linear-gradient(135deg, #ff6bcb 0%, #ffdd57 40%, #4ecdc4 80%, #a8edea 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 10px; animation: titlePop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .home-subtitle { font-size: 1.2rem; opacity: 0.7; margin-bottom: 50px; }
+  @keyframes titlePop { 0% { transform: scale(0.3) rotate(-5deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+
+  .rainbow-preview { display: flex; gap: 10px; margin-bottom: 50px; flex-wrap: wrap; justify-content: center; }
+  .color-pill {
+    width: 55px; height: 55px; border-radius: 50%; cursor: pointer;
+    animation: bounce 2s ease-in-out infinite; transition: transform 0.2s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .color-pill:hover { transform: scale(1.3) rotate(10deg) !important; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  .menu-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 700px; width: 100%; }
+  .menu-card {
+    background: var(--card-bg); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px;
+    padding: 30px 20px; cursor: pointer; transition: all 0.3s; text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .menu-card:hover { transform: translateY(-8px) scale(1.03); background: rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  .menu-icon { font-size: 3.5rem; margin-bottom: 12px; display: block; animation: wiggle 3s ease-in-out infinite; }
+  @keyframes wiggle { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(8deg); } 75% { transform: rotate(-8deg); } }
+  .menu-title { font-family: 'Fredoka One', cursive; font-size: 1.3rem; margin-bottom: 5px; }
+  .menu-desc { font-size: 0.82rem; opacity: 0.65; }
+
+  /* LEARN SCREEN */
+  #learn { }
+  .section-title { font-family: 'Fredoka One', cursive; font-size: 2rem; text-align: center; margin-bottom: 30px; }
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; }
+
+  .color-card {
+    background: var(--card-bg); border-radius: 24px; padding: 24px 16px; text-align: center;
+    cursor: pointer; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid rgba(255,255,255,0.1); backdrop-filter: blur(8px);
+  }
+  .color-card:hover { transform: translateY(-10px) scale(1.05); border-color: rgba(255,255,255,0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .color-swatch {
+    width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4); transition: all 0.3s;
+    animation: swatch-pulse 3s ease-in-out infinite;
+  }
+  .color-card:hover .color-swatch { transform: scale(1.15); }
+  @keyframes swatch-pulse { 0%,100% { box-shadow: 0 8px 24px rgba(0,0,0,0.4); } 50% { box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 20px var(--clr); } }
+  .color-name-si { font-family: 'Fredoka One', cursive; font-size: 1.4rem; }
+  .color-name-en { font-size: 0.95rem; opacity: 0.65; margin-top: 4px; }
+  .color-emoji { font-size: 1.8rem; margin-top: 8px; }
+
+  /* COLOR DETAIL MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 32px;
+    padding: 40px; max-width: 380px; width: 90%; text-align: center;
+    border: 2px solid rgba(255,255,255,0.15); animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  @keyframes modalPop { 0% { transform: scale(0.5) rotate(-5deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+  .modal-swatch { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; box-shadow: 0 0 40px var(--clr-modal); }
+  .modal-si { font-family: 'Fredoka One', cursive; font-size: 2.5rem; }
+  .modal-en { font-size: 1.3rem; opacity: 0.7; margin: 6px 0 16px; }
+  .modal-example { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 14px; font-size: 1rem; margin-bottom: 20px; }
+  .modal-close { background: linear-gradient(135deg, #ff6bcb, #f5576c); border: none; color: #fff; padding: 12px 32px; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
+  .modal-close:hover { transform: scale(1.05); }
+
+  /* DRAG & DROP SCREEN */
+  #drag { }
+  .drag-instructions { text-align: center; opacity: 0.7; margin-bottom: 30px; font-size: 1rem; }
+  .drag-area { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+
+  .draggable-labels { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 500px; }
+  .drag-label {
+    padding: 12px 24px; border-radius: 50px; cursor: grab; font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem; border: 3px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.08);
+    transition: all 0.2s; user-select: none; backdrop-filter: blur(4px);
+  }
+  .drag-label:hover { transform: scale(1.08); background: rgba(255,255,255,0.18); }
+  .drag-label.dragging { opacity: 0.4; transform: scale(0.9); }
+  .drag-label.matched { opacity: 0.3; pointer-events: none; text-decoration: line-through; }
+
+  .drop-targets { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .drop-zone {
+    width: 140px; height: 160px; border-radius: 20px; border: 3px dashed rgba(255,255,255,0.3);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s; background: rgba(255,255,255,0.05);
+    font-size: 0.9rem; opacity: 0.8;
+  }
+  .drop-zone.drag-over { border-color: #ffdd57; background: rgba(255,221,87,0.1); transform: scale(1.05); }
+  .drop-zone.correct { border-color: var(--correct); background: rgba(0,230,118,0.12); }
+  .drop-zone.wrong { border-color: var(--wrong); background: rgba(255,23,68,0.12); animation: shake 0.4s; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+  .drop-swatch { width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+  .drop-hint { font-size: 0.8rem; opacity: 0.5; text-align: center; }
+  .drop-matched-label { font-family: 'Fredoka One', cursive; font-size: 1.1rem; }
+
+  .drag-score { text-align: center; margin: 24px 0; font-family: 'Fredoka One', cursive; font-size: 1.5rem; }
+  .drag-reset-btn { display: block; margin: 0 auto; padding: 12px 36px; border-radius: 50px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
+  .drag-reset-btn:hover { transform: scale(1.05); }
+
+  /* QUIZ SCREEN */
+  #quiz { }
+  .quiz-header { display: flex; justify-content: space-between; align-items: center; max-width: 700px; margin: 0 auto 28px; }
+  .quiz-progress-bar { height: 10px; background: rgba(255,255,255,0.1); border-radius: 50px; overflow: hidden; flex: 1; margin: 0 16px; }
+  .quiz-progress-fill { height: 100%; background: linear-gradient(90deg, #ff6bcb, #ffdd57); border-radius: 50px; transition: width 0.4s; }
+  .quiz-score { font-family: 'Fredoka One', cursive; font-size: 1.1rem; white-space: nowrap; }
+
+  .quiz-card {
+    max-width: 600px; margin: 0 auto; background: var(--card-bg); border-radius: 28px;
+    padding: 36px; text-align: center; border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+  }
+  .quiz-question { font-size: 1.2rem; opacity: 0.75; margin-bottom: 20px; }
+  .quiz-target { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 10px; box-shadow: 0 0 40px var(--qt-color); animation: quizPulse 2s ease-in-out infinite; }
+  @keyframes quizPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+  .quiz-target-emoji { font-size: 3rem; margin-bottom: 16px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  .quiz-option {
+    padding: 18px 12px; border-radius: 18px; border: 2px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06); cursor: pointer; font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem; transition: all 0.2s; color: #fff;
+  }
+  .quiz-option:hover:not(:disabled) { background: rgba(255,255,255,0.18); transform: scale(1.04); border-color: rgba(255,255,255,0.4); }
+  .quiz-option.correct-ans { background: rgba(0,230,118,0.2); border-color: var(--correct); animation: correctPop 0.4s; }
+  .quiz-option.wrong-ans { background: rgba(255,23,68,0.2); border-color: var(--wrong); animation: shake 0.4s; }
+  @keyframes correctPop { 0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); } }
+  .quiz-option:disabled { cursor: default; }
+
+  .quiz-feedback { font-family: 'Fredoka One', cursive; font-size: 1.5rem; min-height: 40px; margin-top: 16px; }
+  .quiz-next { margin-top: 16px; padding: 12px 36px; border-radius: 50px; border: none; background: linear-gradient(135deg, #ff6bcb, #ff8c42); color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; font-family: 'Nunito', sans-serif; display: none; transition: all 0.2s; }
+  .quiz-next:hover { transform: scale(1.06); }
+
+  /* QUIZ RESULT */
+  .quiz-result { display: none; text-align: center; max-width: 500px; margin: 0 auto; }
+  .result-emoji { font-size: 5rem; animation: bounce 1s ease-in-out infinite; margin-bottom: 16px; }
+  .result-score { font-family: 'Fredoka One', cursive; font-size: 3rem; background: linear-gradient(135deg, #ffdd57, #ff6bcb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .result-msg { font-size: 1.2rem; opacity: 0.8; margin: 12px 0 28px; }
+  .result-btn { padding: 14px 40px; border-radius: 50px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; font-weight: 800; font-size: 1.1rem; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
+  .result-btn:hover { transform: scale(1.06); }
+
+  /* CONFETTI */
+  .confetti-piece { position: fixed; width: 12px; height: 12px; pointer-events: none; z-index: 9999; animation: confettiFall linear forwards; border-radius: 2px; }
+  @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
+
+  /* STAR BURST */
+  .star-burst { position: fixed; pointer-events: none; z-index: 9998; font-size: 2rem; animation: starFly 0.8s ease-out forwards; }
+  @keyframes starFly { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 100% { transform: scale(2) rotate(45deg) translateY(-60px); opacity: 0; } }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+  @media (max-width: 500px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .drag-area { flex-direction: column; }
+    .color-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating bubbles -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🌈 වර්ණ</div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="langSi" onclick="setLang('si')">සිංහල</button>
+    <button class="lang-btn" id="langEn" onclick="setLang('en')">English</button>
+  </div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-home" onclick="showScreen('home')">🏠 Home</button>
+    <button class="nav-btn btn-logout" onclick="logoutConfirm()">🚪 Logout</button>
+  </div>
+</nav>
+
+<!-- COLOR MODAL -->
+<div class="modal-overlay" id="colorModal">
+  <div class="modal">
+    <div class="modal-swatch" id="modalSwatch"></div>
+    <div class="modal-si" id="modalSi"></div>
+    <div class="modal-en" id="modalEn"></div>
+    <div class="modal-example" id="modalExample"></div>
+    <button class="modal-close" onclick="closeModal()">✅ හරි! / OK!</button>
+  </div>
+</div>
+
+<!-- HOME SCREEN -->
+<div class="screen active" id="home" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <h1 class="home-title">🌈 වර්ණ ඉගෙනගනිමු!</h1>
+  <p class="home-subtitle">Let's Learn Colors! / වර්ණ ගැන ඉගෙන ගනිමු</p>
+  <div class="rainbow-preview" id="rainbowPreview"></div>
+  <div class="menu-cards">
+    <div class="menu-card" onclick="showScreen('learn')">
+      <span class="menu-icon">📚</span>
+      <div class="menu-title">ඉගෙන ගනිමු</div>
+      <div class="menu-desc">Learn Colors / වර්ණ ඉගෙනගනිමු</div>
+    </div>
+    <div class="menu-card" onclick="showScreen('drag')">
+      <span class="menu-icon">🎯</span>
+      <div class="menu-title">ගලපමු</div>
+      <div class="menu-desc">Drag & Match / ගලපා බලමු</div>
+    </div>
+    <div class="menu-card" onclick="showScreen('quiz')">
+      <span class="menu-icon">🎮</span>
+      <div class="menu-title">ප්‍රශ්නාවලිය</div>
+      <div class="menu-desc">Fun Quiz / ප්‍රශ්න ඇසිල්ලක්</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEARN SCREEN -->
+<div class="screen" id="learn">
+  <h2 class="section-title" id="learnTitle">🎨 වර්ණ ඉගෙන ගනිමු</h2>
+  <div class="color-grid" id="colorGrid"></div>
+</div>
+
+<!-- DRAG SCREEN -->
+<div class="screen" id="drag">
+  <h2 class="section-title" id="dragTitle">🎯 නිවැරදි වර්ණයට ගලවා දමන්න</h2>
+  <p class="drag-instructions" id="dragInstructions">නාමය ඇදගෙනගොස් නිවැරදි වර්ණ කවය මත දමන්න</p>
+  <div class="drag-score" id="dragScore"></div>
+  <div class="drag-area">
+    <div class="draggable-labels" id="draggableLabels"></div>
+    <div class="drop-targets" id="dropTargets"></div>
+  </div>
+  <br>
+  <button class="drag-reset-btn" onclick="initDrag()">🔄 නැවත ආරම්භ කරන්න / Reset</button>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="screen" id="quiz">
+  <div id="quizContent">
+    <div class="quiz-header">
+      <span id="quizQNum" style="font-family:'Fredoka One',cursive;font-size:1.1rem;"></span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill"></div></div>
+      <div class="quiz-score" id="quizScoreDisp">⭐ 0</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-target" id="quizTarget"></div>
+      <div class="quiz-target-emoji" id="quizEmoji"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <button class="quiz-next" id="quizNext" onclick="nextQuestion()">ඊළඟ ➡️</button>
+    </div>
+  </div>
+  <div class="quiz-result" id="quizResult">
+    <div class="result-emoji" id="resultEmoji"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="result-btn" onclick="startQuiz()">🔄 නැවත ආරම්භ / Play Again</button>
+    <br><br>
+    <button class="result-btn" style="background:linear-gradient(135deg,#4ecdc4,#44a08d)" onclick="showScreen('home')">🏠 Home</button>
+  </div>
+</div>
+
+<script>
+const colors = [
+  { si: 'රතු', en: 'Red', hex: '#e53935', emoji: '🍎', exSi: 'ඇපල් ගෙඩියක් වගේ', exEn: 'Like an apple' },
+  { si: 'නිල්', en: 'Blue', hex: '#1e88e5', emoji: '🌊', exSi: 'අහස වගේ', exEn: 'Like the sky' },
+  { si: 'කහ', en: 'Yellow', hex: '#fdd835', emoji: '🍌', exSi: 'කෙසෙල් ගෙඩියක් වගේ', exEn: 'Like a banana' },
+  { si: 'කොළ', en: 'Green', hex: '#43a047', emoji: '🍃', exSi: 'ගහක කොළයක් වගේ', exEn: 'Like a leaf' },
+  { si: 'තැඹිලි', en: 'Orange', hex: '#fb8c00', emoji: '🍊', exSi: 'දොඩම් ගෙඩියක් වගේ', exEn: 'Like an orange' },
+  { si: 'දම්', en: 'Purple', hex: '#8e24aa', emoji: '🍇', exSi: 'මිදි වගේ', exEn: 'Like grapes' },
+  { si: 'කළු', en: 'Black', hex: '#263238', emoji: '🌑', exSi: 'රාත්‍රිය වගේ', exEn: 'Like the night' },
+  { si: 'සුදු', en: 'White', hex: '#eceff1', emoji: '☁️', exSi: 'වලාකුළු වගේ', exEn: 'Like clouds' },
+  { si: 'දුඹුරු', en: 'Brown', hex: '#795548', emoji: '🌰', exSi: 'කිතුල් ගෙඩිය වගේ', exEn: 'Like a chestnut' },
+  { si: 'රෝස', en: 'Pink', hex: '#e91e63', emoji: '🌸', exSi: 'නෙළුම් මල් වගේ', exEn: 'Like lotus flowers' },
+];
+
+let lang = 'si';
+let quizQuestions = [];
+let currentQ = 0;
+let quizScore = 0;
+let answered = false;
+let dragMatched = 0;
+
+// ---- LANG ----
+function setLang(l) {
+  lang = l;
+  document.getElementById('langSi').classList.toggle('active', l === 'si');
+  document.getElementById('langEn').classList.toggle('active', l === 'en');
+  renderLearn();
+  initDrag();
+  updateScreenLabels();
+}
+
+function updateScreenLabels() {
+  document.getElementById('learnTitle').textContent = lang === 'si' ? '🎨 වර්ණ ඉගෙන ගනිමු' : '🎨 Learn Colors';
+  document.getElementById('dragTitle').textContent = lang === 'si' ? '🎯 නිවැරදි වර්ණයට ගලවා දමන්න' : '🎯 Drag to the Right Color';
+  document.getElementById('dragInstructions').textContent = lang === 'si' ? 'නාමය ඇදගෙනගොස් නිවැරදි වර්ණ කවය මත දමන්න' : 'Drag the label onto the matching color circle';
+}
+
+// ---- BUBBLES ----
+function createBubbles() {
+  const container = document.getElementById('bubbles');
+  const cs = colors.map(c => c.hex);
+  for (let i = 0; i < 20; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const sz = Math.random() * 80 + 30;
+    b.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${cs[i%cs.length]};animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;`;
+    container.appendChild(b);
+  }
+}
+
+// ---- HOME ----
+function renderHome() {
+  const rp = document.getElementById('rainbowPreview');
+  rp.innerHTML = '';
+  colors.slice(0,8).forEach((c,i) => {
+    const d = document.createElement('div');
+    d.className = 'color-pill';
+    d.style.cssText = `background:${c.hex};animation-delay:${i*0.1}s;--clr:${c.hex};`;
+    d.title = `${c.si} / ${c.en}`;
+    d.onclick = () => openModal(c);
+    rp.appendChild(d);
+  });
+}
+
+// ---- SCREENS ----
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
+  const el = document.getElementById(id);
+  el.style.display = '';
+  setTimeout(() => el.classList.add('active'), 10);
+  if (id === 'learn') renderLearn();
+  if (id === 'drag') initDrag();
+  if (id === 'quiz') startQuiz();
+}
+
+// ---- LEARN ----
+function renderLearn() {
+  const grid = document.getElementById('colorGrid');
+  grid.innerHTML = '';
+  colors.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'color-card';
+    card.style.setProperty('--clr', c.hex);
+    card.innerHTML = `
+      <div class="color-swatch" style="background:${c.hex};--clr:${c.hex};"></div>
+      <div class="color-name-si">${lang === 'si' ? c.si : c.en}</div>
+      <div class="color-name-en">${lang === 'si' ? c.en : c.si}</div>
+      <div class="color-emoji">${c.emoji}</div>
+    `;
+    card.onclick = () => openModal(c);
+    grid.appendChild(card);
+  });
+}
+
+// ---- MODAL ----
+function openModal(c) {
+  document.getElementById('modalSwatch').style.cssText = `background:${c.hex};width:120px;height:120px;border-radius:50%;margin:0 auto 20px;box-shadow:0 0 40px ${c.hex}88;`;
+  document.getElementById('modalSi').textContent = c.si;
+  document.getElementById('modalEn').textContent = c.en + ' ' + c.emoji;
+  document.getElementById('modalExample').textContent = lang === 'si' ? c.exSi : c.exEn;
+  document.getElementById('colorModal').classList.add('open');
+}
+function closeModal() { document.getElementById('colorModal').classList.remove('open'); }
+
+// ---- DRAG & DROP ----
+function initDrag() {
+  dragMatched = 0;
+  document.getElementById('dragScore').textContent = '';
+  const shuffled = [...colors].sort(() => Math.random() - 0.5).slice(0, 6);
+  const labelOrder = [...shuffled].sort(() => Math.random() - 0.5);
+
+  const labelsEl = document.getElementById('draggableLabels');
+  const targetsEl = document.getElementById('dropTargets');
+  labelsEl.innerHTML = '';
+  targetsEl.innerHTML = '';
+
+  labelOrder.forEach(c => {
+    const lbl = document.createElement('div');
+    lbl.className = 'drag-label';
+    lbl.draggable = true;
+    lbl.dataset.color = c.en;
+    lbl.style.color = c.hex === '#eceff1' ? '#333' : '#fff';
+    lbl.style.borderColor = c.hex;
+    lbl.style.textShadow = '0 1px 4px rgba(0,0,0,0.5)';
+    lbl.textContent = lang === 'si' ? c.si : c.en;
+    lbl.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text', c.en);
+      setTimeout(() => lbl.classList.add('dragging'), 0);
+    });
+    lbl.addEventListener('dragend', () => lbl.classList.remove('dragging'));
+    // Touch support
+    lbl.addEventListener('touchstart', touchStart, {passive:true});
+    lbl.addEventListener('touchmove', touchMove, {passive:false});
+    lbl.addEventListener('touchend', touchEnd);
+    labelsEl.appendChild(lbl);
+  });
+
+  shuffled.forEach(c => {
+    const zone = document.createElement('div');
+    zone.className = 'drop-zone';
+    zone.dataset.color = c.en;
+    const sw = document.createElement('div');
+    sw.className = 'drop-swatch';
+    sw.style.background = c.hex;
+    const hint = document.createElement('div');
+    hint.className = 'drop-hint';
+    hint.textContent = c.emoji;
+    zone.appendChild(sw);
+    zone.appendChild(hint);
+
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const dropped = e.dataTransfer.getData('text');
+      handleDrop(dropped, zone, labelsEl, shuffled);
+    });
+    targetsEl.appendChild(zone);
+  });
+}
+
+let touchDragEl = null, touchClone = null, touchColorKey = null;
+function touchStart(e) {
+  touchDragEl = e.currentTarget;
+  touchColorKey = touchDragEl.dataset.color;
+  touchClone = touchDragEl.cloneNode(true);
+  touchClone.style.cssText += `;position:fixed;opacity:0.85;pointer-events:none;z-index:9999;width:${touchDragEl.offsetWidth}px;`;
+  document.body.appendChild(touchClone);
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - touchDragEl.offsetWidth/2) + 'px';
+  touchClone.style.top = (t.clientY - 25) + 'px';
+}
+function touchMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - parseInt(touchClone.style.width)/2) + 'px';
+  touchClone.style.top = (t.clientY - 25) + 'px';
+  document.querySelectorAll('.drop-zone').forEach(z => {
+    const r = z.getBoundingClientRect();
+    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
+      z.classList.add('drag-over');
+    } else { z.classList.remove('drag-over'); }
+  });
+}
+function touchEnd(e) {
+  if (!touchClone) return;
+  const t = e.changedTouches[0];
+  document.body.removeChild(touchClone); touchClone = null;
+  let found = null;
+  document.querySelectorAll('.drop-zone').forEach(z => {
+    z.classList.remove('drag-over');
+    const r = z.getBoundingClientRect();
+    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) found = z;
+  });
+  if (found && touchColorKey) {
+    const all = [...document.querySelectorAll('.drag-label')];
+    handleDrop(touchColorKey, found, document.getElementById('draggableLabels'), colors);
+    touchDragEl = null; touchColorKey = null;
+  }
+}
+
+function handleDrop(dropped, zone, labelsEl, colorSet) {
+  if (zone.classList.contains('correct')) return;
+  const correct = zone.dataset.color;
+  const lbl = labelsEl.querySelector(`[data-color="${dropped}"]`);
+  if (dropped === correct) {
+    zone.classList.add('correct');
+    const c = colorSet.find(x => x.en === correct);
+    const ml = document.createElement('div');
+    ml.className = 'drop-matched-label';
+    ml.style.color = c.hex === '#eceff1' ? '#333' : c.hex;
+    ml.textContent = lang === 'si' ? c.si : c.en;
+    zone.appendChild(ml);
+    if (lbl) lbl.classList.add('matched');
+    dragMatched++;
+    fireStars(zone);
+    if (dragMatched === document.querySelectorAll('.drop-zone').length) {
+      document.getElementById('dragScore').textContent = '🎉 ' + (lang === 'si' ? 'ඉතා හොඳයි! සියල්ල නිවැරදිව ගලපා ඇත!' : 'Excellent! All matched!');
+      fireConfetti();
+    } else {
+      document.getElementById('dragScore').textContent = `✅ ${dragMatched} / ${document.querySelectorAll('.drop-zone').length}`;
+    }
+  } else {
+    zone.classList.add('wrong');
+    setTimeout(() => zone.classList.remove('wrong'), 500);
+  }
+}
+
+// ---- QUIZ ----
+const quizTypes = ['color-to-name', 'name-to-color', 'emoji-to-color'];
+
+function startQuiz() {
+  quizScore = 0; currentQ = 0; answered = false;
+  const shuffled = [...colors].sort(() => Math.random() - 0.5);
+  quizQuestions = shuffled.slice(0, 8).map(c => ({
+    color: c,
+    type: quizTypes[Math.floor(Math.random() * quizTypes.length)]
+  }));
+  document.getElementById('quizContent').style.display = '';
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizNext').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= quizQuestions.length) { showResult(); return; }
+  answered = false;
+  const q = quizQuestions[currentQ];
+  const total = quizQuestions.length;
+  document.getElementById('quizQNum').textContent = `${currentQ+1} / ${total}`;
+  document.getElementById('quizFill').style.width = `${(currentQ/total)*100}%`;
+  document.getElementById('quizScoreDisp').textContent = `⭐ ${quizScore}`;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNext').style.display = 'none';
+
+  const target = document.getElementById('quizTarget');
+  const emoji = document.getElementById('quizEmoji');
+  const question = document.getElementById('quizQuestion');
+
+  target.style.display = 'block';
+  emoji.style.display = 'block';
+
+  if (q.type === 'color-to-name') {
+    question.textContent = lang === 'si' ? 'මෙම වර්ණයේ නම කුමක්ද?' : 'What is the name of this color?';
+    target.style.cssText = `width:110px;height:110px;border-radius:50%;margin:0 auto 10px;background:${q.color.hex};box-shadow:0 0 40px ${q.color.hex}88;animation:quizPulse 2s ease-in-out infinite;`;
+    emoji.style.display = 'none';
+    buildOptions(q.color, c => lang === 'si' ? c.si : c.en);
+  } else if (q.type === 'name-to-color') {
+    question.textContent = lang === 'si' ? `"${q.color.si}" (${q.color.en}) යනු කුමන වර්ණයද?` : `Which color is "${q.color.en}"?`;
+    target.style.display = 'none';
+    emoji.style.display = 'none';
+    buildColorOptions(q.color);
+  } else {
+    question.textContent = lang === 'si' ? `${q.color.emoji} — මෙම රූපය කුමන වර්ණයද?` : `${q.color.emoji} — What color is this?`;
+    target.style.display = 'none';
+    emoji.textContent = q.color.emoji;
+    emoji.style.fontSize = '5rem';
+    buildOptions(q.color, c => lang === 'si' ? c.si : c.en);
+  }
+}
+
+function buildOptions(correct, labelFn) {
+  const opts = [correct, ...colors.filter(c=>c.en!==correct.en).sort(()=>Math.random()-0.5).slice(0,3)].sort(()=>Math.random()-0.5);
+  const el = document.getElementById('quizOptions');
+  el.innerHTML = '';
+  opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = labelFn(o);
+    btn.onclick = () => checkAnswer(o.en, correct.en, btn);
+    el.appendChild(btn);
+  });
+}
+
+function buildColorOptions(correct) {
+  const opts = [correct, ...colors.filter(c=>c.en!==correct.en).sort(()=>Math.random()-0.5).slice(0,3)].sort(()=>Math.random()-0.5);
+  const el = document.getElementById('quizOptions');
+  el.innerHTML = '';
+  opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.style.cssText = `background:${o.hex};border-color:${o.hex};color:${o.hex==='#eceff1'?'#333':'#fff'};`;
+    btn.textContent = o.emoji;
+    btn.onclick = () => checkAnswer(o.en, correct.en, btn);
+    el.appendChild(btn);
+  });
+}
+
+function checkAnswer(chosen, correct, btn) {
+  if (answered) return;
+  answered = true;
+  const allBtns = document.querySelectorAll('.quiz-option');
+  allBtns.forEach(b => b.disabled = true);
+  if (chosen === correct) {
+    btn.classList.add('correct-ans');
+    quizScore++;
+    document.getElementById('quizFeedback').textContent = ['🎉 ශාබාශ!','🌟 ඉතා හොඳයි!','✅ නිවැරදියි!','🏆 සුපිරි!'][Math.floor(Math.random()*4)];
+    fireStars(btn);
+  } else {
+    btn.classList.add('wrong-ans');
+    allBtns.forEach(b => { if (!b.classList.contains('wrong-ans') && (b.textContent === colors.find(c=>c.en===correct).si || b.textContent === colors.find(c=>c.en===correct).en || b.textContent === colors.find(c=>c.en===correct).emoji)) b.classList.add('correct-ans'); });
+    document.getElementById('quizFeedback').textContent = lang === 'si' ? '❌ නැවත උත්සාහ කරන්න!' : '❌ Try again next time!';
+  }
+  document.getElementById('quizScoreDisp').textContent = `⭐ ${quizScore}`;
+  document.getElementById('quizNext').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuestion();
+}
+
+function showResult() {
+  document.getElementById('quizContent').style.display = 'none';
+  const res = document.getElementById('quizResult');
+  res.style.display = 'block';
+  const pct = quizScore / quizQuestions.length;
+  let emoji = pct >= 0.9 ? '🏆' : pct >= 0.7 ? '🌟' : pct >= 0.5 ? '😊' : '💪';
+  let msg = pct >= 0.9 ? (lang==='si'?'ඔබ ඉතා දක්ෂයි!':'You are amazing!') :
+            pct >= 0.7 ? (lang==='si'?'ඉතා හොඳයි!':'Great job!') :
+            pct >= 0.5 ? (lang==='si'?'හොඳ උත්සාහයක්!':'Good effort!') :
+                         (lang==='si'?'නැවත උත්සාහ කරන්න!':'Keep practicing!');
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultScore').textContent = `${quizScore} / ${quizQuestions.length}`;
+  document.getElementById('resultMsg').textContent = msg;
+  if (pct >= 0.7) fireConfetti();
+}
+
+// ---- EFFECTS ----
+function fireConfetti() {
+  const colors2 = ['#ff6bcb','#ffdd57','#4ecdc4','#ff8c42','#a8edea','#43a047','#1e88e5','#e53935'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.cssText = `left:${Math.random()*100}vw;background:${colors2[i%colors2.length]};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 3000);
+  }
+}
+
+function fireStars(el) {
+  const rect = el.getBoundingClientRect ? el.getBoundingClientRect() : {left:window.innerWidth/2, top:window.innerHeight/2};
+  ['⭐','✨','🌟'].forEach((s,i) => {
+    const star = document.createElement('div');
+    star.className = 'star-burst';
+    star.textContent = s;
+    star.style.cssText = `left:${rect.left + rect.width/2 - 20 + (i-1)*25}px;top:${rect.top}px;animation-delay:${i*0.1}s;`;
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), 900);
+  });
+}
+
+function logoutConfirm() {
+  if (confirm(lang === 'si' ? 'ඔබට ඇත්තටම logout වීමට අවශ්‍යද?' : 'Are you sure you want to logout?')) {
+    document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:'Fredoka One',cursive;font-size:2rem;color:#fff;text-align:center;">👋 ${lang==='si'?'ඉදිරිපත් වෙනු ඇත!':'See you soon!'}<br><br><button onclick="location.reload()" style="font-size:1rem;padding:14px 36px;border-radius:50px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;">🔄 Login Again</button></div>`;
+  }
+}
+
+// ---- INIT ----
+createBubbles();
+renderHome();
+renderLearn();
+updateScreenLabels();
+</script>
+</body>
+</html>

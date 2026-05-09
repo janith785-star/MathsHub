@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Numbers in English 1-20</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#060f20;font-family:Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.screen{width:100%;max-width:400px;min-height:100vh;display:flex;flex-direction:column;background:#060f20;}
+.sbar{background:#0d1f3c;padding:8px 16px;display:flex;justify-content:space-between;}
+.sbar span{color:#4a6080;font-size:12px;}
+.tab-row{display:grid;grid-template-columns:1fr 1fr 1fr;background:#0d1f3c;padding:6px 8px;gap:5px;}
+.tab{border:none;border-radius:10px;padding:9px 0;font-size:12px;font-weight:bold;cursor:pointer;}
+.tab.learn{background:#1a2d50;color:#7eb8f7;}
+.tab.learn.on{background:#2a5298;color:#c8e4ff;}
+.tab.quiz{background:#1a2a1a;color:#7af0a8;}
+.tab.quiz.on{background:#1a472a;color:#c8f0d8;}
+.tab.all{background:#2a1a3a;color:#d4a0f4;}
+.tab.all.on{background:#4a1a7a;color:#f0d0ff;}
+.view{flex:1;padding:12px;display:flex;flex-direction:column;}
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.prog-txt{font-size:12px;color:#4a6080;}
+.prog-bar{flex:1;height:5px;background:#0d1f3c;border-radius:4px;margin:0 8px;overflow:hidden;}
+.prog-fill{height:100%;background:#4cc9f0;border-radius:4px;transition:width 0.4s;}
+.card-main{background:#0d1f3c;border-radius:22px;padding:20px 14px;margin-bottom:12px;text-align:center;border:2px solid #1a2d50;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.num-big{font-size:68px;font-weight:bold;line-height:1;margin-bottom:8px;}
+.word-big{font-size:32px;font-weight:bold;color:#e8f4ff;margin-bottom:5px;}
+.phonetic{font-size:15px;color:#4a8ab8;font-style:italic;margin-bottom:10px;}
+.emoji-disp{font-size:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:220px;margin-bottom:10px;}
+.speak-btn{background:#1a3a5a;border:2px solid #2a6090;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;margin:0 auto;}
+.nav-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px;}
+.nav-btn{border:2px solid #1a2d50;border-radius:12px;padding:12px 0;font-size:16px;font-weight:bold;cursor:pointer;background:#0d1f3c;color:#7eb8f7;}
+.nav-btn:disabled{opacity:0.25;}
+.nav-ctr{text-align:center;}
+.nav-num{font-size:24px;font-weight:bold;color:#e8f4ff;}
+.nav-of{font-size:11px;color:#4a6080;}
+.dot-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.ndot{width:13px;height:13px;border-radius:50%;background:#0d1f3c;border:1.5px solid #1a2d50;cursor:pointer;}
+.ndot.seen{background:#2a5298;}
+.ndot.cur{border-color:#4cc9f0;}
+.qscore-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.qsc{background:#0d1f3c;border-radius:10px;padding:8px;text-align:center;}
+.qsc .ql{font-size:11px;color:#4a6080;}
+.qsc.g .qv{font-size:20px;font-weight:bold;color:#7af0a8;}
+.qsc.a .qv{font-size:20px;font-weight:bold;color:#f0c87a;}
+.q-card{background:#0d1f3c;border-radius:18px;padding:16px;margin-bottom:10px;text-align:center;border:2px solid #1a2d50;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.q-prompt{font-size:13px;color:#4a8ab8;margin-bottom:6px;}
+.q-big{font-size:54px;font-weight:bold;color:#e8f4ff;line-height:1;}
+.q-spk{background:#1a3a5a;border:2px solid #2a6090;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;margin:8px auto 0;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.opt{border:2px solid #1a2d50;border-radius:13px;padding:14px 6px;font-size:18px;font-weight:bold;cursor:pointer;background:#0d1f3c;color:#e8f4ff;text-align:center;}
+.opt.correct{background:#0d2a1a;border-color:#4cc97a;color:#a8f0c0;}
+.opt.wrong{background:#2a0d0d;border-color:#e24b4a;color:#f4a0a0;}
+.opt.reveal{background:#0d2a1a;border-color:#4cc97a;color:#a8f0c0;}
+.fb{border-radius:12px;padding:10px;text-align:center;font-size:14px;font-weight:bold;min-height:42px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.fb.good{background:#0d2a1a;color:#a8f0c0;}
+.fb.bad{background:#2a0d0d;color:#f4a0a0;}
+.fb.neutral{background:#0d1f3c;color:#4a6080;}
+.nxtbtn{background:#4cc9f0;color:#060f20;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;}
+.nxtbtn:disabled{opacity:0.25;}
+.all-view{flex:1;overflow-y:auto;padding:10px;}
+.all-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.all-card{background:#0d1f3c;border-radius:13px;padding:10px 8px;text-align:center;border:1.5px solid #1a2d50;cursor:pointer;}
+.all-num{font-size:26px;font-weight:bold;line-height:1;margin-bottom:3px;}
+.all-word{font-size:14px;font-weight:bold;color:#e8f4ff;margin-bottom:2px;}
+.all-ph{font-size:11px;color:#4a8ab8;font-style:italic;}
+.spark{position:absolute;font-size:20px;pointer-events:none;animation:sf 0.75s forwards;}
+@keyframes sf{0%{opacity:1;transform:translateY(0)scale(1);}100%{opacity:0;transform:translateY(-65px)scale(0.3);}}
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="sbar"><span id="stime">9:41</span><span>Numbers in English</span><span>🔋</span></div>
+  <div class="tab-row">
+    <button class="tab learn on" id="t-learn" onclick="showTab('learn')">📖 Learn</button>
+    <button class="tab quiz" id="t-quiz" onclick="showTab('quiz')">🧠 Quiz</button>
+    <button class="tab all" id="t-all" onclick="showTab('all')">📋 All</button>
+  </div>
+
+  <div class="view" id="v-learn">
+    <div class="prog-row">
+      <span class="prog-txt" id="prog-lbl">1 of 20</span>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:5%"></div></div>
+      <span class="prog-txt" id="seen-lbl">seen: 0</span>
+    </div>
+    <div class="card-main" id="learn-card">
+      <div class="num-big" id="l-num">1</div>
+      <div class="word-big" id="l-word">One</div>
+      <div class="phonetic" id="l-ph">/wʌn/</div>
+      <div class="emoji-disp" id="l-emoji"></div>
+      <button class="speak-btn" id="l-speak" onclick="speakCurrent()">🔊</button>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" id="prev-btn" onclick="learnNav(-1)" disabled>◀ Prev</button>
+      <div class="nav-ctr"><div class="nav-num" id="l-idx">1</div><div class="nav-of">/ 20</div></div>
+      <button class="nav-btn" id="next-btn" onclick="learnNav(1)">Next ▶</button>
+    </div>
+    <div class="dot-row" id="dot-row"></div>
+  </div>
+
+  <div class="view" id="v-quiz" style="display:none;">
+    <div class="qscore-row">
+      <div class="qsc g"><div class="ql">Score</div><div class="qv" id="qscore">0</div></div>
+      <div class="qsc a"><div class="ql">Round</div><div class="qv" id="qrnd">1/10</div></div>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-prompt" id="q-prompt">What is the word for this number?</div>
+      <div class="q-big" id="q-big">?</div>
+      <button class="q-spk" id="q-spk" onclick="speakQuiz()">🔊</button>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="fb neutral" id="qfb">Choose the correct answer!</div>
+    <button class="nxtbtn" id="qnxt" disabled onclick="nextQuiz()">Next ➜</button>
+  </div>
+
+  <div class="all-view" id="v-all" style="display:none;">
+    <div class="all-grid" id="all-grid"></div>
+  </div>
+</div>
+
+<script>
+var NUMS=[
+  {n:1,w:'One',ph:'/wʌn/',e:'🍎',c:'#ff6b6b'},
+  {n:2,w:'Two',ph:'/tuː/',e:'🌟',c:'#ffa500'},
+  {n:3,w:'Three',ph:'/θriː/',e:'🐱',c:'#ffd700'},
+  {n:4,w:'Four',ph:'/fɔːr/',e:'🌸',c:'#98fb98'},
+  {n:5,w:'Five',ph:'/faɪv/',e:'🐸',c:'#4cc9f0'},
+  {n:6,w:'Six',ph:'/sɪks/',e:'🦋',c:'#a78bfa'},
+  {n:7,w:'Seven',ph:'/ˈsevən/',e:'🌈',c:'#f472b6'},
+  {n:8,w:'Eight',ph:'/eɪt/',e:'🐙',c:'#34d399'},
+  {n:9,w:'Nine',ph:'/naɪn/',e:'🚀',c:'#60a5fa'},
+  {n:10,w:'Ten',ph:'/ten/',e:'🎯',c:'#fb923c'},
+  {n:11,w:'Eleven',ph:'/ɪˈlevən/',e:'⭐',c:'#f9a8d4'},
+  {n:12,w:'Twelve',ph:'/twelv/',e:'🌙',c:'#6ee7b7'},
+  {n:13,w:'Thirteen',ph:'/ˌθɜːrˈtiːn/',e:'🎸',c:'#fbbf24'},
+  {n:14,w:'Fourteen',ph:'/ˌfɔːrˈtiːn/',e:'🌺',c:'#a3e635'},
+  {n:15,w:'Fifteen',ph:'/ˌfɪfˈtiːn/',e:'🦜',c:'#38bdf8'},
+  {n:16,w:'Sixteen',ph:'/ˌsɪkˈstiːn/',e:'🎨',c:'#c084fc'},
+  {n:17,w:'Seventeen',ph:'/ˌsevənˈtiːn/',e:'🏆',c:'#fb7185'},
+  {n:18,w:'Eighteen',ph:'/ˌeɪˈtiːn/',e:'🦁',c:'#4ade80'},
+  {n:19,w:'Nineteen',ph:'/ˌnaɪnˈtiːn/',e:'🎪',c:'#f87171'},
+  {n:20,w:'Twenty',ph:'/ˈtwenti/',e:'🎉',c:'#818cf8'}
+];
+var li=0,seen=new Set(),qs=0,qc=0,qr=[],qa=false;
+function showTab(t){
+  ['learn','quiz','all'].forEach(function(v){
+    document.getElementById('v-'+v).style.display='none';
+    var el=document.getElementById('t-'+v);
+    el.className='tab '+v+(v===t?' on':'');
+  });
+  document.getElementById('v-'+t).style.display='flex';
+  if(t==='quiz'&&qr.length===0)buildQuiz();
+  if(t==='all')buildAll();
+}
+function renderLearn(){
+  var d=NUMS[li];seen.add(li);
+  document.getElementById('l-num').textContent=d.n;
+  document.getElementById('l-num').style.color=d.c;
+  document.getElementById('l-word').textContent=d.w;
+  document.getElementById('l-ph').textContent=d.ph;
+  document.getElementById('l-idx').textContent=d.n;
+  document.getElementById('prog-lbl').textContent=d.n+' of 20';
+  document.getElementById('seen-lbl').textContent='seen: '+seen.size;
+  document.getElementById('prog-fill').style.width=(seen.size/20*100)+'%';
+  var em=document.getElementById('l-emoji');em.innerHTML='';
+  for(var i=0;i<Math.min(d.n,10);i++){var s=document.createElement('span');s.textContent=d.e;s.style.fontSize='18px';em.appendChild(s);}
+  document.getElementById('prev-btn').disabled=li===0;
+  document.getElementById('next-btn').disabled=li===19;
+  renderDots();
+}
+function renderDots(){
+  var row=document.getElementById('dot-row');row.innerHTML='';
+  NUMS.forEach(function(d,i){
+    var dot=document.createElement('div');
+    dot.className='ndot'+(seen.has(i)?' seen':'')+(i===li?' cur':'');
+    dot.style.background=i===li?NUMS[i].c:seen.has(i)?'#2a5298':'';
+    (function(idx){dot.addEventListener('click',function(){li=idx;renderLearn();});})(i);
+    row.appendChild(dot);
+  });
+}
+function learnNav(d){li=Math.max(0,Math.min(19,li+d));renderLearn();}
+function speakCurrent(){speak(NUMS[li].w,'l-speak');}
+function speakQuiz(){if(qr[qc])speak(qr[qc].w,'q-spk');}
+function speak(word,btnId){
+  if(!window.speechSynthesis)return;
+  var btn=document.getElementById(btnId);
+  btn.style.background='#2a5a8a';
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(word);
+  u.lang='en-US';u.rate=0.85;u.pitch=1.1;
+  u.onend=function(){btn.style.background='#1a3a5a';};
+  window.speechSynthesis.speak(u);
+}
+function buildQuiz(){
+  qs=0;qc=0;qa=false;
+  document.getElementById('qscore').textContent='0';
+  qr=NUMS.slice().sort(function(){return Math.random()-0.5;}).slice(0,10);
+  renderQuiz();
+}
+function renderQuiz(){
+  qa=false;
+  var d=qr[qc];
+  document.getElementById('qrnd').textContent=(qc+1)+'/10';
+  var isN2W=Math.random()>0.5;
+  if(isN2W){
+    document.getElementById('q-prompt').textContent='What is the English word for:';
+    document.getElementById('q-big').textContent=d.n;
+    document.getElementById('q-big').style.fontSize='54px';
+    document.getElementById('q-spk').style.display='flex';
+  } else {
+    document.getElementById('q-prompt').textContent='Which number is this word?';
+    document.getElementById('q-big').textContent=d.w;
+    document.getElementById('q-big').style.fontSize='28px';
+    document.getElementById('q-spk').style.display='none';
+  }
+  document.getElementById('q-big').style.color=d.c;
+  buildOpts(d,isN2W);
+  document.getElementById('qfb').textContent='Choose the correct answer!';
+  document.getElementById('qfb').className='fb neutral';
+  document.getElementById('qnxt').disabled=true;
+}
+function buildOpts(correct,isN2W){
+  var g=document.getElementById('opts');g.innerHTML='';
+  var pool=NUMS.slice().sort(function(){return Math.random()-0.5;});
+  var ch=[correct];
+  pool.forEach(function(d){if(ch.length<4&&d.n!==correct.n)ch.push(d);});
+  ch=ch.sort(function(){return Math.random()-0.5;});
+  ch.forEach(function(d){
+    var b=document.createElement('button');b.className='opt';
+    b.textContent=isN2W?d.w:d.n;
+    (function(dd,btn){
+      btn.addEventListener('click',function(){chkQ(dd.n===correct.n,btn,correct,isN2W);});
+    })(d,b);
+    g.appendChild(b);
+  });
+}
+function chkQ(ok,btn,correct,isN2W){
+  if(qa)return;qa=true;
+  document.querySelectorAll('.opt').forEach(function(b){b.style.pointerEvents='none';});
+  if(ok){
+    btn.className='opt correct';qs++;
+    document.getElementById('qscore').textContent=qs;
+    spk2(correct.w);
+    spawnS();
+    document.getElementById('qfb').textContent='🎉 Correct! '+correct.w+' = '+correct.n;
+    document.getElementById('qfb').className='fb good';
+  } else {
+    btn.className='opt wrong';
+    document.querySelectorAll('.opt').forEach(function(b){
+      var v=isN2W?b.textContent:parseInt(b.textContent);
+      if(v==(isN2W?correct.w:correct.n))b.className='opt reveal';
+    });
+    document.getElementById('qfb').textContent='❌ Answer: '+correct.w+' ('+correct.n+')';
+    document.getElementById('qfb').className='fb bad';
+  }
+  document.getElementById('qnxt').disabled=false;
+}
+function spk2(w){try{var u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=0.85;window.speechSynthesis.speak(u);}catch(e){}}
+function spawnS(){
+  var c=document.getElementById('q-card');
+  ['🎉','⭐','✨'].forEach(function(e,i){
+    setTimeout(function(){
+      var el=document.createElement('span');el.className='spark';el.textContent=e;
+      el.style.left=Math.random()*80+10+'%';el.style.top='8px';
+      c.appendChild(el);setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},800);
+    },i*100);
+  });
+}
+function nextQuiz(){
+  qc++;
+  if(qc>=10){
+    document.getElementById('qfb').textContent=(qs===10?'🏆 Perfect!':qs>=7?'🌟 Great job!':'💪 Keep going!')+' Score: '+qs+'/10';
+    document.getElementById('qfb').className='fb good';
+    document.getElementById('qnxt').textContent='Play Again 🔄';
+    document.getElementById('qnxt').onclick=function(){document.getElementById('qnxt').textContent='Next ➜';document.getElementById('qnxt').onclick=nextQuiz;buildQuiz();};
+  } else renderQuiz();
+}
+function buildAll(){
+  var g=document.getElementById('all-grid');g.innerHTML='';
+  NUMS.forEach(function(d){
+    var c=document.createElement('div');c.className='all-card';c.style.borderColor=d.c+'55';
+    c.innerHTML='<div class="all-num" style="color:'+d.c+'">'+d.n+'</div><div class="all-word">'+d.w+'</div><div class="all-ph">'+d.ph+'</div><div style="font-size:14px;margin-top:4px;">🔊 tap to hear</div>';
+    c.addEventListener('click',function(){spk2(d.w);});
+    g.appendChild(c);
+  });
+}
+var now=new Date();
+document.getElementById('stime').textContent=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+renderLearn();
+</script>
+</body>
+</html>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>මාස ඉගෙනගනිමු! 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Noto+Sans+Sinhala:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fff9f0;
+    --card1: #ff6b6b; --card2: #ff9f43; --card3: #ffd32a; --card4: #0be881;
+    --card5: #00d2d3; --card6: #54a0ff; --card7: #5f27cd; --card8: #ff6b81;
+    --card9: #1dd1a1; --card10: #ff9f43; --card11: #48dbfb; --card12: #ff6348;
+    --white: #ffffff;
+    --dark: #2d3436;
+    --correct: #00b894;
+    --wrong: #d63031;
+    --shadow: 0 8px 32px rgba(0,0,0,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Baloo 2', 'Noto Sans Sinhala', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STARS BG */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: 
+      radial-gradient(circle at 10% 20%, #ffe0f0 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, #e0f7ff 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #fff8e1 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 16px; }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 24px 16px 16px;
+    animation: bounceIn 0.7s cubic-bezier(.36,1.56,.64,1) both;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff6b6b, #ff9f43, #ffd32a, #0be881, #54a0ff, #5f27cd);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+    line-height: 1.2;
+  }
+  header p { color: #636e72; font-size: 1rem; margin-top: 6px; }
+
+  @keyframes gradientShift {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* NAV TABS */
+  .tabs {
+    display: flex; gap: 8px; justify-content: center;
+    flex-wrap: wrap; margin: 16px 0;
+  }
+  .tab-btn {
+    padding: 10px 20px; border: none; border-radius: 50px;
+    font-family: inherit; font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    background: #e0e0e0; color: #555;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: linear-gradient(135deg, #54a0ff, #5f27cd);
+    color: white; transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(84,160,255,0.35);
+  }
+
+  /* SECTIONS */
+  .section { display: none; animation: fadeUp 0.4s ease both; }
+  .section.active { display: block; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px);} to { opacity:1; transform:none;} }
+  @keyframes bounceIn { from { opacity:0; transform:scale(0.7);} to { opacity:1; transform:scale(1);} }
+
+  /* ========== SECTION 1: CARD GALLERY ========== */
+  .months-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px; margin-top: 10px;
+  }
+  .month-card {
+    border-radius: 20px; padding: 16px 10px; text-align: center;
+    cursor: pointer; transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+    color: white;
+    animation: popIn 0.5s cubic-bezier(.36,1.56,.64,1) both;
+  }
+  .month-card:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
+  .month-card .num {
+    position: absolute; top: 8px; left: 12px;
+    font-size: 0.75rem; opacity: 0.7; font-weight: 700;
+  }
+  .month-card .emoji { font-size: 2rem; margin-bottom: 6px; display: block; }
+  .month-card .en { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+  .month-card .si { font-family: 'Noto Sans Sinhala', sans-serif; font-size: 0.9rem; font-weight: 600; opacity: 0.9; }
+  .month-card::after {
+    content: ''; position: absolute; top: -30%; right: -30%;
+    width: 80%; height: 80%; border-radius: 50%;
+    background: rgba(255,255,255,0.1); pointer-events: none;
+  }
+
+  @keyframes popIn {
+    from { opacity:0; transform:scale(0.5) rotate(-10deg); }
+    to { opacity:1; transform:scale(1) rotate(0); }
+  }
+
+  /* ========== SECTION 2: SEQUENCE ========== */
+  .seq-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .seq-btn {
+    padding: 10px 22px; border-radius: 50px; border: none;
+    font-family: inherit; font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; color: white;
+  }
+  .seq-btn.prev { background: linear-gradient(135deg, #ff6b6b, #ff9f43); }
+  .seq-btn.next { background: linear-gradient(135deg, #54a0ff, #0be881); }
+  .seq-btn:hover { transform: scale(1.07); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
+  .seq-btn:disabled { opacity: 0.4; transform: none; cursor: default; }
+
+  .big-month-display {
+    background: white; border-radius: 28px; padding: 36px 24px;
+    text-align: center; box-shadow: var(--shadow);
+    max-width: 400px; margin: 0 auto;
+    transition: all 0.3s cubic-bezier(.36,1.56,.64,1);
+  }
+  .big-month-display .big-emoji { font-size: 4rem; margin-bottom: 12px; display: block; }
+  .big-month-display .big-num { font-size: 0.9rem; color: #aaa; font-weight: 700; margin-bottom: 6px; }
+  .big-month-display .big-en {
+    font-size: 2.8rem; font-weight: 800; margin-bottom: 8px;
+    background: linear-gradient(135deg, #54a0ff, #5f27cd);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .big-month-display .big-si {
+    font-family: 'Noto Sans Sinhala', sans-serif;
+    font-size: 2rem; font-weight: 700; color: #ff6b6b;
+  }
+  .context-info {
+    display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap;
+  }
+  .ctx-box {
+    background: #f8f9fa; border-radius: 16px; padding: 10px 16px;
+    font-size: 0.85rem; text-align: center; min-width: 100px;
+  }
+  .ctx-box .ctx-label { color: #aaa; font-size: 0.75rem; margin-bottom: 3px; }
+  .ctx-box .ctx-val { font-weight: 700; color: #2d3436; font-family: 'Noto Sans Sinhala', sans-serif; }
+  .ctx-box .ctx-val.en-val { font-family: 'Baloo 2', sans-serif; }
+  .dot-progress {
+    display: flex; gap: 6px; justify-content: center; margin: 16px 0;
+  }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #e0e0e0; transition: all 0.3s; cursor: pointer;
+  }
+  .dot.active { background: #54a0ff; transform: scale(1.4); }
+  .dot.visited { background: #0be881; }
+
+  /* ========== SECTION 3: MATCH GAME ========== */
+  .match-header { text-align: center; margin-bottom: 16px; }
+  .match-header h2 { font-size: 1.4rem; font-weight: 800; color: #2d3436; }
+  .match-header p { color: #636e72; font-size: 0.9rem; }
+  .match-area {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    max-width: 600px; margin: 0 auto;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+  .match-item {
+    padding: 13px 16px; border-radius: 16px; text-align: center;
+    cursor: pointer; font-weight: 700; font-size: 1rem;
+    border: 3px solid transparent; transition: all 0.2s;
+    background: white; box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    user-select: none;
+  }
+  .match-item.si-item { font-family: 'Noto Sans Sinhala', sans-serif; }
+  .match-item:hover { transform: scale(1.03); box-shadow: 0 6px 18px rgba(0,0,0,0.13); }
+  .match-item.selected { border-color: #54a0ff; background: #e8f4ff; transform: scale(1.05); }
+  .match-item.correct { border-color: var(--correct); background: #d4f5ec; animation: correctPop 0.4s ease; pointer-events: none; }
+  .match-item.wrong { border-color: var(--wrong); background: #ffe0e0; animation: shake 0.4s ease; }
+  .match-item.matched { opacity: 0.45; pointer-events: none; }
+
+  @keyframes correctPop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
+
+  .match-score {
+    text-align: center; margin: 14px 0;
+    font-size: 1rem; font-weight: 700; color: #2d3436;
+  }
+  .score-badge {
+    display: inline-block; background: linear-gradient(135deg,#ffd32a,#ff9f43);
+    color: white; border-radius: 50px; padding: 4px 16px;
+    font-size: 1.1rem; font-weight: 800; margin-left: 6px;
+    box-shadow: 0 3px 10px rgba(255,159,67,0.35);
+  }
+  .match-btn {
+    display: block; margin: 10px auto 0; padding: 12px 32px;
+    background: linear-gradient(135deg,#54a0ff,#5f27cd); color: white;
+    border: none; border-radius: 50px; font-family: inherit;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 5px 18px rgba(84,160,255,0.35); transition: all 0.2s;
+  }
+  .match-btn:hover { transform: scale(1.05); }
+
+  /* ========== SECTION 4: QUIZ ========== */
+  .quiz-wrap { max-width: 550px; margin: 0 auto; }
+  .quiz-progress-bar { background: #e0e0e0; border-radius: 50px; height: 10px; margin-bottom: 18px; overflow: hidden; }
+  .quiz-progress-fill { height: 100%; border-radius: 50px; transition: width 0.4s; background: linear-gradient(90deg,#54a0ff,#0be881); }
+  .quiz-q {
+    background: white; border-radius: 24px; padding: 28px 24px;
+    text-align: center; box-shadow: var(--shadow); margin-bottom: 16px;
+  }
+  .quiz-q .q-label { font-size: 0.85rem; color: #aaa; font-weight: 700; margin-bottom: 10px; }
+  .quiz-q .q-text {
+    font-size: 2rem; font-weight: 800; color: #2d3436; line-height: 1.2;
+  }
+  .quiz-q .q-text.si { font-family: 'Noto Sans Sinhala', sans-serif; font-size: 1.7rem; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quiz-opt {
+    padding: 14px 10px; border-radius: 16px; border: 3px solid #e0e0e0;
+    background: white; font-family: inherit; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; color: #2d3436;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  }
+  .quiz-opt.si { font-family: 'Noto Sans Sinhala', sans-serif; font-size: 0.95rem; }
+  .quiz-opt:hover:not(:disabled) { border-color: #54a0ff; background: #e8f4ff; transform: scale(1.03); }
+  .quiz-opt.correct-ans { border-color: var(--correct); background: #d4f5ec; animation: correctPop 0.4s ease; }
+  .quiz-opt.wrong-ans { border-color: var(--wrong); background: #ffe0e0; animation: shake 0.4s ease; }
+  .quiz-opt:disabled { cursor: default; }
+
+  .quiz-feedback {
+    text-align: center; font-size: 1.1rem; font-weight: 700;
+    min-height: 36px; margin: 10px 0;
+    transition: all 0.3s;
+  }
+  .quiz-feedback.correct { color: var(--correct); }
+  .quiz-feedback.wrong { color: var(--wrong); }
+
+  .quiz-counter { text-align: center; font-size: 0.9rem; color: #aaa; font-weight: 700; margin-bottom: 12px; }
+
+  /* RESULTS */
+  .quiz-results {
+    background: white; border-radius: 28px; padding: 36px 24px;
+    text-align: center; box-shadow: var(--shadow); animation: bounceIn 0.5s ease;
+  }
+  .quiz-results .result-emoji { font-size: 4rem; margin-bottom: 10px; display: block; }
+  .quiz-results h2 { font-size: 1.8rem; font-weight: 800; color: #2d3436; margin-bottom: 8px; }
+  .quiz-results .result-score {
+    font-size: 3rem; font-weight: 800;
+    background: linear-gradient(135deg,#ff9f43,#ffd32a);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .quiz-results p { color: #636e72; margin: 8px 0; }
+  .restart-btn {
+    margin-top: 20px; padding: 14px 36px;
+    background: linear-gradient(135deg,#ff6b6b,#ff9f43); color: white;
+    border: none; border-radius: 50px; font-family: inherit;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 5px 18px rgba(255,107,107,0.35); transition: all 0.2s;
+  }
+  .restart-btn:hover { transform: scale(1.06); }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed; width: 10px; height: 10px; border-radius: 2px;
+    animation: confettiFall linear forwards; pointer-events: none; z-index: 9999;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* QUIZ TYPE SELECTOR */
+  .quiz-type-selector {
+    display: flex; gap: 8px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .qt-btn {
+    padding: 8px 16px; border-radius: 50px; border: 2px solid #e0e0e0;
+    font-family: inherit; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; background: white; color: #636e72; transition: all 0.2s;
+  }
+  .qt-btn.active {
+    background: linear-gradient(135deg,#ff6b81,#ff9f43); color: white;
+    border-color: transparent; box-shadow: 0 4px 14px rgba(255,107,129,0.35);
+  }
+
+  footer {
+    text-align: center; padding: 24px 0 16px;
+    color: #b2bec3; font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🌟 මාස ඉගෙනගනිමු! 🌟</h1>
+    <p>ඉංග්‍රීසි සහ සිංහල මාස නාම ඉගෙන ගනිමු</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showSection('cards')">📅 මාස කාඩ්</button>
+    <button class="tab-btn" onclick="showSection('sequence')">🔢 අනුක්‍රමය</button>
+    <button class="tab-btn" onclick="showSection('match')">🎯 ගලපමු</button>
+    <button class="tab-btn" onclick="showSection('quiz')">🧠 Quiz</button>
+  </div>
+
+  <!-- SECTION 1: CARDS -->
+  <section id="cards" class="section active">
+    <div class="months-grid" id="cardsGrid"></div>
+  </section>
+
+  <!-- SECTION 2: SEQUENCE -->
+  <section id="sequence" class="section">
+    <div class="dot-progress" id="dotProgress"></div>
+    <div class="big-month-display" id="bigDisplay"></div>
+    <div class="context-info" id="contextInfo"></div>
+    <div class="seq-controls" style="margin-top:16px;">
+      <button class="seq-btn prev" id="prevBtn" onclick="seqNav(-1)">← පෙර මාසය</button>
+      <button class="seq-btn next" id="nextBtn" onclick="seqNav(1)">ඊළඟ මාසය →</button>
+    </div>
+  </section>
+
+  <!-- SECTION 3: MATCH -->
+  <section id="match" class="section">
+    <div class="match-header">
+      <h2>🎯 මාස ගලපමු!</h2>
+      <p>ඉංග්‍රීසි සහ සිංහල මාස ගළපන්න</p>
+    </div>
+    <div class="match-score">ලකුණු: <span class="score-badge" id="matchScore">0</span> / 12</div>
+    <div class="match-area">
+      <div class="match-col" id="colEN"></div>
+      <div class="match-col" id="colSI"></div>
+    </div>
+    <button class="match-btn" onclick="initMatch()" style="margin-top:18px;">🔄 නැවත ආරම්භ කරන්න</button>
+  </section>
+
+  <!-- SECTION 4: QUIZ -->
+  <section id="quiz" class="section">
+    <div class="quiz-wrap" id="quizWrap">
+      <div class="quiz-type-selector">
+        <button class="qt-btn active" onclick="setQType('en-si',this)">EN → සිංහල</button>
+        <button class="qt-btn" onclick="setQType('si-en',this)">සිංහල → EN</button>
+        <button class="qt-btn" onclick="setQType('num-en',this)">මාස අංක → EN</button>
+        <button class="qt-btn" onclick="setQType('num-si',this)">මාස අංක → සිංහල</button>
+      </div>
+      <div class="quiz-counter" id="quizCounter"></div>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill"></div></div>
+      <div id="quizBody"></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>📚 ඉගෙනගනිමු · ක්‍රීඩා කරමු · දිනෙමු! 🏆</p>
+</footer>
+
+<script>
+const MONTHS = [
+  { num:1,  en:'January',   si:'දුරුතු',   emoji:'❄️' },
+  { num:2,  en:'February',  si:'නවම්',     emoji:'💝' },
+  { num:3,  en:'March',     si:'මැදින්',   emoji:'🌸' },
+  { num:4,  en:'April',     si:'බක්',      emoji:'🌷' },
+  { num:5,  en:'May',       si:'වෙසක්',    emoji:'🌺' },
+  { num:6,  en:'June',      si:'පොසොන්',   emoji:'☀️' },
+  { num:7,  en:'July',      si:'ඇසළ',      emoji:'🌊' },
+  { num:8,  en:'August',    si:'නිකිණි',   emoji:'⭐' },
+  { num:9,  en:'September', si:'බිනර',     emoji:'🍂' },
+  { num:10, en:'October',   si:'වප්',      emoji:'🎃' },
+  { num:11, en:'November',  si:'ඉල්',      emoji:'🍁' },
+  { num:12, en:'December',  si:'උඳුවප්',   emoji:'🎄' },
+];
+
+const COLORS = [
+  '#ff6b6b','#ff9f43','#ffd32a','#0be881',
+  '#00d2d3','#54a0ff','#5f27cd','#ff6b81',
+  '#1dd1a1','#ff9f43','#48dbfb','#ff6348'
+];
+
+// ========== SECTION NAVIGATION ==========
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='sequence') initSeq();
+  if(id==='match') initMatch();
+  if(id==='quiz') initQuiz();
+}
+
+// ========== CARDS ==========
+function initCards() {
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+  MONTHS.forEach((m,i) => {
+    const card = document.createElement('div');
+    card.className = 'month-card';
+    card.style.background = `linear-gradient(135deg, ${COLORS[i]}, ${adjustColor(COLORS[i])})`;
+    card.style.animationDelay = (i*0.05)+'s';
+    card.innerHTML = `
+      <span class="num">${m.num}</span>
+      <span class="emoji">${m.emoji}</span>
+      <div class="en">${m.en}</div>
+      <div class="si">${m.si}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function adjustColor(hex) {
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(r+40,255)},${Math.max(g-20,0)},${Math.min(b+30,255)})`;
+}
+initCards();
+
+// ========== SEQUENCE ==========
+let seqIdx = 0;
+let seqVisited = new Set();
+
+function initSeq() {
+  seqIdx = 0; seqVisited = new Set([0]);
+  renderSeq();
+}
+
+function seqNav(dir) {
+  seqIdx = Math.max(0, Math.min(11, seqIdx+dir));
+  seqVisited.add(seqIdx);
+  renderSeq();
+}
+
+function renderSeq() {
+  const m = MONTHS[seqIdx];
+  const prev = seqIdx > 0 ? MONTHS[seqIdx-1] : null;
+  const next = seqIdx < 11 ? MONTHS[seqIdx+1] : null;
+
+  // Big display
+  document.getElementById('bigDisplay').innerHTML = `
+    <span class="big-emoji">${m.emoji}</span>
+    <div class="big-num">මාසය ${m.num} / 12</div>
+    <div class="big-en">${m.en}</div>
+    <div class="big-si">${m.si}</div>
+  `;
+  document.getElementById('bigDisplay').style.borderTop = `6px solid ${COLORS[seqIdx]}`;
+
+  // Context boxes
+  let ctxHTML = '';
+  if(prev) ctxHTML += `<div class="ctx-box"><div class="ctx-label">⬅ පෙර මාසය</div><div class="ctx-val">${prev.si}</div><div class="ctx-val en-val">${prev.en}</div></div>`;
+  if(next) ctxHTML += `<div class="ctx-box"><div class="ctx-label">➡ ඊළඟ මාසය</div><div class="ctx-val">${next.si}</div><div class="ctx-val en-val">${next.en}</div></div>`;
+  document.getElementById('contextInfo').innerHTML = ctxHTML;
+
+  // Dots
+  const dotWrap = document.getElementById('dotProgress');
+  dotWrap.innerHTML = '';
+  MONTHS.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===seqIdx?' active':'') + (seqVisited.has(i)&&i!==seqIdx?' visited':'');
+    d.onclick = () => { seqIdx=i; seqVisited.add(i); renderSeq(); };
+    dotWrap.appendChild(d);
+  });
+
+  document.getElementById('prevBtn').disabled = seqIdx===0;
+  document.getElementById('nextBtn').disabled = seqIdx===11;
+}
+
+// ========== MATCH GAME ==========
+let matchSelected = null;
+let matchScore = 0;
+let matchedPairs = new Set();
+
+function initMatch() {
+  matchScore = 0;
+  matchedPairs = new Set();
+  matchSelected = null;
+  document.getElementById('matchScore').textContent = '0';
+
+  const shuffledEN = shuffle([...MONTHS]);
+  const shuffledSI = shuffle([...MONTHS]);
+
+  const colEN = document.getElementById('colEN');
+  const colSI = document.getElementById('colSI');
+  colEN.innerHTML = ''; colSI.innerHTML = '';
+
+  shuffledEN.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.dataset.idx = m.num;
+    el.dataset.type = 'en';
+    el.textContent = m.en;
+    el.style.borderColor = COLORS[m.num-1]+'55';
+    el.onclick = () => matchClick(el);
+    colEN.appendChild(el);
+  });
+  shuffledSI.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'match-item si-item';
+    el.dataset.idx = m.num;
+    el.dataset.type = 'si';
+    el.textContent = m.si;
+    el.style.borderColor = COLORS[m.num-1]+'55';
+    el.onclick = () => matchClick(el);
+    colSI.appendChild(el);
+  });
+}
+
+function matchClick(el) {
+  if(el.classList.contains('matched') || el.classList.contains('correct')) return;
+
+  if(!matchSelected) {
+    // First selection
+    document.querySelectorAll('.match-item.selected').forEach(e=>e.classList.remove('selected'));
+    el.classList.add('selected');
+    matchSelected = el;
+  } else {
+    // Second selection - must be opposite type
+    if(el.dataset.type === matchSelected.dataset.type) {
+      document.querySelectorAll('.match-item.selected').forEach(e=>e.classList.remove('selected'));
+      el.classList.add('selected');
+      matchSelected = el;
+      return;
+    }
+
+    const a = matchSelected, b = el;
+    document.querySelectorAll('.match-item.selected').forEach(e=>e.classList.remove('selected'));
+
+    if(a.dataset.idx === b.dataset.idx) {
+      // Correct!
+      a.classList.add('correct'); b.classList.add('correct');
+      setTimeout(()=>{ a.classList.add('matched'); b.classList.add('matched'); }, 600);
+      matchScore++;
+      document.getElementById('matchScore').textContent = matchScore;
+      if(matchScore===12) { setTimeout(()=>{ launchConfetti(); alert('🎉 සාදු! ඔබ සියලු මාස ගැලපූයේ!'); },400); }
+    } else {
+      // Wrong
+      a.classList.add('wrong'); b.classList.add('wrong');
+      setTimeout(()=>{ a.classList.remove('wrong'); b.classList.remove('wrong'); }, 500);
+    }
+    matchSelected = null;
+  }
+}
+
+// ========== QUIZ ==========
+let quizType = 'en-si';
+let quizList = [];
+let quizIdx = 0;
+let quizCorrect = 0;
+let quizAnswered = false;
+
+function setQType(type, btn) {
+  quizType = type;
+  document.querySelectorAll('.qt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  initQuiz();
+}
+
+function initQuiz() {
+  quizList = shuffle([...MONTHS]);
+  quizIdx = 0; quizCorrect = 0; quizAnswered = false;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  if(quizIdx >= quizList.length) { showResults(); return; }
+
+  const m = quizList[quizIdx];
+  const total = quizList.length;
+  document.getElementById('quizCounter').textContent = `ප්‍රශ්නය ${quizIdx+1} / ${total}`;
+  document.getElementById('quizFill').style.width = ((quizIdx/total)*100)+'%';
+
+  let qText='', qClass='', correctAns='', wrongPool=[], optClass='';
+  if(quizType==='en-si') {
+    qText=m.en; qClass=''; correctAns=m.si;
+    wrongPool=MONTHS.filter(x=>x.num!==m.num).map(x=>x.si); optClass='si';
+  } else if(quizType==='si-en') {
+    qText=m.si; qClass='si'; correctAns=m.en;
+    wrongPool=MONTHS.filter(x=>x.num!==m.num).map(x=>x.en); optClass='';
+  } else if(quizType==='num-en') {
+    qText=`මාස අංකය ${m.num} 🔢`; qClass=''; correctAns=m.en;
+    wrongPool=MONTHS.filter(x=>x.num!==m.num).map(x=>x.en); optClass='';
+  } else {
+    qText=`${m.num} වන මාසය`; qClass='si'; correctAns=m.si;
+    wrongPool=MONTHS.filter(x=>x.num!==m.num).map(x=>x.si); optClass='si';
+  }
+
+  const wrong3 = shuffle(wrongPool).slice(0,3);
+  const options = shuffle([correctAns,...wrong3]);
+
+  const optHTML = options.map(opt=>`
+    <button class="quiz-opt ${optClass}" onclick="checkAnswer('${opt.replace(/'/g,"\\'")}','${correctAns.replace(/'/g,"\\'")}',this)">${opt}</button>
+  `).join('');
+
+  document.getElementById('quizBody').innerHTML = `
+    <div class="quiz-q">
+      <div class="q-label">${m.emoji} මෙම මාසයේ ${quizType.includes('si')&&quizType.split('-')[1]==='en'?'ඉංග්‍රීසි':'සිංහල'} නාමය කුමක්ද?</div>
+      <div class="q-text ${qClass}">${qText}</div>
+    </div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-options">${optHTML}</div>
+    <div style="text-align:center;margin-top:14px;">
+      <button id="nextQBtn" style="display:none;padding:10px 28px;background:linear-gradient(135deg,#54a0ff,#0be881);color:white;border:none;border-radius:50px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;" onclick="nextQ()">ඊළඟ ප්‍රශ්නය →</button>
+    </div>
+  `;
+  quizAnswered = false;
+}
+
+function checkAnswer(selected, correct, btn) {
+  if(quizAnswered) return;
+  quizAnswered = true;
+
+  const fb = document.getElementById('quizFeedback');
+  document.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+
+  if(selected===correct) {
+    btn.classList.add('correct-ans');
+    fb.textContent = '✅ නිවැරදියි! Excellent!';
+    fb.className = 'quiz-feedback correct';
+    quizCorrect++;
+  } else {
+    btn.classList.add('wrong-ans');
+    fb.textContent = `❌ නිවැරදි පිළිතුර: ${correct}`;
+    fb.className = 'quiz-feedback wrong';
+    // Highlight correct
+    document.querySelectorAll('.quiz-opt').forEach(b=>{
+      if(b.textContent.trim()===correct) b.classList.add('correct-ans');
+    });
+  }
+  document.getElementById('nextQBtn').style.display='inline-block';
+}
+
+function nextQ() { quizIdx++; renderQuiz(); }
+
+function showResults() {
+  const pct = Math.round((quizCorrect/quizList.length)*100);
+  let emoji='🌟', msg='';
+  if(pct===100){emoji='🏆';msg='Perfect! ඔබ ශූරයා!';}
+  else if(pct>=80){emoji='🎉';msg='Excellent! ඉතා හොඳයි!';}
+  else if(pct>=60){emoji='😊';msg='Good! තව ඉගෙන ගන්න!';}
+  else{emoji='💪';msg='Try Again! ඔබට කළ හැකිය!';}
+
+  if(pct>=80) launchConfetti();
+
+  document.getElementById('quizBody').innerHTML = `
+    <div class="quiz-results">
+      <span class="result-emoji">${emoji}</span>
+      <h2>${msg}</h2>
+      <div class="result-score">${quizCorrect} / ${quizList.length}</div>
+      <p>නිවැරදි පිළිතුරු ${pct}%</p>
+      <button class="restart-btn" onclick="initQuiz()">🔄 නැවත Quiz කරන්න</button>
+    </div>
+  `;
+  document.getElementById('quizCounter').textContent = '';
+  document.getElementById('quizFill').style.width='100%';
+}
+
+// ========== UTILITIES ==========
+function shuffle(arr) {
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+function launchConfetti() {
+  const colors=['#ff6b6b','#ff9f43','#ffd32a','#0be881','#54a0ff','#5f27cd','#ff6b81'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');
+    c.className='confetti-piece';
+    c.style.left=Math.random()*100+'vw';
+    c.style.top='-20px';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(8+Math.random()*8)+'px';
+    c.style.height=(8+Math.random()*8)+'px';
+    c.style.borderRadius=Math.random()>0.5?'50%':'2px';
+    c.style.animationDuration=(1.5+Math.random()*2)+'s';
+    c.style.animationDelay=(Math.random()*1)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3500);
+  }
+}
+</script>
+</body>
+</html>

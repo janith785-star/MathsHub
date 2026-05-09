@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2 ශ්‍රේණිය - වාහන</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e3f2fd,#e8eaf6,#fce4ec);min-height:100vh;}
+.topbar{display:flex;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-bottom:3px solid #2196F3;position:sticky;top:0;z-index:100;}
+.back-btn{text-decoration:none;background:linear-gradient(135deg,#2196F3,#1565C0);color:white;padding:8px 16px;border-radius:20px;font-size:0.85em;font-weight:700;}
+.topbar h2{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;margin:0 auto;padding-right:70px;}
+.container{padding:16px;max-width:480px;margin:0 auto;}
+.intro-card{background:white;border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,0.08);border-left:6px solid #2196F3;}
+.intro-card h3{font-family:'Fredoka One',cursive;color:#1565C0;font-size:1.2em;margin-bottom:6px;}
+.intro-card p{color:#555;font-size:0.88em;line-height:1.6;}
+
+/* MATCHING GAME */
+.match-section{background:white;border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+.match-title{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;margin-bottom:14px;text-align:center;}
+.match-subtitle{font-size:0.82em;color:#777;text-align:center;margin-bottom:14px;}
+.match-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.match-col h4{font-family:'Fredoka One',cursive;font-size:1em;color:#555;text-align:center;margin-bottom:8px;}
+.match-item{padding:12px 8px;border-radius:16px;border:3px solid #eee;text-align:center;cursor:pointer;transition:all 0.3s;margin-bottom:8px;background:#fafafa;}
+.match-item.vehicle-item{font-size:2em;line-height:1;}
+.match-item.label-item{font-size:0.82em;font-weight:700;color:#333;min-height:44px;display:flex;align-items:center;justify-content:center;}
+.match-item.selected{border-color:#2196F3;background:#E3F2FD;transform:scale(1.04);}
+.match-item.matched{border-color:#4CAF50;background:#E8F5E9;pointer-events:none;}
+.match-item.wrong-flash{animation:wrongFlash 0.5s;}
+@keyframes wrongFlash{0%,100%{border-color:#eee;}50%{border-color:#F44336;background:#FFEBEE;}}
+.match-feedback{text-align:center;padding:10px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;margin-top:10px;display:none;}
+.match-feedback.show{display:block;animation:popIn 0.4s;}
+.match-feedback.good{background:#E8F5E9;color:#2E7D32;}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+.reset-btn{width:100%;padding:12px;background:linear-gradient(135deg,#2196F3,#1565C0);color:white;border:none;border-radius:16px;font-family:'Fredoka One',cursive;font-size:1.1em;cursor:pointer;margin-top:10px;transition:all 0.3s;}
+.reset-btn:hover{transform:scale(1.03);}
+
+/* FILL BLANK QUIZ */
+.fillblank-section{background:white;border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+.fill-title{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;margin-bottom:6px;text-align:center;}
+.score-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.score-tag{background:linear-gradient(135deg,#FF6B35,#FF1744);color:white;padding:5px 14px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.95em;}
+.fill-stmt{font-size:1em;font-weight:700;color:#444;line-height:1.8;text-align:center;background:#f5f5f5;border-radius:16px;padding:14px;margin-bottom:12px;}
+.blank{display:inline-block;border-bottom:3px solid #2196F3;min-width:80px;text-align:center;font-family:'Fredoka One',cursive;color:#1565C0;}
+.fill-emoji{font-size:72px;display:block;text-align:center;margin:6px 0;animation:floatV 2s ease-in-out infinite;}
+@keyframes floatV{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-8px) rotate(3deg);}}
+.fill-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.fill-opt{padding:12px 8px;border:3px solid #eee;border-radius:14px;background:white;font-family:'Fredoka One',cursive;font-size:0.95em;cursor:pointer;text-align:center;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.fill-opt:hover{transform:scale(1.04);border-color:#2196F3;}
+.fill-opt.correct{background:#E8F5E9;border-color:#4CAF50;}
+.fill-opt.wrong{background:#FFEBEE;border-color:#F44336;animation:shake 0.4s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.fill-feedback{text-align:center;padding:10px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;margin-top:10px;display:none;}
+.fill-feedback.show{display:block;animation:popIn 0.4s;}
+.fill-feedback.good{background:#E8F5E9;color:#2E7D32;}
+.fill-feedback.bad{background:#FFEBEE;color:#C62828;}
+.next-fill-btn{width:100%;padding:12px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;cursor:pointer;margin-top:10px;display:none;transition:all 0.3s;}
+.next-fill-btn.show{display:block;animation:popIn 0.3s;}
+.next-fill-btn:hover{transform:scale(1.03);}
+.confetti-emoji{position:fixed;pointer-events:none;font-size:2em;animation:fall 1.5s ease-in forwards;z-index:999;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="back-btn">← ආපසු</a>
+  <h2>🌟 2 ශ්‍රේණිය</h2>
+</div>
+
+<div class="container">
+  <div class="intro-card">
+    <h3>🎯 වාහන හා ස්ථාන ගැළපීම</h3>
+    <p>ගොඩබිමේ, ජලයේ හා ගුවනේ ගමන් කරන වාහන. වාහනය හා ගමන් කරන ස්ථානය ගැළපෙන විට ❤️ ලකුණ ලැබේ!</p>
+  </div>
+
+  <!-- Matching Game -->
+  <div class="match-section">
+    <div class="match-title">🔗 ගැළපීමේ ක්‍රීඩාව</div>
+    <div class="match-subtitle">වාහනය ස්පර්ශ කර, ගමන් කරන ස්ථානය ස්පර්ශ කරන්න</div>
+    <div class="match-cols">
+      <div>
+        <h4>🚗 වාහනය</h4>
+        <div id="matchVehicles"></div>
+      </div>
+      <div>
+        <h4>📍 ස්ථානය</h4>
+        <div id="matchPlaces"></div>
+      </div>
+    </div>
+    <div class="match-feedback" id="matchFb"></div>
+    <button class="reset-btn" onclick="initMatch()">🔄 නැවත ආරම්භ</button>
+  </div>
+
+  <!-- Fill Blank -->
+  <div class="fillblank-section">
+    <div class="fill-title">📝 හිස් තැන පුරවන්න</div>
+    <div class="score-row">
+      <span style="font-size:0.85em;color:#777;font-weight:700;">ලකුණු:</span>
+      <span class="score-tag" id="fbScore">0/0</span>
+    </div>
+    <div class="fill-stmt" id="fillStmt">ගොඩබිම ගමන් කරන වාහනය: <span class="blank" id="blankText">?</span></div>
+    <span class="fill-emoji" id="fillEmoji">❓</span>
+    <div class="fill-options" id="fillOptions"></div>
+    <div class="fill-feedback" id="fillFb"></div>
+    <button class="next-fill-btn" id="nextFillBtn" onclick="loadFillQ()">ඊළඟ →</button>
+  </div>
+</div>
+
+<script>
+// MATCHING
+const matchPairs=[
+  {emoji:'🚂',name:'දුම්රිය',place:'ගොඩබිම 🛣️'},
+  {emoji:'⛵',name:'බෝට්ටුව',place:'ජලය 🌊'},
+  {emoji:'✈️',name:'ගුවන් යානය',place:'ගුවන ☁️'},
+  {emoji:'🚌',name:'බස් රථය',place:'ගොඩබිම 🛣️'},
+  {emoji:'🚢',name:'නැව',place:'ජලය 🌊'},
+  {emoji:'🚁',name:'හෙලිකොප්ටරය',place:'ගුවන ☁️'},
+];
+
+let selectedVehicle=null,matchedCount=0;
+function initMatch(){
+  selectedVehicle=null;matchedCount=0;
+  document.getElementById('matchFb').className='match-feedback';
+  const pairs=matchPairs.sort(()=>Math.random()-0.5).slice(0,4);
+  const places=pairs.map(p=>p.place).sort(()=>Math.random()-0.5);
+  const vDiv=document.getElementById('matchVehicles');
+  const pDiv=document.getElementById('matchPlaces');
+  vDiv.innerHTML='';pDiv.innerHTML='';
+  pairs.forEach(p=>{
+    const vEl=document.createElement('div');
+    vEl.className='match-item vehicle-item';
+    vEl.textContent=p.emoji;
+    vEl.dataset.name=p.name;vEl.dataset.place=p.place;
+    vEl.onclick=()=>selectV(vEl);
+    vDiv.appendChild(vEl);
+  });
+  places.forEach(pl=>{
+    const pEl=document.createElement('div');
+    pEl.className='match-item label-item';
+    pEl.textContent=pl;pEl.dataset.place=pl;
+    pEl.onclick=()=>selectP(pEl);
+    pDiv.appendChild(pEl);
+  });
+}
+
+function selectV(el){
+  if(el.classList.contains('matched'))return;
+  document.querySelectorAll('.match-item.vehicle-item.selected').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedVehicle=el;
+}
+
+function selectP(el){
+  if(!selectedVehicle)return;
+  if(el.classList.contains('matched'))return;
+  if(selectedVehicle.dataset.place===el.dataset.place){
+    selectedVehicle.classList.remove('selected');
+    selectedVehicle.classList.add('matched');
+    el.classList.add('matched');
+    matchedCount++;
+    selectedVehicle=null;
+    if(matchedCount===document.querySelectorAll('.match-item.vehicle-item').length){
+      const fb=document.getElementById('matchFb');
+      fb.textContent='🎉 සියල්ල නිවැරදිව ගළපා ගත්තා!';
+      fb.className='match-feedback show good';
+      spawnConfetti();
+    }
+  }else{
+    selectedVehicle.classList.add('wrong-flash');
+    el.classList.add('wrong-flash');
+    setTimeout(()=>{
+      selectedVehicle&&selectedVehicle.classList.remove('wrong-flash','selected');
+      el.classList.remove('wrong-flash');
+      selectedVehicle=null;
+    },500);
+  }
+}
+
+// FILL BLANK
+const fillQs=[
+  {stmt:'ගොඩබිම ගමන් කරන වාහනය:',emoji:'🚂',answer:'දුම්රිය',opts:['දුම්රිය','ඔරුව','ගුවන් යානය','නැව']},
+  {stmt:'ජලයේ ගමන් කරන වාහනය:',emoji:'⛵',answer:'බෝට්ටුව',opts:['කාර් එක','බෝට්ටුව','හෙලිකොප්ටරය','බස් රථය']},
+  {stmt:'ගුවනේ ගමන් කරන වාහනය:',emoji:'✈️',answer:'ගුවන් යානය',opts:['ලොරි රථය','නැව','ගුවන් යානය','දුම්රිය']},
+  {stmt:'ජලයේ ගමන් කරන විශාල වාහනය:',emoji:'🚢',answer:'නැව',opts:['නැව','කාර් එක','දුම්රිය','හෙලිකොප්ටරය']},
+  {stmt:'ගොඩබිම රෝද 2ෙන් ගමන් කරනය:',emoji:'🚲',answer:'පාපැදිය',opts:['පාපැදිය','ඔරුව','ගුවන් යානය','නැව']},
+  {stmt:'ගුවනේ ඉහළ-යටට යන වාහනය:',emoji:'🚁',answer:'හෙලිකොප්ටරය',opts:['බස් රථය','නැව','හෙලිකොප්ටරය','ලොරි රථය']},
+];
+let fbScore=0,fbTotal=0,fbAnswered=false,curFill=null;
+function loadFillQ(){
+  fbAnswered=false;
+  document.getElementById('fillFb').className='fill-feedback';
+  document.getElementById('nextFillBtn').className='next-fill-btn';
+  document.querySelectorAll('.fill-opt').forEach(b=>{b.className='fill-opt';b.disabled=false;});
+  curFill=fillQs[Math.floor(Math.random()*fillQs.length)];
+  document.getElementById('fillStmt').innerHTML=`${curFill.stmt} <span class="blank" id="blankText">?</span>`;
+  document.getElementById('fillEmoji').textContent=curFill.emoji;
+  const opts=[...curFill.opts].sort(()=>Math.random()-0.5);
+  const opDiv=document.getElementById('fillOptions');
+  opDiv.innerHTML='';
+  opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='fill-opt';
+    btn.textContent=o;
+    btn.onclick=()=>checkFill(o,btn);
+    opDiv.appendChild(btn);
+  });
+}
+function checkFill(ans,btn){
+  if(fbAnswered)return;
+  fbAnswered=true;fbTotal++;
+  const fb=document.getElementById('fillFb');
+  if(ans===curFill.answer){
+    fbScore++;btn.className='fill-opt correct';
+    document.getElementById('blankText').textContent=ans;
+    fb.textContent='🎉 ඉතා දක්ෂයි!';fb.className='fill-feedback show good';
+    spawnConfetti();
+  }else{
+    btn.className='fill-opt wrong';
+    fb.textContent=`නැවත උත්සාහ! නිවැරදි: ${curFill.answer}`;fb.className='fill-feedback show bad';
+  }
+  document.getElementById('fbScore').textContent=`${fbScore}/${fbTotal}`;
+  document.querySelectorAll('.fill-opt').forEach(b=>b.disabled=true);
+  document.getElementById('nextFillBtn').className='next-fill-btn show';
+}
+function spawnConfetti(){
+  ['🎉','⭐','🌟','💫','🎊'].forEach((e,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='confetti-emoji';
+      el.textContent=e;el.style.left=Math.random()*100+'vw';
+      el.style.animationDuration=(Math.random()+1)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2000);
+    },i*100);
+  });
+}
+initMatch();
+loadFillQ();
+</script>
+</body>
+</html>

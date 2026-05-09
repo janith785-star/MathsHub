@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1 ශ්‍රේණිය - වාහන</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e8f5e9,#e3f2fd,#fff8e1);min-height:100vh;}
+.topbar{display:flex;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-bottom:3px solid #4CAF50;position:sticky;top:0;z-index:100;}
+.back-btn{text-decoration:none;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;padding:8px 16px;border-radius:20px;font-size:0.85em;font-weight:700;}
+.topbar h2{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;margin:0 auto;padding-right:70px;}
+.container{padding:16px;max-width:480px;margin:0 auto;}
+.intro-card{background:white;border-radius:24px;padding:20px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,0.08);border-left:6px solid #4CAF50;}
+.intro-card h3{font-family:'Fredoka One',cursive;color:#2E7D32;font-size:1.3em;margin-bottom:8px;}
+.intro-card p{color:#555;font-size:0.9em;line-height:1.6;}
+.category-section{margin:16px 0;}
+.cat-header{display:flex;align-items:center;gap:10px;background:white;border-radius:20px;padding:12px 16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.07);}
+.cat-header span{font-size:1.8em;}
+.cat-header h3{font-family:'Fredoka One',cursive;font-size:1.2em;}
+.cat-header.land h3{color:#E65100;}
+.cat-header.water h3{color:#01579B;}
+.cat-header.air h3{color:#6A1B9A;}
+.vehicles-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;}
+.vehicles-scroll::-webkit-scrollbar{display:none;}
+.v-chip{background:white;border-radius:20px;padding:16px 14px;text-align:center;min-width:110px;box-shadow:0 6px 16px rgba(0,0,0,0.1);cursor:pointer;transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);border:3px solid transparent;flex-shrink:0;}
+.v-chip:hover,.v-chip.tapped{transform:scale(1.08) translateY(-4px);}
+.v-chip.land-c:hover,.v-chip.land-c.tapped{border-color:#FF6B35;box-shadow:0 12px 24px rgba(255,107,53,0.25);}
+.v-chip.water-c:hover,.v-chip.water-c.tapped{border-color:#0288D1;box-shadow:0 12px 24px rgba(2,136,209,0.25);}
+.v-chip.air-c:hover,.v-chip.air-c.tapped{border-color:#9C27B0;box-shadow:0 12px 24px rgba(156,39,176,0.25);}
+.v-chip span:first-child{font-size:48px;display:block;margin-bottom:4px;animation:vehicleAnim 2s ease-in-out infinite;}
+@keyframes vehicleAnim{0%,100%{transform:translateX(0);}50%{transform:translateX(4px);}}
+.v-chip span:last-child{font-size:0.8em;font-weight:700;color:#333;}
+.fact-bubble{background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;border-radius:16px;padding:10px 14px;font-size:0.8em;font-weight:700;margin-top:4px;display:none;line-height:1.4;}
+.v-chip.tapped .fact-bubble{display:block;animation:popIn 0.3s;}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+
+/* QUIZ */
+.quiz-box{background:white;border-radius:24px;padding:20px;margin:16px 0;box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:1.4em;color:#333;}
+.score-badge{background:linear-gradient(135deg,#FF6B35,#FF1744);color:white;padding:6px 16px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:1em;}
+.q-text{font-size:1em;font-weight:700;color:#444;margin-bottom:12px;line-height:1.5;text-align:center;}
+.q-emoji{font-size:80px;display:block;text-align:center;margin:8px 0;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15));animation:qFloat 2s ease-in-out infinite;}
+@keyframes qFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.type-quiz-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0;}
+.tq-btn{padding:14px 6px;border:3px solid #eee;border-radius:16px;background:white;font-family:'Fredoka One',cursive;font-size:0.9em;cursor:pointer;text-align:center;transition:all 0.3s;}
+.tq-btn:hover{transform:scale(1.05);}
+.tq-btn span{display:block;font-size:1.5em;margin-bottom:4px;}
+.tq-btn.correct{background:#E8F5E9;border-color:#4CAF50;}
+.tq-btn.wrong{background:#FFEBEE;border-color:#F44336;}
+.feedback{text-align:center;padding:12px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;margin-top:10px;display:none;}
+.feedback.show{display:block;animation:popIn 0.4s;}
+.feedback.good{background:#E8F5E9;color:#2E7D32;}
+.feedback.bad{background:#FFEBEE;color:#C62828;}
+.next-q-btn{width:100%;padding:13px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;border:none;border-radius:16px;font-family:'Fredoka One',cursive;font-size:1.1em;cursor:pointer;margin-top:10px;display:none;transition:all 0.3s;}
+.next-q-btn.show{display:block;animation:popIn 0.3s;}
+.next-q-btn:hover{transform:scale(1.03);}
+.confetti-emoji{position:fixed;pointer-events:none;font-size:2em;animation:fall 1.5s ease-in forwards;z-index:999;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="back-btn">← ආපසු</a>
+  <h2>⭐ 1 ශ්‍රේණිය</h2>
+</div>
+
+<div class="container">
+  <div class="intro-card">
+    <h3>🚀 වාහන හඳුනාගනිමු!</h3>
+    <p>ගොඩබිමේ, ජලයේ සහ ගුවනේ ගමන් කරන වාහන. වාහනය ස්පර්ශ කර තොරතුරු දකින්න!</p>
+  </div>
+
+  <!-- Land -->
+  <div class="category-section">
+    <div class="cat-header land">
+      <span>🛣️</span><h3>ගොඩබිමේ ගමන් කරන වාහන</h3>
+    </div>
+    <div class="vehicles-scroll">
+      <div class="v-chip land-c" onclick="this.classList.toggle('tapped')">
+        <span>🚲</span><span>පාපැදිය</span>
+        <div class="fact-bubble">රෝද 2ක් ඇත!</div>
+      </div>
+      <div class="v-chip land-c" onclick="this.classList.toggle('tapped')">
+        <span>🏍️</span><span>මෝටර් සයිකලය</span>
+        <div class="fact-bubble">ඉන්ධන මගින් ධාවනය!</div>
+      </div>
+      <div class="v-chip land-c" onclick="this.classList.toggle('tapped')">
+        <span>🚗</span><span>කාර් එක</span>
+        <div class="fact-bubble">රෝද 4ක් ඇත!</div>
+      </div>
+      <div class="v-chip land-c" onclick="this.classList.toggle('tapped')">
+        <span>🚌</span><span>බස් රථය</span>
+        <div class="fact-bubble">බොහෝ දෙනෙකු ගෙන යයි!</div>
+      </div>
+      <div class="v-chip land-c" onclick="this.classList.toggle('tapped')">
+        <span>🚛</span><span>ලොරි රථය</span>
+        <div class="fact-bubble">බර ගෙනයයි!</div>
+      </div>
+      <div class="v-chip land-c" onclick="this.classList.toggle('tapped')">
+        <span>🚂</span><span>දුම්රිය</span>
+        <div class="fact-bubble">තාර පාරක ධාවනය!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Water -->
+  <div class="category-section">
+    <div class="cat-header water">
+      <span>🌊</span><h3>ජලයේ ගමන් කරන වාහන</h3>
+    </div>
+    <div class="vehicles-scroll">
+      <div class="v-chip water-c" onclick="this.classList.toggle('tapped')">
+        <span>🛶</span><span>ඔරුව</span>
+        <div class="fact-bubble">අතින් ඔරු ගසනු!</div>
+      </div>
+      <div class="v-chip water-c" onclick="this.classList.toggle('tapped')">
+        <span>⛵</span><span>බෝට්ටුව</span>
+        <div class="fact-bubble">සුළඟෙන් යයි!</div>
+      </div>
+      <div class="v-chip water-c" onclick="this.classList.toggle('tapped')">
+        <span>🚢</span><span>නැව</span>
+        <div class="fact-bubble">මහා ජල යානය!</div>
+      </div>
+      <div class="v-chip water-c" onclick="this.classList.toggle('tapped')">
+        <span>🛥️</span><span>තෙප්පම</span>
+        <div class="fact-bubble">ගංගාවල යයි!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Air -->
+  <div class="category-section">
+    <div class="cat-header air">
+      <span>☁️</span><h3>ගුවනේ ගමන් කරන වාහන</h3>
+    </div>
+    <div class="vehicles-scroll">
+      <div class="v-chip air-c" onclick="this.classList.toggle('tapped')">
+        <span>✈️</span><span>ගුවන් යානය</span>
+        <div class="fact-bubble">වේගෙන් යයි!</div>
+      </div>
+      <div class="v-chip air-c" onclick="this.classList.toggle('tapped')">
+        <span>🚁</span><span>හෙලිකොප්ටරය</span>
+        <div class="fact-bubble">ඉහළ-යටට යයි!</div>
+      </div>
+      <div class="v-chip air-c" onclick="this.classList.toggle('tapped')">
+        <span>🪂</span><span>පැරෂූටය</span>
+        <div class="fact-bubble">천천히 බසියි!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="quiz-box">
+    <div class="quiz-header">
+      <span class="quiz-title">🎯 ප්‍රශ්නාවලිය</span>
+      <span class="score-badge" id="scoreBadge">0/0</span>
+    </div>
+    <div class="q-text" id="qText">මෙය කොතැනක ගමන් කරන වාහනද?</div>
+    <span class="q-emoji" id="qEmoji">🚗</span>
+    <div class="type-quiz-options" id="typeOptions">
+      <button class="tq-btn" onclick="checkType('land',this)"><span>🛣️</span>ගොඩබිම</button>
+      <button class="tq-btn" onclick="checkType('water',this)"><span>🌊</span>ජලය</button>
+      <button class="tq-btn" onclick="checkType('air',this)"><span>☁️</span>ගුවන</button>
+    </div>
+    <div class="feedback" id="qFeedback"></div>
+    <button class="next-q-btn" id="nextQBtn" onclick="loadNextQ()">ඊළඟ ප්‍රශ්නය →</button>
+  </div>
+</div>
+
+<script>
+const allV=[
+  {emoji:'🚲',name:'පාපැදිය',type:'land'},
+  {emoji:'🏍️',name:'මෝටර් සයිකලය',type:'land'},
+  {emoji:'🚗',name:'කාර් එක',type:'land'},
+  {emoji:'🚌',name:'බස් රථය',type:'land'},
+  {emoji:'🚛',name:'ලොරි රථය',type:'land'},
+  {emoji:'🚂',name:'දුම්රිය',type:'land'},
+  {emoji:'🛶',name:'ඔරුව',type:'water'},
+  {emoji:'⛵',name:'බෝට්ටුව',type:'water'},
+  {emoji:'🚢',name:'නැව',type:'water'},
+  {emoji:'🛥️',name:'තෙප්පම',type:'water'},
+  {emoji:'✈️',name:'ගුවන් යානය',type:'air'},
+  {emoji:'🚁',name:'හෙලිකොප්ටරය',type:'air'},
+  {emoji:'🪂',name:'පැරෂූටය',type:'air'},
+];
+let cur=null,score=0,total=0,answered=false;
+function loadNextQ(){
+  answered=false;
+  document.getElementById('qFeedback').className='feedback';
+  document.getElementById('nextQBtn').className='next-q-btn';
+  document.querySelectorAll('.tq-btn').forEach(b=>{b.className='tq-btn';b.disabled=false;});
+  cur=allV[Math.floor(Math.random()*allV.length)];
+  document.getElementById('qEmoji').textContent=cur.emoji;
+  document.getElementById('qText').textContent=`${cur.name} - කොතැනක ගමන් කරයිද?`;
+}
+function checkType(type,btn){
+  if(answered)return;
+  answered=true;total++;
+  const fb=document.getElementById('qFeedback');
+  const typeNames={land:'ගොඩබිම',water:'ජලය',air:'ගුවන'};
+  if(type===cur.type){
+    score++;btn.className='tq-btn correct';
+    fb.textContent='🎉 ඉතා දක්ෂයි! සුපිරි!';fb.className='feedback show good';
+    spawnConfetti();
+  }else{
+    btn.className='tq-btn wrong';
+    fb.textContent=`නැවත උත්සාහ! නිවැරදි: ${typeNames[cur.type]}`;fb.className='feedback show bad';
+  }
+  document.getElementById('scoreBadge').textContent=`${score}/${total}`;
+  document.querySelectorAll('.tq-btn').forEach(b=>b.disabled=true);
+  document.getElementById('nextQBtn').className='next-q-btn show';
+}
+function spawnConfetti(){
+  ['🎉','⭐','🌟','💫','🎊'].forEach((e,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='confetti-emoji';
+      el.textContent=e;el.style.left=Math.random()*100+'vw';
+      el.style.animationDuration=(Math.random()+1)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2000);
+    },i*100);
+  });
+}
+loadNextQ();
+</script>
+</body>
+</html>

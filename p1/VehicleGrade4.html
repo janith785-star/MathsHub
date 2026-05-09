@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4 ශ්‍රේණිය - වාහන</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e8eaf6,#ede7f6,#fce4ec);min-height:100vh;}
+.topbar{display:flex;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-bottom:3px solid #673AB7;position:sticky;top:0;z-index:100;}
+.back-btn{text-decoration:none;background:linear-gradient(135deg,#673AB7,#4527A0);color:white;padding:8px 16px;border-radius:20px;font-size:0.85em;font-weight:700;}
+.topbar h2{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;margin:0 auto;padding-right:70px;}
+.container{padding:16px;max-width:480px;margin:0 auto;}
+
+.intro-banner{background:linear-gradient(135deg,#673AB7,#9C27B0);border-radius:20px;padding:18px;color:white;margin:12px 0;}
+.intro-banner h3{font-family:'Fredoka One',cursive;font-size:1.2em;margin-bottom:6px;}
+.intro-banner p{font-size:0.84em;opacity:0.9;line-height:1.5;}
+
+/* Comparison table */
+.comp-section{background:white;border-radius:20px;padding:16px;margin:10px 0;box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+.comp-section h3{font-family:'Fredoka One',cursive;font-size:1.2em;color:#333;margin-bottom:12px;}
+.comp-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;}
+.comp-row:last-child{border-bottom:none;}
+.comp-row.header{font-weight:800;font-size:0.8em;color:#999;text-transform:uppercase;padding-bottom:4px;}
+.comp-label{font-size:0.88em;font-weight:700;color:#333;display:flex;align-items:center;gap:6px;}
+.comp-pub,.comp-priv{text-align:center;padding:6px 4px;border-radius:10px;font-size:0.8em;font-weight:700;}
+.comp-pub{background:#E8F5E9;color:#2E7D32;}
+.comp-priv{background:#FFEBEE;color:#C62828;}
+
+/* Environment cards */
+.env-section{margin:10px 0;}
+.env-card{border-radius:20px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.env-card.good{background:linear-gradient(135deg,#E8F5E9,#C8E6C9);}
+.env-card.bad{background:linear-gradient(135deg,#FFEBEE,#FFCDD2);}
+.env-icon{font-size:40px;flex-shrink:0;}
+.env-info h4{font-family:'Fredoka One',cursive;font-size:1em;color:#333;}
+.env-info p{font-size:0.78em;color:#555;line-height:1.4;margin-top:3px;}
+.env-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.68em;font-weight:700;margin-top:5px;color:white;}
+.env-tag.eco{background:#4CAF50;}
+.env-tag.pollute{background:#F44336;}
+
+/* True/False Quiz */
+.tf-section{background:white;border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+.tf-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.tf-hdr h3{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;}
+.tf-score{background:linear-gradient(135deg,#673AB7,#9C27B0);color:white;padding:5px 14px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.95em;}
+.tf-stmt{background:#f5f5f5;border-radius:14px;padding:14px;font-size:0.92em;font-weight:700;color:#333;line-height:1.6;text-align:center;margin-bottom:12px;}
+.tf-emoji{font-size:60px;display:block;text-align:center;margin:8px 0;animation:tfFloat 2s ease-in-out infinite;}
+@keyframes tfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.tf-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tf-btn{padding:18px 12px;border:3px solid #eee;border-radius:18px;background:white;font-family:'Fredoka One',cursive;font-size:1.2em;cursor:pointer;transition:all 0.3s;text-align:center;}
+.tf-btn:hover{transform:scale(1.06);}
+.tf-btn.t-btn:hover{border-color:#4CAF50;background:#E8F5E9;}
+.tf-btn.f-btn:hover{border-color:#F44336;background:#FFEBEE;}
+.tf-btn.correct{border-color:#4CAF50;background:#E8F5E9;}
+.tf-btn.wrong{border-color:#F44336;background:#FFEBEE;animation:shk 0.4s;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.tf-fb{text-align:center;padding:10px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1em;margin-top:10px;display:none;}
+.tf-fb.show{display:block;animation:popIn 0.4s;}
+.tf-fb.good{background:#E8F5E9;color:#2E7D32;}
+.tf-fb.bad{background:#FFEBEE;color:#C62828;}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+.next-tf{width:100%;padding:12px;background:linear-gradient(135deg,#673AB7,#9C27B0);color:white;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;cursor:pointer;margin-top:10px;display:none;transition:all 0.3s;}
+.next-tf.show{display:block;animation:popIn 0.3s;}
+.next-tf:hover{transform:scale(1.03);}
+.confetti-emoji{position:fixed;pointer-events:none;font-size:2em;animation:fall 1.5s ease-in forwards;z-index:999;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="back-btn">← ආපසු</a>
+  <h2>🏆 4 ශ්‍රේණිය</h2>
+</div>
+<div class="container">
+  <div class="intro-banner">
+    <h3>🌍 වාහන හා පරිසරය</h3>
+    <p>පොදු හා පෞද්ගලික ප්‍රවාහන සේවාවන් සහ ඒවා පරිසරයට ඇති බලපෑම ගැන ඉගෙනගනිමු!</p>
+  </div>
+
+  <!-- Public vs Private -->
+  <div class="comp-section">
+    <h3>🚌 පොදු vs 🚗 පෞද්ගලික ප්‍රවාහනය</h3>
+    <div class="comp-row header">
+      <div>ලක්ෂණය</div>
+      <div style="text-align:center">🚌 පොදු</div>
+      <div style="text-align:center">🚗 පෞද්ගලික</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-label">💰 මිල</div>
+      <div class="comp-pub">ලාබ</div>
+      <div class="comp-priv">මිල</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-label">🌿 CO₂ ගැලවීම</div>
+      <div class="comp-pub">අඩු</div>
+      <div class="comp-priv">වැඩි</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-label">👥 ගෙන යන ගණන</div>
+      <div class="comp-pub">බොහෝ</div>
+      <div class="comp-priv">සීමිත</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-label">⏰ නිවදනා</div>
+      <div class="comp-priv">ප්‍රමාද</div>
+      <div class="comp-pub">ඉක්මන්</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-label">🏙️ රථ ශ්ධාදා</div>
+      <div class="comp-pub">අඩු</div>
+      <div class="comp-priv">වැඩි</div>
+    </div>
+  </div>
+
+  <!-- Environment -->
+  <div class="comp-section">
+    <h3>🌿 පරිසර හිතකාමී වාහන</h3>
+  </div>
+  <div class="env-section">
+    <div class="env-card good">
+      <span class="env-icon">🚲</span>
+      <div class="env-info">
+        <h4>පාපැදිය</h4>
+        <p>CO₂ ශුන්‍ය. ශ්‍රීතල ඉන්ධනය නොවේ. ශාරීරික සෞඛ්‍යයට ද යොදා ගනී.</p>
+        <span class="env-tag eco">✅ පරිසර හිතකාමී</span>
+      </div>
+    </div>
+    <div class="env-card good">
+      <span class="env-icon">🚌</span>
+      <div class="env-info">
+        <h4>බස් රථය (පොදු)</h4>
+        <p>ගොඩක් ජනතාව ගෙනයන නිසා එක් ​​පාරිභෝගිකයෙකුට CO₂ ශ්‍රේෂ්ඨ ලෙස අඩුය.</p>
+        <span class="env-tag eco">✅ සාමාන්‍ය</span>
+      </div>
+    </div>
+    <div class="env-card bad">
+      <span class="env-icon">🚗</span>
+      <div class="env-info">
+        <h4>පෞද්ගලික කාර් රථය</h4>
+        <p>CO₂ ගැලවීම වැඩිය. ගෙවල් ශ්ධාදා නිර්මාණය කරයි. ඉන්ධන ෂය වේ.</p>
+        <span class="env-tag pollute">⚠️ ප්‍රවේශම් වන්න</span>
+      </div>
+    </div>
+    <div class="env-card good">
+      <span class="env-icon">🚂</span>
+      <div class="env-info">
+        <h4>විදුලි දුම්රිය</h4>
+        <p>විදුලියෙන් ධාවනය නිසා ළඟ-ළඟ ගමන් සඳහා CO₂ ශ්‍රේෂ්ඨ ලෙස අඩුය.</p>
+        <span class="env-tag eco">✅ හොඳ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- T/F Quiz -->
+  <div class="tf-section">
+    <div class="tf-hdr">
+      <h3>✅ සත්‍ය / ❌ අසත්‍ය</h3>
+      <span class="tf-score" id="tfSc">0/0</span>
+    </div>
+    <div class="tf-stmt" id="tfStmt"></div>
+    <span class="tf-emoji" id="tfEmoji"></span>
+    <div class="tf-btns">
+      <button class="tf-btn t-btn" onclick="checkTF(true,this)">✅ සත්‍ය</button>
+      <button class="tf-btn f-btn" onclick="checkTF(false,this)">❌ අසත්‍ය</button>
+    </div>
+    <div class="tf-fb" id="tfFb"></div>
+    <button class="next-tf" id="nextTf" onclick="loadTF()">ඊළඟ ප්‍රශ්නය →</button>
+  </div>
+</div>
+
+<script>
+const tfQs=[
+  {stmt:'නැව ජලයේ ගමන් කරන විශාලම වාහනය.',emoji:'🚢',answer:true,explain:'නිවැරදියි! නැව ජලයේ ගමන් කරන ප්‍රධාන විශාලම යාත්‍රාව.'},
+  {stmt:'පාපැදිය CO₂ ගැලවීමක් කරන ඉන්ධන වාහනයකි.',emoji:'🚲',answer:false,explain:'වැරදියි! පාපැදිය ඉන්ධන නොයොදයි - CO₂ ශුන්‍ය!'},
+  {stmt:'හෙලිකොප්ටරය ගොඩබිමේ ගමන් කරන වාහනයකි.',emoji:'🚁',answer:false,explain:'වැරදියි! හෙලිකොප්ටරය ගුවනේ ගමන් කරයි!'},
+  {stmt:'පොදු ප්‍රවාහනය (බස්) පෞද්ගලික කාර් වලට වඩා ලාබ ය.',emoji:'🚌',answer:true,explain:'නිවැරදියි! බස් ගෙවල් සෞඛ්‍ය ශ්‍රේෂ්ඨ ලෙස ලාබ!'},
+  {stmt:'දුම්රිය ගොඩබිමේ රේල් පීලි ඔස්සේ යයි.',emoji:'🚂',answer:true,explain:'නිවැරදියි! දුම්රිය රේල් පීලිවල ගමන් කරයි!'},
+  {stmt:'ඔරුව ගුවනේ ගමන් කරන වාහනයකි.',emoji:'🛶',answer:false,explain:'වැරදියි! ඔරුව ජලයේ ගමන් කරන සාම්ප්‍රදායික යාත්‍රාවකි!'},
+  {stmt:'CO₂ ශ්‍රේෂ්ඨ ලෙස ගොදුරු කිරීමෙන් ගෝලීය උෂ්ණත්ව ඉහළ යයි.',emoji:'🌍',answer:true,explain:'නිවැරදියි! CO₂ ගෝලීය තාපකය ඇති කරන ප්‍රධාන හේතුවකි!'},
+];
+let tfSc=0,tfTot=0,tfAnswered=false,curTF=null;
+function loadTF(){
+  tfAnswered=false;
+  document.getElementById('tfFb').className='tf-fb';
+  document.getElementById('nextTf').className='next-tf';
+  document.querySelectorAll('.tf-btn').forEach(b=>{b.className=b.classList.contains('t-btn')?'tf-btn t-btn':'tf-btn f-btn';b.disabled=false;});
+  curTF=tfQs[Math.floor(Math.random()*tfQs.length)];
+  document.getElementById('tfStmt').textContent=curTF.stmt;
+  document.getElementById('tfEmoji').textContent=curTF.emoji;
+}
+function checkTF(ans,btn){
+  if(tfAnswered)return;
+  tfAnswered=true;tfTot++;
+  const fb=document.getElementById('tfFb');
+  const baseClass=btn.classList.contains('t-btn')?'tf-btn t-btn':'tf-btn f-btn';
+  if(ans===curTF.answer){
+    tfSc++;btn.className=baseClass+' correct';
+    fb.textContent='🎉 '+curTF.explain;fb.className='tf-fb show good';
+    spawnConfetti();
+  }else{
+    btn.className=baseClass+' wrong';
+    fb.textContent='❌ '+curTF.explain;fb.className='tf-fb show bad';
+  }
+  document.getElementById('tfSc').textContent=`${tfSc}/${tfTot}`;
+  document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  document.getElementById('nextTf').className='next-tf show';
+}
+function spawnConfetti(){
+  ['🎉','⭐','🌟','💫','🎊'].forEach((e,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='confetti-emoji';
+      el.textContent=e;el.style.left=Math.random()*100+'vw';
+      el.style.animationDuration=(Math.random()+1)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2000);
+    },i*100);
+  });
+}
+loadTF();
+</script>
+</body>
+</html>

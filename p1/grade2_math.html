@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Math Fun - Add & Subtract</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#120222;font-family:Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:12px;color:#e2d4ff;}
+.screen{width:100%;max-width:380px;background:#120222;min-height:98vh;display:flex;flex-direction:column;padding:10px;}
+.sbar{display:flex;justify-content:space-between;margin-bottom:10px;}
+.sbar span{color:#8877aa;font-size:12px;}
+.mode-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.mode-btn{border:2px solid #3d1a6e;border-radius:14px;padding:12px 0;font-size:15px;font-weight:bold;cursor:pointer;text-align:center;}
+.mode-btn.add{background:#1a2a50;color:#7eb8f7;border-color:#2a4a8a;}
+.mode-btn.add.active{background:#2a4a9a;color:#c8e4ff;border-color:#4cc9f0;}
+.mode-btn.sub{background:#2a1a30;color:#e89af0;border-color:#5a2a7a;}
+.mode-btn.sub.active{background:#5a1a8a;color:#f0c8ff;border-color:#c47af0;}
+.score-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.score-card{background:#1e0540;border-radius:12px;padding:9px 10px;text-align:center;}
+.score-card .lbl{font-size:11px;color:#8877aa;}
+.score-card.green .val{font-size:22px;font-weight:bold;color:#7af0a8;}
+.score-card.amber .val{font-size:22px;font-weight:bold;color:#f0c87a;}
+.round-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.rdots{display:flex;gap:5px;}
+.rdot{width:10px;height:10px;border-radius:50%;background:#2a1a40;}
+.rdot.done{background:#7af0a8;}
+.rdot.active{background:#c47af0;}
+.rnd-txt{font-size:12px;color:#8877aa;}
+.qcard{background:#1e0540;border-radius:20px;padding:16px 12px;margin-bottom:12px;text-align:center;border:2px solid #3d1a6e;position:relative;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.erow{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-bottom:10px;min-height:44px;}
+.eobj{font-size:30px;line-height:1;}
+.eobj.gone{opacity:0.15;}
+.meq{font-size:28px;font-weight:bold;color:#e2d4ff;letter-spacing:2px;}
+.obadge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:13px;font-weight:bold;margin-bottom:6px;}
+.obadge.add{background:#1e3a6a;color:#7eb8f7;}
+.obadge.sub{background:#3a1a5a;color:#e89af0;}
+.alabel{font-size:13px;color:#8877aa;text-align:center;margin-bottom:8px;}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
+.abtn{border:2px solid #3d1a6e;border-radius:14px;padding:15px 0;font-size:24px;font-weight:bold;cursor:pointer;background:#1e0540;color:#e2d4ff;text-align:center;}
+.abtn.correct{background:#1a3a2a;border-color:#4cc97a;color:#a8f0c0;}
+.abtn.wrong{background:#3a1a1a;border-color:#e24b4a;color:#f4a0a0;}
+.abtn.reveal{background:#1a3a2a;border-color:#4cc97a;color:#a8f0c0;}
+.fb{border-radius:14px;padding:11px;text-align:center;font-size:15px;font-weight:bold;min-height:46px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.fb.good{background:#1a3a2a;color:#a8f0c0;}
+.fb.bad{background:#3a1a1a;color:#f4a0a0;}
+.fb.neutral{background:#1e0540;color:#8877aa;}
+.nxtbtn{background:#c47af0;color:#1a0533;border:none;border-radius:14px;padding:14px;font-size:17px;font-weight:bold;cursor:pointer;width:100%;}
+.nxtbtn:disabled{opacity:0.25;}
+.endscreen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;}
+.endscreen.show{display:flex;}
+.trophy{font-size:72px;margin-bottom:12px;}
+.etitle{font-size:26px;font-weight:bold;color:#e2d4ff;margin-bottom:6px;}
+.esub{color:#8877aa;font-size:15px;margin-bottom:16px;}
+.estars{font-size:28px;margin-bottom:20px;}
+.replay{background:#c47af0;color:#1a0533;border:none;border-radius:14px;padding:14px;font-size:17px;font-weight:bold;cursor:pointer;width:100%;margin-bottom:10px;}
+.swbtn{background:#1e0540;color:#c47af0;border:2px solid #5a2a7a;border-radius:14px;padding:12px;font-size:14px;font-weight:bold;cursor:pointer;width:100%;}
+.spark{position:absolute;font-size:22px;pointer-events:none;animation:sf 0.8s forwards;}
+@keyframes sf{0%{opacity:1;transform:translateY(0)scale(1);}100%{opacity:0;transform:translateY(-70px)scale(0.4);}}
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="sbar"><span id="stime">9:41</span><span>Math Fun ✦</span><span>🔋</span></div>
+
+  <div id="gameview" style="display:flex;flex-direction:column;flex:1;">
+    <div class="mode-row">
+      <button class="mode-btn add active" id="btnadd" onclick="setMode('add')">➕ Addition</button>
+      <button class="mode-btn sub" id="btnsub" onclick="setMode('sub')">➖ Subtraction</button>
+    </div>
+    <div class="score-row">
+      <div class="score-card green"><div class="lbl">Score</div><div class="val" id="scorev">0</div></div>
+      <div class="score-card amber"><div class="lbl">Round</div><div class="val" id="rndv">1/10</div></div>
+    </div>
+    <div class="round-bar">
+      <div class="rdots" id="rdots"></div>
+      <span class="rnd-txt" id="modetxt">Addition mode</span>
+    </div>
+    <div class="qcard" id="qcard">
+      <div class="erow" id="erow"></div>
+      <div class="meq" id="meq">? + ? = ?</div>
+      <span class="obadge add" id="obadge">adding</span>
+    </div>
+    <div class="alabel">Choose the correct answer 👇</div>
+    <div class="agrid" id="agrid"></div>
+    <div class="fb neutral" id="fb">Look at the picture and solve!</div>
+    <button class="nxtbtn" id="nxtbtn" disabled onclick="nextQ()">Next ➜</button>
+  </div>
+
+  <div class="endscreen" id="endview">
+    <div class="trophy" id="etrophy">🏆</div>
+    <div class="etitle" id="etitle">Amazing!</div>
+    <div class="esub" id="esub">You got 10 out of 10!</div>
+    <div class="estars" id="estars"></div>
+    <button class="replay" onclick="restartGame()">Play Again 🎮</button>
+    <button class="swbtn" onclick="toggleMode()">Switch Mode ↔</button>
+  </div>
+</div>
+
+<script>
+var mode='add',rounds=[],cur=0,score=0,answered=false,actx=null;
+var EM=['🍎','⭐','🐱','🌸','🐸','🐟','❤️','☀️','🦋','🚀','🍭','🎈','🍦','🎁','🐶'];
+function au(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function tone(f,d,t,v){try{var c=au(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.25,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function sOk(){[523,659,784,1046].forEach(function(f,i){setTimeout(function(){tone(f,0.18,'sine',0.28);},i*75);});}
+function sNo(){[280,220].forEach(function(f,i){setTimeout(function(){tone(f,0.22,'sawtooth',0.2);},i*100);});}
+function sCk(){tone(500,0.09,'sine',0.18);}
+function sEnd(){[523,587,659,698,784,880,988,1046].forEach(function(f,i){setTimeout(function(){tone(f,0.14,'sine',0.28);},i*65);});}
+function shuf(a){return a.slice().sort(function(){return Math.random()-0.5;});}
+function setMode(m){
+  mode=m;
+  document.getElementById('btnadd').className='mode-btn add'+(m==='add'?' active':'');
+  document.getElementById('btnsub').className='mode-btn sub'+(m==='sub'?' active':'');
+  document.getElementById('modetxt').textContent=m==='add'?'Addition mode':'Subtraction mode';
+  sCk(); buildRounds(); renderQ();
+}
+function buildRounds(){
+  cur=0;score=0;document.getElementById('scorev').textContent='0';
+  var pool=[];
+  for(var a=1;a<=10;a++)for(var b=1;b<=10;b++){
+    if(mode==='add'&&a+b<=10)pool.push({a:a,b:b,ans:a+b});
+    if(mode==='sub'&&a>=b&&a<=10)pool.push({a:a,b:b,ans:a-b});
+  }
+  rounds=shuf(pool).slice(0,10);
+}
+function renderDots(){
+  var el=document.getElementById('rdots');el.innerHTML='';
+  for(var i=0;i<10;i++){var d=document.createElement('div');d.className='rdot'+(i<cur?' done':i===cur?' active':'');el.appendChild(d);}
+}
+function renderQ(){
+  answered=false;
+  var r=rounds[cur];
+  document.getElementById('rndv').textContent=(cur+1)+'/10';
+  renderDots();
+  var em=EM[Math.floor(Math.random()*EM.length)];
+  var er=document.getElementById('erow');er.innerHTML='';
+  if(mode==='add'){
+    document.getElementById('obadge').className='obadge add';
+    document.getElementById('obadge').textContent='adding';
+    document.getElementById('meq').textContent=r.a+' + '+r.b+' = ?';
+    for(var i=0;i<r.a+r.b;i++){
+      (function(idx){
+        var s=document.createElement('span');s.className='eobj'+(idx>=r.a?' gone':'');s.textContent=em;
+        if(idx===r.a){var sp=document.createElement('span');sp.style.cssText='font-size:18px;color:#4cc9f0;font-weight:bold;align-self:center;';sp.textContent='+';er.appendChild(sp);}
+        er.appendChild(s);
+      })(i);
+    }
+  } else {
+    document.getElementById('obadge').className='obadge sub';
+    document.getElementById('obadge').textContent='subtracting';
+    document.getElementById('meq').textContent=r.a+' − '+r.b+' = ?';
+    for(var i=0;i<r.a;i++){var s=document.createElement('span');s.className='eobj'+(i>=(r.a-r.b)?' gone':'');s.textContent=em;er.appendChild(s);}
+  }
+  buildAns(r.ans);
+  document.getElementById('fb').textContent='Look at the picture and solve!';
+  document.getElementById('fb').className='fb neutral';
+  document.getElementById('nxtbtn').disabled=true;
+  var now=new Date();
+  document.getElementById('stime').textContent=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+}
+function buildAns(correct){
+  var g=document.getElementById('agrid');g.innerHTML='';
+  var opts=new Set([correct]);var att=0;
+  while(opts.size<4&&att<50){att++;var v=Math.floor(Math.random()*11);if(v>=0&&v<=10)opts.add(v);}
+  shuf(Array.from(opts)).forEach(function(n){
+    var b=document.createElement('button');b.className='abtn';b.textContent=n;
+    b.addEventListener('click',function(){chk(n,correct,b);});
+    g.appendChild(b);
+  });
+}
+function spark(e){
+  var c=document.getElementById('qcard');var el=document.createElement('span');
+  el.className='spark';el.textContent=e;el.style.left=Math.random()*80+10+'%';el.style.top='10px';
+  c.appendChild(el);setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},900);
+}
+function chk(chosen,correct,btn){
+  if(answered)return;answered=true;
+  document.querySelectorAll('.abtn').forEach(function(b){b.style.pointerEvents='none';});
+  if(chosen===correct){
+    btn.className='abtn correct';score++;document.getElementById('scorev').textContent=score;
+    sOk();['🎉','⭐','✨','💫'].forEach(function(e,i){setTimeout(function(){spark(e);},i*110);});
+    document.getElementById('fb').textContent='🎉 Correct! Super smart!';
+    document.getElementById('fb').className='fb good';
+  } else {
+    btn.className='abtn wrong';sNo();
+    document.querySelectorAll('.abtn').forEach(function(b){if(parseInt(b.textContent)===correct)b.className='abtn reveal';});
+    document.getElementById('fb').textContent='❌ Answer was '+correct+'. Keep going!';
+    document.getElementById('fb').className='fb bad';
+  }
+  document.getElementById('nxtbtn').disabled=false;
+}
+function nextQ(){cur++;if(cur>=10)showEnd();else renderQ();}
+function showEnd(){
+  sEnd();
+  document.getElementById('gameview').style.display='none';
+  document.getElementById('endview').className='endscreen show';
+  var t=score===10?'🏆':score>=7?'🌟':'😊';
+  document.getElementById('etrophy').textContent=t;
+  document.getElementById('etitle').textContent=score===10?'Perfect!':score>=7?'Well done!':'Keep practising!';
+  document.getElementById('esub').textContent='You got '+score+' out of 10 correct!';
+  var s='';for(var i=0;i<10;i++)s+=i<score?'⭐':'☆';
+  document.getElementById('estars').textContent=s;
+}
+function restartGame(){
+  document.getElementById('endview').className='endscreen';
+  document.getElementById('gameview').style.display='flex';
+  buildRounds();renderQ();
+}
+function toggleMode(){
+  restartGame();setMode(mode==='add'?'sub':'add');
+}
+buildRounds();renderQ();
+</script>
+</body>
+</html>

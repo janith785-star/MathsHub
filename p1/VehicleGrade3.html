@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3 ශ්‍රේණිය - වාහන</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#fff3e0,#fbe9e7,#e8f5e9);min-height:100vh;}
+.topbar{display:flex;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);border-bottom:3px solid #FF9800;position:sticky;top:0;z-index:100;}
+.back-btn{text-decoration:none;background:linear-gradient(135deg,#FF9800,#E65100);color:white;padding:8px 16px;border-radius:20px;font-size:0.85em;font-weight:700;}
+.topbar h2{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;margin:0 auto;padding-right:70px;}
+.container{padding:16px;max-width:480px;margin:0 auto;}
+
+/* Category tabs */
+.tabs{display:flex;gap:6px;margin:12px 0;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 16px;border-radius:20px;border:2px solid #eee;background:white;font-family:'Fredoka One',cursive;font-size:0.9em;cursor:pointer;transition:all 0.3s;white-space:nowrap;color:#666;}
+.tab.active{color:white;border-color:transparent;}
+.tab:nth-child(1).active{background:linear-gradient(135deg,#FF9800,#E65100);}
+.tab:nth-child(2).active{background:linear-gradient(135deg,#2196F3,#1565C0);}
+.tab:nth-child(3).active{background:linear-gradient(135deg,#9C27B0,#6A1B9A);}
+
+.content-panel{display:none;}
+.content-panel.active{display:block;}
+
+/* Vehicle detail cards */
+.v-detail-card{background:white;border-radius:20px;padding:16px;margin:10px 0;box-shadow:0 6px 20px rgba(0,0,0,0.08);display:flex;align-items:flex-start;gap:12px;}
+.v-big-emoji{font-size:56px;flex-shrink:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.1));}
+.v-info h3{font-family:'Fredoka One',cursive;font-size:1.15em;color:#333;margin-bottom:4px;}
+.v-info p{font-size:0.8em;color:#666;line-height:1.5;}
+.v-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.vtag{padding:3px 10px;border-radius:20px;font-size:0.7em;font-weight:700;color:white;}
+.vtag.fuel{background:#FF6B35;}
+.vtag.path{background:#2196F3;}
+.vtag.speed{background:#9C27B0;}
+.vtag.old{background:#795548;}
+.vtag.new{background:#4CAF50;}
+
+/* Fuel type section */
+.fuel-section{background:white;border-radius:20px;padding:16px;margin:10px 0;box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+.fuel-section h3{font-family:'Fredoka One',cursive;font-size:1.1em;color:#333;margin-bottom:12px;}
+.fuel-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fuel-item{padding:12px;border-radius:16px;text-align:center;}
+.fuel-item.petrol{background:linear-gradient(135deg,#fff3e0,#ffe0b2);}
+.fuel-item.electric{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);}
+.fuel-item.none{background:linear-gradient(135deg,#e3f2fd,#bbdefb);}
+.fuel-item.wind{background:linear-gradient(135deg,#f3e5f5,#e1bee7);}
+.fuel-emoji{font-size:36px;display:block;margin-bottom:4px;}
+.fuel-name{font-family:'Fredoka One',cursive;font-size:0.95em;color:#333;}
+.fuel-sub{font-size:0.72em;color:#666;display:block;margin-top:2px;}
+
+/* QUIZ */
+.quiz-section{background:white;border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+.quiz-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.quiz-hdr h3{font-family:'Fredoka One',cursive;font-size:1.3em;color:#333;}
+.score-pill{background:linear-gradient(135deg,#FF9800,#E65100);color:white;padding:5px 14px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.95em;}
+.q-scenario{background:#f5f5f5;border-radius:14px;padding:14px;font-size:0.9em;color:#444;font-weight:700;line-height:1.6;text-align:center;margin-bottom:10px;}
+.q-big-emoji{font-size:70px;display:block;text-align:center;margin:6px 0;animation:spinBounce 3s ease-in-out infinite;}
+@keyframes spinBounce{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-10px) scale(1.05);}}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.q-opt{padding:12px 16px;border:3px solid #eee;border-radius:14px;background:white;font-weight:700;font-size:0.9em;cursor:pointer;transition:all 0.3s;text-align:left;display:flex;align-items:center;gap:10px;}
+.q-opt span:first-child{font-size:1.6em;flex-shrink:0;}
+.q-opt:hover{transform:translateX(6px);border-color:#FF9800;}
+.q-opt.correct{background:#E8F5E9;border-color:#4CAF50;}
+.q-opt.wrong{background:#FFEBEE;border-color:#F44336;animation:shk 0.4s;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.q-fb{text-align:center;padding:10px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1em;margin-top:10px;display:none;}
+.q-fb.show{display:block;animation:popIn 0.4s;}
+.q-fb.good{background:#E8F5E9;color:#2E7D32;}
+.q-fb.bad{background:#FFEBEE;color:#C62828;}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+.next-btn{width:100%;padding:12px;background:linear-gradient(135deg,#FF9800,#E65100);color:white;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;cursor:pointer;margin-top:10px;display:none;transition:all 0.3s;}
+.next-btn.show{display:block;animation:popIn 0.3s;}
+.next-btn:hover{transform:scale(1.03);}
+.confetti-emoji{position:fixed;pointer-events:none;font-size:2em;animation:fall 1.5s ease-in forwards;z-index:999;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="back-btn">← ආපසු</a>
+  <h2>💫 3 ශ්‍රේණිය</h2>
+</div>
+<div class="container">
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(0,this)">🛣️ ගොඩබිම</div>
+    <div class="tab" onclick="showTab(1,this)">🌊 ජලය</div>
+    <div class="tab" onclick="showTab(2,this)">☁️ ගුවන</div>
+  </div>
+
+  <!-- Land panel -->
+  <div class="content-panel active" id="panel0">
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🏍️</span>
+      <div class="v-info">
+        <h3>මෝටර් රථය (කාර් එක)</h3>
+        <p>රෝද 4ක් ඇත. ඉන්ධන (පෙට්‍රල්/ඩීසල්) මගින් ධාවනය. ගොඩබිම් මාර්ගවල යයි.</p>
+        <div class="v-tags"><span class="vtag fuel">⛽ ඉන්ධන</span><span class="vtag path">🛣️ ගොඩබිම</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🚂</span>
+      <div class="v-info">
+        <h3>දුම්රිය</h3>
+        <p>තාර පාරක ධාවනය. ගොඩබිම ගමන් කරන දිගම වාහනය. බොහෝ දෙනෙකු ගෙනයයි.</p>
+        <div class="v-tags"><span class="vtag fuel">⚡ විදුලිය</span><span class="vtag path">🚂 රේල් පීලි</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🛺</span>
+      <div class="v-info">
+        <h3>තී රෝද රථය</h3>
+        <p>රෝද 3ක් ඇත. ඉන්ධන රහිත ධාවනය කළ හැකි. ශ්‍රී ලංකාවේ බහුලව දක්නට ලැබේ.</p>
+        <div class="v-tags"><span class="vtag fuel">⛽ ඉන්ධන</span><span class="vtag path">🛣️ ගොඩබිම</span></div>
+      </div>
+    </div>
+    <div class="fuel-section">
+      <h3>⛽ ඉන්ධන වර්ග</h3>
+      <div class="fuel-items">
+        <div class="fuel-item petrol"><span class="fuel-emoji">⛽</span><span class="fuel-name">පෙට්‍රල්/ඩීසල්</span><span class="fuel-sub">කාර්, බස්, ලොරි</span></div>
+        <div class="fuel-item electric"><span class="fuel-emoji">⚡</span><span class="fuel-name">විදුලිය</span><span class="fuel-sub">දුම්රිය, ඉ-කාර්</span></div>
+        <div class="fuel-item none"><span class="fuel-emoji">🦶</span><span class="fuel-name">ඉන්ධන රහිත</span><span class="fuel-sub">පාපැදිය</span></div>
+        <div class="fuel-item wind"><span class="fuel-emoji">💨</span><span class="fuel-name">සුළං</span><span class="fuel-sub">ජල යානා සමහරක්</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Water panel -->
+  <div class="content-panel" id="panel1">
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🚢</span>
+      <div class="v-info">
+        <h3>නැව</h3>
+        <p>ගංගා සහ සාගරවල ගමන් කරයි. ශ්‍රී ලංකාවේ නාවික ගමනාගමනයේ ප්‍රධාන යානය.</p>
+        <div class="v-tags"><span class="vtag fuel">⛽ ඉන්ධන</span><span class="vtag path">🌊 ජලය</span><span class="vtag speed">🐢 සෙමින්</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">⛵</span>
+      <div class="v-info">
+        <h3>බෝට්ටුව</h3>
+        <p>ගංගා, ජලාශ, ගෙවල් ආශ්‍රිතව යයි. සුළං බල ධාවනයකට යයි.</p>
+        <div class="v-tags"><span class="vtag wind">💨 සුළං</span><span class="vtag path">🌊 ජලය</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🛶</span>
+      <div class="v-info">
+        <h3>ඔරුව</h3>
+        <p>ශ්‍රී ලංකාවේ ගොවි ජනයා ජලාශවල ධීවර කටයුතු සඳහා යොදා ගනියි. ඔරු ගෙඩිය භාවිතා කරයි.</p>
+        <div class="v-tags"><span class="vtag old">🏺 සාම්ප්‍රදායික</span><span class="vtag path">🌊 ජලය</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🛥️</span>
+      <div class="v-info">
+        <h3>තෙප්පම</h3>
+        <p>ගංගාවල ද, ජලාශවල ද ධාවනය කළ හැකි. ශ්‍රී ලංකාවේ ජල ගමනාගමනයේ දී භාවිතා වේ.</p>
+        <div class="v-tags"><span class="vtag fuel">⛽ ඉන්ධන</span><span class="vtag path">🌊 ජලය</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Air panel -->
+  <div class="content-panel" id="panel2">
+    <div class="v-detail-card">
+      <span class="v-big-emoji">✈️</span>
+      <div class="v-info">
+        <h3>ගුවන් යානය</h3>
+        <p>ගුවන් ගමන සඳහා ප්‍රධාන යාත්‍රාව. ශ්‍රී ලංකාවේ රත්මලාන/බණ්ඩාරනායක ගුවන්තොටේ ඇත.</p>
+        <div class="v-tags"><span class="vtag fuel">⛽ ජෙට් ඉන්ධන</span><span class="vtag path">☁️ ගුවන</span><span class="vtag speed">⚡ වේගවත්</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🚁</span>
+      <div class="v-info">
+        <h3>හෙලිකොප්ටරය</h3>
+        <p>ඉහළ-යටට ගමන් කළ හැකි. ගිනිකඳු/ආපදා සහන කටයුතු සඳහා ශ්‍රී ලංකාවේ යොදා ගනු ලැබේ.</p>
+        <div class="v-tags"><span class="vtag fuel">⛽ ඉන්ධන</span><span class="vtag path">☁️ ගුවන</span><span class="vtag new">🆕 නවීන</span></div>
+      </div>
+    </div>
+    <div class="v-detail-card">
+      <span class="v-big-emoji">🚀</span>
+      <div class="v-info">
+        <h3>රොකට්ටුව</h3>
+        <p>අවකාශ ගමනාගමනය සඳහා. අධිශීඝ්‍ර ගමන් කළ හැකිය. ශ්‍රී ලංකාවේ ඉතා දුර්ලභය.</p>
+        <div class="v-tags"><span class="vtag fuel">🔥 ඉන්ධන</span><span class="vtag path">🌌 අවකාශ</span><span class="vtag speed">⚡ ඉතා වේගවත්</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-hdr">
+      <h3>🧠 ප්‍රශ්නාවලිය</h3>
+      <span class="score-pill" id="sc">0/0</span>
+    </div>
+    <div class="q-scenario" id="qScenario"></div>
+    <span class="q-big-emoji" id="qEmoji"></span>
+    <div class="q-opts" id="qOpts"></div>
+    <div class="q-fb" id="qFb"></div>
+    <button class="next-btn" id="nBtn" onclick="loadQ()">ඊළඟ ප්‍රශ්නය →</button>
+  </div>
+</div>
+
+<script>
+function showTab(idx,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.content-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel'+idx).classList.add('active');
+}
+
+const qs=[
+  {q:'ඉන්ධන නොමැතිව ගමන් කරන ගොඩබිම් වාහනය කුමක්ද?',emoji:'🚲',opts:[{e:'🚲',t:'පාපැදිය',c:true},{e:'🚌',t:'බස් රථය',c:false},{e:'🚂',t:'දුම්රිය',c:false},{e:'🚛',t:'ලොරි රථය',c:false}]},
+  {q:'රේල් පීලිවල ගමන් කරන වාහනය:',emoji:'🚂',opts:[{e:'🚂',t:'දුම්රිය',c:true},{e:'🚌',t:'බස් රථය',c:false},{e:'🏍️',t:'මෝටර් සයිකලය',c:false},{e:'🚛',t:'ලොරි රථය',c:false}]},
+  {q:'ගිනිකඳු ගලා ඒමේ දී ගිලෙන ජනතාව ගලවා ගැනීමට ශ්‍රේෂ්ඨ ගුවන් වාහනය:',emoji:'🚁',opts:[{e:'✈️',t:'ගුවන් යානය',c:false},{e:'🚁',t:'හෙලිකොප්ටරය',c:true},{e:'🚀',t:'රොකට්ටුව',c:false},{e:'🪂',t:'පැරෂූටය',c:false}]},
+  {q:'ජල ගොවීන් ධීවර කටයුතු සඳහා ප්‍රධාන ලෙස භාවිතා කරන වාහනය:',emoji:'🛶',opts:[{e:'🛶',t:'ඔරුව',c:true},{e:'🚢',t:'නැව',c:false},{e:'⛵',t:'බෝට්ටුව',c:false},{e:'🛥️',t:'තෙප්පම',c:false}]},
+  {q:'දිගු ජල ගමන් සඳහා ශ්‍රේෂ්ඨ විශාලම ජල යාත්‍රාව:',emoji:'🚢',opts:[{e:'🚢',t:'නැව',c:true},{e:'🛶',t:'ඔරුව',c:false},{e:'⛵',t:'බෝට්ටුව',c:false},{e:'🛥️',t:'තෙප්පම',c:false}]},
+];
+let sc=0,tot=0,answered=false,cur=null;
+function loadQ(){
+  answered=false;
+  document.getElementById('qFb').className='q-fb';
+  document.getElementById('nBtn').className='next-btn';
+  cur=qs[Math.floor(Math.random()*qs.length)];
+  document.getElementById('qScenario').textContent=cur.q;
+  document.getElementById('qEmoji').textContent=cur.emoji;
+  const opts=[...cur.opts].sort(()=>Math.random()-0.5);
+  const div=document.getElementById('qOpts');
+  div.innerHTML='';
+  opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.innerHTML=`<span>${o.e}</span><span>${o.t}</span>`;
+    btn.onclick=()=>checkA(o.c,btn);
+    div.appendChild(btn);
+  });
+}
+function checkA(correct,btn){
+  if(answered)return;
+  answered=true;tot++;
+  const fb=document.getElementById('qFb');
+  if(correct){
+    sc++;btn.className='q-opt correct';
+    fb.textContent='🎉 ඉතා දක්ෂයි! නිවැරදියි!';fb.className='q-fb show good';
+    spawnConfetti();
+  }else{
+    btn.className='q-opt wrong';
+    const right=cur.opts.find(o=>o.c);
+    fb.textContent=`නැවත උත්සාහ! නිවැරදි: ${right.e} ${right.t}`;fb.className='q-fb show bad';
+  }
+  document.getElementById('sc').textContent=`${sc}/${tot}`;
+  document.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+  document.getElementById('nBtn').className='next-btn show';
+}
+function spawnConfetti(){
+  ['🎉','⭐','🌟','💫','🎊'].forEach((e,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='confetti-emoji';
+      el.textContent=e;el.style.left=Math.random()*100+'vw';
+      el.style.animationDuration=(Math.random()+1)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2000);
+    },i*100);
+  });
+}
+loadQ();
+</script>
+</body>
+</html>

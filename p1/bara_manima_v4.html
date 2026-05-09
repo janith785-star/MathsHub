@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>බර මැනීම - 3,4,5 ශ්‍රේණිය</title>
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --sky: #4FC3F7;
+    --sun: #FFD54F;
+    --grass: #66BB6A;
+    --coral: #FF7043;
+    --purple: #7E57C2;
+    --pink: #EC407A;
+    --teal: #26C6DA;
+    --orange: #FFA726;
+    --bg: #FFF8E1;
+    --card: #fff;
+    --text: #1A237E;
+    --shadow: 0 8px 32px rgba(30,60,120,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #FFF9C4 0%, #FFF3E0 50%, #E8F5E9 100%);
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== VISIT COUNTER ===== */
+  .visit-banner {
+    background: linear-gradient(135deg, #43A047, #2E7D32);
+    color: white;
+    text-align: center;
+    padding: 6px 16px;
+    font-size: 0.78rem;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .visit-count {
+    background: #FFD54F;
+    color: #1B5E20;
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  /* ===== WHATSAPP BANNER ===== */
+  .whatsapp-banner {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(37,211,102,0.3);
+  }
+  .whatsapp-banner .wa-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+  .whatsapp-banner .wa-text { flex: 1; }
+  .whatsapp-banner .wa-text strong {
+    display: block;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+  .whatsapp-banner .wa-text span {
+    font-size: 0.72rem;
+    opacity: 0.9;
+  }
+  .whatsapp-banner .wa-btn {
+    background: white;
+    color: #128C7E;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.8rem;
+    font-weight: 800;
+    white-space: nowrap;
+    animation: pulse-wa 2s infinite;
+  }
+  @keyframes pulse-wa {
+    0%,100%{transform:scale(1)} 50%{transform:scale(1.05)}
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #E65100 0%, #FF6F00 50%, #FFB300 100%);
+    color: white;
+    text-align: center;
+    padding: 18px 16px 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .header::before {
+    content: '⚖️';
+    position: absolute;
+    top: -10px; left: 10px;
+    font-size: 5rem;
+    opacity: 0.1;
+  }
+  .header::after {
+    content: '🏋️';
+    position: absolute;
+    bottom: -10px; right: 10px;
+    font-size: 4rem;
+    opacity: 0.1;
+  }
+  .header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .header p {
+    font-size: 0.82rem;
+    opacity: 0.92;
+    margin-top: 3px;
+    position: relative;
+  }
+  .stars-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .star { font-size: 1.2rem; animation: twinkle 2s infinite alternate; }
+  .star:nth-child(2) { animation-delay: 0.3s; }
+  .star:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes twinkle { from{opacity:0.5;transform:scale(0.9)} to{opacity:1;transform:scale(1.1)} }
+
+  /* ===== SCORE BAR ===== */
+  .score-bar {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border-bottom: 3px solid #FFB300;
+  }
+  .score-item { text-align: center; }
+  .score-item .val {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--coral);
+  }
+  .score-item .lbl { font-size: 0.65rem; color: #777; }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 14px 4px;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: #f0f0f0;
+    color: #666;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab.active {
+    background: var(--coral);
+    color: white;
+    border-color: #E64A19;
+    box-shadow: 0 3px 10px rgba(255,112,67,0.35);
+  }
+
+  /* ===== PAGES ===== */
+  .page { display: none; padding: 10px 14px 80px; }
+  .page.active { display: block; }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text);
+    padding: 10px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ===== CONCEPT CARD ===== */
+  .concept-card {
+    background: var(--card);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--orange);
+  }
+  .concept-card h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .concept-card p { font-size: 0.83rem; line-height: 1.6; color: #444; }
+
+  .formula-box {
+    background: linear-gradient(135deg, #FFF9C4, #FFF3E0);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    text-align: center;
+    border: 2px dashed #FFB300;
+  }
+  .formula-box .formula {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #E65100;
+  }
+
+  /* ===== SCALE ANIMATION ===== */
+  .scale-section {
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    border: 3px solid #FFB300;
+    text-align: center;
+  }
+  .scale-anim {
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .scale-base {
+    width: 140px;
+    height: 20px;
+    background: linear-gradient(135deg, #8D6E63, #5D4037);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0;
+  }
+  .scale-pole {
+    width: 8px;
+    height: 80px;
+    background: linear-gradient(135deg, #8D6E63, #5D4037);
+    border-radius: 4px;
+    position: absolute;
+    bottom: 20px;
+  }
+  .scale-arm {
+    width: 160px;
+    height: 8px;
+    background: linear-gradient(135deg, #8D6E63, #5D4037);
+    border-radius: 4px;
+    position: absolute;
+    top: 10px;
+    transform-origin: center;
+    transition: transform 0.5s ease;
+  }
+  .scale-pan {
+    width: 60px;
+    height: 10px;
+    background: linear-gradient(135deg, #FFA726, #FF6F00);
+    border-radius: 5px;
+    position: absolute;
+    bottom: 28px;
+    transition: bottom 0.5s ease;
+  }
+  .scale-pan.left { left: 0; }
+  .scale-pan.right { right: 0; }
+  .pan-item {
+    position: absolute;
+    font-size: 1.4rem;
+    bottom: 40px;
+    transition: bottom 0.5s ease;
+  }
+  .pan-item.left { left: 8px; }
+  .pan-item.right { right: 8px; }
+  .pan-label {
+    position: absolute;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #E65100;
+    bottom: 40px;
+    transition: all 0.5s;
+  }
+  .pan-label.left { left: 0; width: 60px; text-align: center; }
+  .pan-label.right { right: 0; width: 60px; text-align: center; }
+
+  /* ===== ITEMS GRID ===== */
+  .items-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 8px 0;
+  }
+  .item-card {
+    background: linear-gradient(135deg, #FFF3E0, #FFF9C4);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid #FFB300;
+  }
+  .item-card .item-emoji { font-size: 1.8rem; }
+  .item-card .item-name { font-size: 0.72rem; font-weight: 700; color: #4A148C; margin-top: 4px; }
+  .item-card .item-weight {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #E65100;
+    margin-top: 2px;
+  }
+
+  /* ===== CONVERSION SECTION ===== */
+  .conv-demo {
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .conv-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 10px 0;
+  }
+  .conv-box {
+    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+    border-radius: 12px;
+    padding: 10px 16px;
+    text-align: center;
+    border: 2px solid #1565C0;
+    min-width: 80px;
+  }
+  .conv-box .val {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0D47A1;
+  }
+  .conv-box .unit { font-size: 0.7rem; color: #555; }
+  .conv-arrow {
+    font-size: 1.5rem;
+    color: #FF6F00;
+    font-weight: 800;
+  }
+  .conv-rule {
+    background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+    border-radius: 12px;
+    padding: 8px 14px;
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1B5E20;
+    border: 2px solid #4CAF50;
+  }
+
+  /* ===== EXERCISE TABLE ===== */
+  .ex-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .ex-table th {
+    background: linear-gradient(135deg, #FF6F00, #FFB300);
+    color: white;
+    padding: 10px 8px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-align: center;
+  }
+  .ex-table td {
+    padding: 8px;
+    font-size: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #FFF3E0;
+    color: #333;
+  }
+  .ex-table tr:last-child td { border-bottom: none; }
+  .ex-table tr:nth-child(even) td { background: #FFF8E1; }
+
+  /* ===== COMPARISON SECTION ===== */
+  .compare-demo {
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .compare-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 12px 0;
+    gap: 8px;
+  }
+  .comp-item {
+    background: linear-gradient(135deg, #F3E5F5, #E1BEE7);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+    flex: 1;
+    border: 2px solid #9C27B0;
+  }
+  .comp-item .emoji { font-size: 2rem; }
+  .comp-item .weight {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #4A148C;
+    margin-top: 4px;
+  }
+  .comp-sign {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #E65100;
+  }
+
+  /* ===== DRAG & DROP ===== */
+  .drag-section {
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .drag-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .drag-items-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    min-height: 60px;
+  }
+  .drag-item {
+    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+    border-radius: 12px;
+    padding: 8px 12px;
+    cursor: grab;
+    border: 2px solid #1565C0;
+    text-align: center;
+    user-select: none;
+    transition: all 0.2s;
+    touch-action: none;
+  }
+  .drag-item:active { transform: scale(1.05); opacity: 0.8; cursor: grabbing; }
+  .drag-item.dragging { opacity: 0.4; }
+  .drag-item .di-emoji { font-size: 1.3rem; }
+  .drag-item .di-weight {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #0D47A1;
+  }
+  .drop-zones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .drop-zone {
+    background: #F5F5F5;
+    border: 3px dashed #BDBDBD;
+    border-radius: 16px;
+    padding: 12px 8px;
+    min-height: 100px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .drop-zone.dragover {
+    background: #E8F5E9;
+    border-color: #43A047;
+  }
+  .drop-zone.correct-zone { background: #E8F5E9; border-color: #43A047; border-style: solid; }
+  .drop-zone.wrong-zone { background: #FFEBEE; border-color: #E53935; border-style: solid; }
+  .drop-zone .zone-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .drop-zone .zone-emoji { font-size: 1.6rem; }
+  .dropped-item {
+    display: inline-block;
+    background: white;
+    border-radius: 10px;
+    padding: 4px 8px;
+    margin: 3px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 2px solid #ddd;
+  }
+  .drag-check-btn {
+    display: block;
+    width: 100%;
+    padding: 11px;
+    background: linear-gradient(135deg, #43A047, #2E7D32);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(67,160,71,0.35);
+  }
+
+  /* ===== COLUMN CALCULATOR ===== */
+  .col-calc {
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .col-mode-btns {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .col-mode-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    background: #f5f5f5;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .col-mode-btn.active {
+    background: linear-gradient(135deg, #1565C0, #0288D1);
+    color: white;
+    border-color: #0D47A1;
+  }
+  .col-problem {
+    background: #FFF3E0;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 2px solid #FFB300;
+    font-family: 'Baloo 2', cursive;
+  }
+  .col-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .col-row .unit-lbl { width: 30px; text-align: right; font-size: 0.72rem; color: #777; font-family: 'Nunito'; font-weight: 600; }
+  .col-row .col-val { width: 54px; text-align: right; }
+  .col-divider { border: none; border-top: 3px solid #1565C0; margin: 6px 0; }
+  .col-inputs { display: flex; justify-content: flex-end; gap: 14px; align-items: center; }
+  .col-input {
+    width: 54px;
+    border: 2px solid #1565C0;
+    border-radius: 8px;
+    padding: 6px 4px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--text);
+    background: white;
+  }
+
+  /* ===== QUIZ ===== */
+  .quiz-container {
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .diff-btns {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .diff-btn {
+    flex: 1;
+    padding: 7px;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    background: #f5f5f5;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .diff-btn.active {
+    background: linear-gradient(135deg, #FF6F00, #FFB300);
+    color: white;
+    border-color: #E65100;
+  }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 12px;
+    background: #eee;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #66BB6A, #2E7D32);
+    border-radius: 6px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-text { font-size: 0.72rem; color: #888; white-space: nowrap; }
+  .question-box {
+    background: linear-gradient(135deg, #FFF3E0, #FFF9C4);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border: 3px solid #FFB300;
+    text-align: center;
+  }
+  .question-emoji { font-size: 2rem; margin-bottom: 6px; }
+  .question-text {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .option-btn {
+    padding: 12px 8px;
+    border-radius: 14px;
+    border: 3px solid #ddd;
+    background: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .option-btn:active:not(:disabled) { transform: scale(0.97); }
+  .option-btn.correct { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border-color: #43A047; color: #1B5E20; }
+  .option-btn.wrong { background: linear-gradient(135deg, #FFEBEE, #FFCDD2); border-color: #E53935; color: #B71C1C; }
+  .feedback-box {
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: none;
+    margin-bottom: 8px;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); color: #1B5E20; border: 2px solid #43A047; }
+  .feedback-box.wrong-fb { background: linear-gradient(135deg, #FFEBEE, #FFCDD2); color: #B71C1C; border: 2px solid #E53935; }
+  .next-btn {
+    display: none;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #7E57C2, #512DA8);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(126,87,194,0.35);
+  }
+  .next-btn.show { display: block; }
+
+  /* ===== CELEBRATION ===== */
+  .celebration {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+  .celebration.show { display: flex; }
+  .celeb-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: center;
+    max-width: 280px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .celeb-emoji { font-size: 4rem; }
+  .celeb-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #E65100;
+    margin: 8px 0 4px;
+  }
+  .celeb-msg { font-size: 0.9rem; color: #555; margin-bottom: 16px; }
+  .celeb-stars { font-size: 1.8rem; letter-spacing: 4px; margin-bottom: 14px; }
+  .celeb-close {
+    padding: 10px 28px;
+    background: linear-gradient(135deg, #FF6F00, #FFB300);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: confettifall 2s ease-in forwards;
+    z-index: 1000;
+  }
+  @keyframes confettifall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== COLUMN PROBLEM TABLE ===== */
+  .prob-item {
+    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border: 2px solid #1565C0;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ===== BUTTONS ===== */
+  .action-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #FF6F00, #FFB300);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 15px rgba(255,111,0,0.3);
+    transition: all 0.2s;
+  }
+  .action-btn:active { transform: scale(0.98); }
+  .action-btn.green {
+    background: linear-gradient(135deg, #43A047, #2E7D32);
+    box-shadow: 0 4px 15px rgba(67,160,71,0.3);
+  }
+
+  /* ===== PROGRESS PAGE ===== */
+  .badge-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    margin-bottom: 8px;
+    background: #f5f5f5;
+    opacity: 0.4;
+    transition: all 0.3s;
+  }
+  .badge-item.earned { background: #E8F5E9; opacity: 1; }
+  .badge-emoji { font-size: 1.8rem; }
+  .badge-info .badge-name {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 0.88rem;
+  }
+  .badge-info .badge-req { font-size: 0.72rem; color: #777; }
+  .earned-label {
+    margin-left: auto;
+    background: #43A047;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  /* ===== HOME BUTTON ===== */
+  .home-btn-bar {
+    background: linear-gradient(135deg, #1A237E, #283593);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #FFB300, #FF6F00);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(255,111,0,0.35);
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .home-btn:active { transform: scale(0.97); }
+
+  /* ===== DISH SCALE (SVG) ===== */
+  .dish-scale-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .dish-scale-wrap svg { width: 100%; max-width: 340px; height: auto; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat-val {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--coral);
+  }
+  .stat-lbl { font-size: 0.72rem; color: #777; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HOME BUTTON BAR -->
+<div class="home-btn-bar">
+  <button class="home-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});showPage('page-intro',document.querySelector('.tab'))">🏠 මුල් පිටුව (Home)</button>
+</div>
+
+<!-- VISIT COUNTER BANNER -->
+<div class="visit-banner">
+  <span>📊 මෙම යෙදුම භාවිත කළ ගණන:</span>
+  <span class="visit-count" id="visitCount">0</span>
+</div>
+
+<!-- WHATSAPP BANNER -->
+<a class="whatsapp-banner" href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee" target="_blank">
+  <span class="wa-icon">💬</span>
+  <div class="wa-text">
+    <strong>නවතම පාඩම් සඳහා WhatsApp Group</strong>
+    <span>ගණිත, සිංහල, ඉංග්‍රීසි - නොමිලේ!</span>
+  </div>
+  <span class="wa-btn">Join ➜</span>
+</a>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>⚖️ බර මැනීම</h1>
+  <p>3, 4, 5 ශ්‍රේණිය | කිලෝග්‍රෑම් සහ ග්‍රෑම්</p>
+  <div class="stars-row">
+    <span class="star">⭐</span>
+    <span class="star">⭐</span>
+    <span class="star">⭐</span>
+  </div>
+</div>
+
+<!-- SCORE BAR -->
+<div class="score-bar">
+  <div class="score-item"><div class="val" id="scoreDisplay">0</div><div class="lbl">ලකුණු</div></div>
+  <div class="score-item"><div class="val" id="correctDisplay" style="color:#43A047">0</div><div class="lbl">✅ නිවැරදි</div></div>
+  <div class="score-item"><div class="val" id="wrongDisplay" style="color:#E53935">0</div><div class="lbl">❌ වැරදි</div></div>
+  <div class="score-item"><div class="val" id="streakDisplay" style="color:#7E57C2">0</div><div class="lbl">🔥 streak</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="showPage('page-intro',this)">📚 මූලික</button>
+  <button class="tab" onclick="showPage('page-convert',this)">🔄 පරිවර්තනය</button>
+  <button class="tab" onclick="showPage('page-compare',this)">⚖️ සසඳන්න</button>
+  <button class="tab" onclick="showPage('page-addSub',this)">➕➖ ගණනය</button>
+  <button class="tab" onclick="showPage('page-drag',this)">🖱️ Drag & Match</button>
+  <button class="tab" onclick="showPage('page-quiz',this)">🎯 Quiz</button>
+  <button class="tab" onclick="showPage('page-word',this)">📝 ගැටලු</button>
+  <button class="tab" onclick="showPage('page-progress',this);updateProgress()">🏆 ප්‍රගතිය</button>
+</div>
+
+<!-- ===== PAGE: INTRO ===== -->
+<div id="page-intro" class="page active">
+  <div class="section-title">📖 1. මූලික සංකල්පය</div>
+
+  <div class="concept-card">
+    <h3>⚖️ කිලෝග්‍රෑම් (kg) සහ ග්‍රෑම් (g)</h3>
+    <p>බර මැනීමේ සම්මත ඒකකය <strong>කිලෝග්‍රෑම්</strong> (kg) වේ. කුඩා බර මැනීමට <strong>ග්‍රෑම්</strong> (g) භාවිත කරයි.</p>
+    <div class="formula-box">
+      <div class="formula">1 kg = 1000 g</div>
+    </div>
+  </div>
+
+  <!-- Dish Scale (SVG) -->
+  <div class="scale-section">
+    <div class="section-title" style="justify-content:center; padding:0 0 8px">⚖️ තැටි තරාදිය</div>
+    <div class="dish-scale-wrap">
+      <svg id="dishScaleSVG" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
+        <!-- Base (static) -->
+        <rect x="135" y="185" width="70" height="16" rx="8" fill="#795548"/>
+        <!-- Pole (static) -->
+        <rect x="167" y="95" width="6" height="90" rx="3" fill="#6D4C41"/>
+        <!-- Pivot (static, drawn last so it's on top) -->
+
+        <!-- === ARM GROUP: rotates around pivot (170,100) === -->
+        <!-- Everything here tilts: arm, strings, pans, items, labels -->
+        <g id="scaleArmG" style="transform-origin:170px 100px; transition:transform 0.8s cubic-bezier(.4,0,.2,1);">
+
+          <!-- Arm bar -->
+          <rect x="65" y="97" width="210" height="6" rx="3" fill="#8D6E63"/>
+
+          <!-- Left side strings (from arm-end ~80px to pan) -->
+          <line x1="88"  y1="103" x2="75"  y2="138" stroke="#795548" stroke-width="2"/>
+          <line x1="112" y1="103" x2="125" y2="138" stroke="#795548" stroke-width="2"/>
+
+          <!-- Right side strings -->
+          <line x1="228" y1="103" x2="215" y2="138" stroke="#795548" stroke-width="2"/>
+          <line x1="252" y1="103" x2="265" y2="138" stroke="#795548" stroke-width="2"/>
+
+          <!-- Left pan (dish) -->
+          <ellipse cx="100" cy="140" rx="32" ry="9" fill="#FFA726" stroke="#E65100" stroke-width="2.5"/>
+          <!-- Pan rim shadow -->
+          <ellipse cx="100" cy="140" rx="32" ry="9" fill="none" stroke="#BF360C" stroke-width="1" opacity="0.3"/>
+
+          <!-- Right pan (dish) -->
+          <ellipse cx="240" cy="140" rx="32" ry="9" fill="#FFA726" stroke="#E65100" stroke-width="2.5"/>
+          <ellipse cx="240" cy="140" rx="32" ry="9" fill="none" stroke="#BF360C" stroke-width="1" opacity="0.3"/>
+
+          <!-- Left item emoji (sits on left pan) -->
+          <text id="svgLeftItem" x="100" y="130" text-anchor="middle" font-size="24">🍎</text>
+
+          <!-- Right item emoji (sits on right pan) -->
+          <text id="svgRightItem" x="240" y="130" text-anchor="middle" font-size="24">🥕</text>
+
+          <!-- Left weight label (below left pan) -->
+          <text id="svgLeftLabel" x="100" y="158" text-anchor="middle" font-family="'Baloo 2',cursive" font-size="12" font-weight="800" fill="#E65100">200g</text>
+
+          <!-- Right weight label (below right pan) -->
+          <text id="svgRightLabel" x="240" y="158" text-anchor="middle" font-family="'Baloo 2',cursive" font-size="12" font-weight="800" fill="#E65100">500g</text>
+
+        </g>
+
+        <!-- Pivot circle on top of arm -->
+        <circle cx="170" cy="100" r="8" fill="#5D4037" stroke="#3E2723" stroke-width="1.5"/>
+        <circle cx="170" cy="100" r="3" fill="#BCAAA4"/>
+      </svg>
+    </div>
+    <div id="scaleResult" style="text-align:center;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:800;color:#1A237E;margin-bottom:8px;min-height:24px;"></div>
+    <button class="action-btn" onclick="animateScale()">⚖️ තරාදියෙන් බර කිරමු</button>
+  </div>
+
+  <div class="section-title">🛒 2. දෛනික ජීවිතයේ බර</div>
+  <div class="items-info">
+    <div class="item-card"><div class="item-emoji">🧼</div><div class="item-name">සබන් කැටයක්</div><div class="item-weight">125 g</div></div>
+    <div class="item-card"><div class="item-emoji">🍚</div><div class="item-name">සහල් මල්ලක්</div><div class="item-weight">5 kg</div></div>
+    <div class="item-card"><div class="item-emoji">🍬</div><div class="item-name">සිනිඳු පැකෙට්ටුවක්</div><div class="item-weight">500 g</div></div>
+    <div class="item-card"><div class="item-emoji">📚</div><div class="item-name">පොත් බෑගයක්</div><div class="item-weight">2 kg</div></div>
+    <div class="item-card"><div class="item-emoji">🥚</div><div class="item-name">බිත්තරයක්</div><div class="item-weight">60 g</div></div>
+    <div class="item-card"><div class="item-emoji">🍊</div><div class="item-name">දොඩම් ගෙඩියක්</div><div class="item-weight">200 g</div></div>
+    <div class="item-card"><div class="item-emoji">🍌</div><div class="item-name">කෙසෙල් ගෙඩියක්</div><div class="item-weight">150 g</div></div>
+    <div class="item-card"><div class="item-emoji">💧</div><div class="item-name">වතුර බෝතලයක්</div><div class="item-weight">1 kg</div></div>
+  </div>
+
+  <div class="section-title">📋 3. kg සහ g වලින් මනිනු ලබන දෑ</div>
+  <table class="ex-table">
+    <tr><th>kg (කිලෝග්‍රෑම්) වලින්</th><th>g (ග්‍රෑම්) වලින්</th></tr>
+    <tr><td>හාල් මල්ලක්</td><td>රත්තරන් ආහාරණ</td></tr>
+    <tr><td>සීනි මිටියක්</td><td>තේ කොළ පැකෙට්ටුවක්</td></tr>
+    <tr><td>කොමඩු ගෙඩියක්</td><td>ගම්මිරිස් කුඩු</td></tr>
+    <tr><td>පුද්ගලයෙකුගේ බර</td><td>බිස්කට් පැකෙට්ටුවක්</td></tr>
+  </table>
+</div>
+
+<!-- ===== PAGE: CONVERT ===== -->
+<div id="page-convert" class="page">
+  <div class="section-title">🔄 3. ඒකක පරිවර්තනය</div>
+
+  <div class="conv-demo">
+    <div class="conv-rule">kg → g: 1000 න් ගුණ කරන්න</div>
+    <div class="conv-row">
+      <div class="conv-box"><div class="val">2 kg</div></div>
+      <div class="conv-arrow">×1000<br>⟹</div>
+      <div class="conv-box"><div class="val">2000 g</div></div>
+    </div>
+    <div class="conv-rule" style="background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-color:#FF6F00;color:#E65100;">g → kg: 1000 න් බෙදන්න</div>
+    <div class="conv-row">
+      <div class="conv-box"><div class="val">3000 g</div></div>
+      <div class="conv-arrow">÷1000<br>⟹</div>
+      <div class="conv-box"><div class="val">3 kg</div></div>
+    </div>
+    <div class="conv-rule">kg සහ g → g: <br>5 kg 250 g = 5000 + 250 = 5250 g</div>
+  </div>
+
+  <div class="section-title">✏️ පරිවර්තන අභ්‍යාස</div>
+  <div class="quiz-container">
+    <div class="question-box">
+      <div class="question-emoji" id="convEmoji">🔄</div>
+      <div class="question-text" id="convQuestion">Loading...</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <input type="number" id="convAnswer" placeholder="පිළිතුර ලියන්න..." style="flex:1;padding:10px;border:3px solid #FFB300;border-radius:12px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;color:var(--text);">
+      <select id="convUnit" style="padding:10px;border:3px solid #FFB300;border-radius:12px;font-family:'Baloo 2',cursive;font-size:0.85rem;font-weight:700;color:var(--text);">
+        <option value="g">g</option>
+        <option value="kg">kg</option>
+      </select>
+    </div>
+    <div class="feedback-box" id="convFeedback"></div>
+    <button class="action-btn" onclick="checkConvert()">✅ පරීක්ෂා කරන්න</button>
+    <button class="next-btn show" id="convNextBtn" onclick="loadConvQuestion()" style="margin-top:8px;">➡️ ඊළඟ</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: COMPARE ===== -->
+<div id="page-compare" class="page">
+  <div class="section-title">⚖️ 2. බර සසසන්දනය</div>
+
+  <div class="compare-demo">
+    <div class="section-title" style="padding:0 0 8px;font-size:0.9rem;">සසඳීම සඳහා >, < හෝ = ලකුණ</div>
+    <div class="compare-row" id="compareRow">
+      <div class="comp-item" id="compLeft">
+        <div class="emoji" id="compLeftEmoji">🍎</div>
+        <div class="weight" id="compLeftW">200 g</div>
+      </div>
+      <div class="comp-sign" id="compSign">?</div>
+      <div class="comp-item" id="compRight">
+        <div class="emoji" id="compRightEmoji">🥕</div>
+        <div class="weight" id="compRightW">500 g</div>
+      </div>
+    </div>
+    <div class="options-grid" style="grid-template-columns:1fr 1fr 1fr;">
+      <button class="option-btn" onclick="checkCompare(this,'>')" style="font-size:1.3rem;font-weight:900;">&#x25B6; (&gt;)</button>
+      <button class="option-btn" onclick="checkCompare(this,'=')" style="font-size:1.3rem;font-weight:900;">= (=)</button>
+      <button class="option-btn" onclick="checkCompare(this,'<')" style="font-size:1.3rem;font-weight:900;">&#x25C0; (&lt;)</button>
+    </div>
+    <div class="feedback-box" id="compareFeedback"></div>
+    <button class="next-btn show" id="compareNextBtn" onclick="loadCompare()">➡️ ඊළඟ ප‍‍ශ්නය</button>
+  </div>
+
+  <div class="section-title">📊 අනුක්‍රමය (කුඩා→ ලොකු)</div>
+  <div class="concept-card" style="border-left-color:#9C27B0;">
+    <h3>🔢 ආරෝහණ පිළිවෙළ</h3>
+    <p>400 g, 1 kg, 250 g → ග්‍රෑම් ලෙස: 250g, 400g, 1000g</p>
+    <p style="margin-top:6px;color:#7B1FA2;font-weight:700;">∴ 250 g &lt; 400 g &lt; 1 kg</p>
+  </div>
+</div>
+
+<!-- ===== PAGE: ADD/SUB ===== -->
+<div id="page-addSub" class="page">
+  <div class="section-title">➕➖ 4. එකතු කිරීම සහ අඩු කිරීම</div>
+
+  <div class="col-calc">
+    <div class="col-mode-btns">
+      <button class="col-mode-btn active" id="modeAddBtn" onclick="setColMode('add',this)">➕ එකතු කිරීම</button>
+      <button class="col-mode-btn" id="modeSubBtn" onclick="setColMode('sub',this)">➖ අඩු කිරීම</button>
+    </div>
+
+    <div class="col-problem">
+      <div class="col-row">
+        <span class="unit-lbl">kg</span>
+        <span class="unit-lbl">g</span>
+      </div>
+      <div class="col-row">
+        <span class="col-val" id="cp_a_kg">5</span>
+        <span class="col-val" id="cp_a_g">750</span>
+      </div>
+      <div class="col-row">
+        <span style="margin-right:auto;font-size:1.2rem;" id="cp_op">+</span>
+        <span class="col-val" id="cp_b_kg">1</span>
+        <span class="col-val" id="cp_b_g">500</span>
+      </div>
+      <hr class="col-divider">
+      <div class="col-inputs">
+        <input type="number" id="ansKg" class="col-input" placeholder="kg">
+        <input type="number" id="ansG" class="col-input" placeholder="g">
+      </div>
+    </div>
+    <div class="feedback-box" id="colFeedback"></div>
+    <button class="action-btn" onclick="checkColumn()">✅ පරීක්ෂා කරන්න</button>
+    <button class="next-btn show" id="colNextBtn" onclick="loadColProblem()" style="margin-top:8px;">➡️ ඊළඟ</button>
+  </div>
+
+  <div class="section-title">📝 ගණනය ගැටලු</div>
+  <div id="calcProblems"></div>
+</div>
+
+<!-- ===== PAGE: DRAG & MATCH ===== -->
+<div id="page-drag" class="page">
+  <div class="section-title">🖱️ Drag & Drop ගැලපීම</div>
+
+  <!-- Drag: match item to weight category -->
+  <div class="drag-section">
+    <div class="drag-title">🎯 බඩු kg හෝ g ලෙස වෙන් කරන්න!</div>
+    <div class="drag-items-row" id="dragItems"></div>
+    <div class="drop-zones">
+      <div class="drop-zone" id="zone-kg" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event,'kg')">
+        <div class="zone-label">⚖️ kg (කිලෝග්‍රෑම්)</div>
+        <div id="kg-dropped"></div>
+      </div>
+      <div class="drop-zone" id="zone-g" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event,'g')">
+        <div class="zone-label">🔬 g (ග්‍රෑම්)</div>
+        <div id="g-dropped"></div>
+      </div>
+    </div>
+    <div class="feedback-box" id="dragFeedback"></div>
+    <button class="drag-check-btn" onclick="checkDrag()">✅ පරීක්ෂා කරන්න</button>
+    <button class="action-btn" onclick="loadDragGame()" style="margin-top:8px;">🔄 නව ක‍ීමක්</button>
+  </div>
+
+  <!-- Sort game -->
+  <div class="drag-section">
+    <div class="drag-title">📊 කුඩා→ ලොකු ලෙස අනුපිළිවෙළ කරන්න</div>
+    <div id="sortItems" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
+    <div id="sortSlots" style="display:flex;gap:8px;margin-bottom:10px;"></div>
+    <div class="feedback-box" id="sortFeedback"></div>
+    <button class="action-btn green" onclick="checkSort()">✅ පරීක්ෂා කරන්න</button>
+    <button class="action-btn" onclick="loadSortGame()" style="margin-top:8px;">🔄 ඊළඟ ගැටලුව</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: QUIZ ===== -->
+<div id="page-quiz" class="page">
+  <div class="section-title">🎯 Quiz</div>
+  <div class="quiz-container">
+    <div class="diff-btns">
+      <button class="diff-btn active" onclick="setDiff('easy',this)">😊 පහසු</button>
+      <button class="diff-btn" onclick="setDiff('medium',this)">😐 මධ්‍යම</button>
+      <button class="diff-btn" onclick="setDiff('hard',this)">😤 අමාරු</button>
+    </div>
+    <div class="progress-row">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">ප‍ශ්නය 1/10</span>
+    </div>
+    <div class="question-box">
+      <div class="question-emoji" id="questionEmoji">🤔</div>
+      <div class="question-text" id="questionText">Loading...</div>
+    </div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <button class="next-btn" id="nextBtn" onclick="loadNextQuestion()">➡️ ඊළඟ ප‍ශ්නය</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: WORD PROBLEMS ===== -->
+<div id="page-word" class="page">
+  <div class="section-title">📝 5. ප්‍රායෝගික ගැටලු</div>
+  <div id="wordProblems"></div>
+</div>
+
+<!-- ===== PAGE: PROGRESS ===== -->
+<div id="page-progress" class="page">
+  <div class="section-title">🏆 ප‍ගතිය</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="totalScore">0</div><div class="stat-lbl">මුළු ලකුණු</div></div>
+    <div class="stat-card"><div class="stat-val" id="correctCount" style="color:#43A047">0</div><div class="stat-lbl">නිවැරදි</div></div>
+    <div class="stat-card"><div class="stat-val" id="wrongCount" style="color:#E53935">0</div><div class="stat-lbl">වැරදි</div></div>
+    <div class="stat-card"><div class="stat-val" id="streakCount" style="color:#7E57C2">0</div><div class="stat-lbl">🔥 Streak</div></div>
+  </div>
+  <div class="section-title">🏅 Badges</div>
+  <div id="badgesList"></div>
+</div>
+
+<!-- ===== CELEBRATION ===== -->
+<div class="celebration" id="celebration">
+  <div class="celeb-card">
+    <div class="celeb-emoji" id="celebEmoji">🎉</div>
+    <div class="celeb-title" id="celebTitle">සුපිරි!</div>
+    <div class="celeb-stars">⭐⭐⭐</div>
+    <div class="celeb-msg" id="celebMsg">ඔබ ඉතා දක්ෂයි!</div>
+    <button class="celeb-close" onclick="closeCelebration()">👍 ඉදිරියට!</button>
+  </div>
+</div>
+
+<script>
+// ===== VISIT COUNTER =====
+let visitCount = parseInt(localStorage.getItem('bara_visits') || '0') + 1;
+localStorage.setItem('bara_visits', visitCount);
+document.getElementById('visitCount').textContent = visitCount;
+
+// ===== GLOBAL STATE =====
+let score = 0, correct = 0, wrong = 0, streak = 0;
+let currentDiff = 'easy';
+let qNum = 0;
+let usedQs = [];
+let qPool = [];
+let currentQuestion = null;
+let colMode = 'add';
+let history = [];
+let dragData = [];
+let droppedKg = [];
+let droppedG = [];
+let sortData = [];
+let sortAnswer = [];
+let currentConvQ = null;
+let currentCompare = null;
+
+function updateScoreBar() {
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('correctDisplay').textContent = correct;
+  document.getElementById('wrongDisplay').textContent = wrong;
+  document.getElementById('streakDisplay').textContent = streak;
+}
+
+// ===== SOUND =====
+function playSound(freq, type='sine', dur=0.15) {
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type = type; o.frequency.setValueAtTime(freq, ac.currentTime);
+    g.gain.setValueAtTime(0.3, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+    o.start(); o.stop(ac.currentTime + dur);
+  } catch(e) {}
+}
+function playCorrect() { playSound(880,'sine',0.2); setTimeout(()=>playSound(1046,'sine',0.15),100); }
+function playWrong() { playSound(220,'sawtooth',0.3); }
+function playClick() { playSound(600,'sine',0.08); }
+
+// ===== PAGE NAV =====
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  playClick();
+}
+
+// ===== SVG DISH SCALE ANIMATION =====
+const scaleItems = [
+  {l:'🍎',lw:200,  r:'🥕',rw:500},
+  {l:'🧼',lw:125,  r:'🍚',rw:5000},
+  {l:'📚',lw:1500, r:'🥚',rw:60},
+  {l:'🍊',lw:200,  r:'🍌',rw:150},
+  {l:'💧',lw:1000, r:'🍬',rw:500},
+  {l:'🍇',lw:300,  r:'🍇',rw:300},   // equal
+];
+let scaleIdx = 0;
+function animateScale() {
+  const item = scaleItems[scaleIdx % scaleItems.length];
+  scaleIdx++;
+  const armG        = document.getElementById('scaleArmG');
+  const svgLeftItem  = document.getElementById('svgLeftItem');
+  const svgRightItem = document.getElementById('svgRightItem');
+  const svgLeftLabel = document.getElementById('svgLeftLabel');
+  const svgRightLabel= document.getElementById('svgRightLabel');
+  const resultEl     = document.getElementById('scaleResult');
+
+  // Update emoji & labels (they are INSIDE the arm group, so they tilt with it)
+  svgLeftItem.textContent  = item.l;
+  svgRightItem.textContent = item.r;
+  svgLeftLabel.textContent  = item.lw >= 1000 ? (item.lw/1000)+'kg' : item.lw+'g';
+  svgRightLabel.textContent = item.rw >= 1000 ? (item.rw/1000)+'kg' : item.rw+'g';
+
+  // Tilt: left heavier → left DOWN → arm rotates CLOCKWISE (negative in SVG = counter-clockwise)
+  // SVG positive rotation = clockwise = left goes UP (wrong!)
+  // So we NEGATE: left heavy (diff>0) → rotate NEGATIVE → left goes DOWN ✓
+  const diff  = item.lw - item.rw;
+  const maxTilt = 20;
+  let tilt = 0;
+  if (diff !== 0) {
+    const maxDiff = Math.max(item.lw, item.rw);
+    tilt = -(diff / maxDiff) * maxTilt;   // ← negated: heavy side goes DOWN
+    tilt = Math.max(-maxTilt, Math.min(maxTilt, tilt));
+  }
+  armG.style.transform = `rotate(${tilt}deg)`;
+
+  // Result text
+  const ll = item.lw >= 1000 ? (item.lw/1000)+'kg' : item.lw+'g';
+  const rl = item.rw >= 1000 ? (item.rw/1000)+'kg' : item.rw+'g';
+  let resultText = '';
+  if (diff > 0)      resultText = `${item.l} (${ll}) > ${item.r} (${rl}) — වමේ පැත්ත බරිනි ⬇️`;
+  else if (diff < 0) resultText = `${item.r} (${rl}) > ${item.l} (${ll}) — දකුණේ පැත්ත බරිනි ⬇️`;
+  else               resultText = `${item.l} (${ll}) = ${item.r} (${rl}) — දෙකම සමානයි ⚖️`;
+  resultEl.textContent = resultText;
+  playSound(660,'sine',0.1);
+}
+animateScale();
+
+// ===== CONVERSION QUIZ =====
+const convQuestions = [
+  {q:'3000 g = ? kg', ans:3, unit:'kg', emoji:'⚖️'},
+  {q:'5 kg = ? g', ans:5000, unit:'g', emoji:'🔄'},
+  {q:'7000 g = ? kg', ans:7, unit:'kg', emoji:'⚖️'},
+  {q:'4 kg = ? g', ans:4000, unit:'g', emoji:'🔄'},
+  {q:'2500 g = ? kg 500 g → kg කොටස?', ans:2, unit:'kg', emoji:'🤔'},
+  {q:'8 kg 250 g = ? g', ans:8250, unit:'g', emoji:'🔄'},
+  {q:'6000 g = ? kg', ans:6, unit:'kg', emoji:'⚖️'},
+  {q:'1050 g = 1 kg + ? g', ans:50, unit:'g', emoji:'🔢'},
+  {q:'12 kg = ? g', ans:12000, unit:'g', emoji:'🔄'},
+  {q:'9 kg 75 g = ? g', ans:9075, unit:'g', emoji:'🔢'},
+  {q:'25 kg = ? g', ans:25000, unit:'g', emoji:'🔄'},
+  {q:'4500 g = ? kg + 500 g → kg?', ans:4, unit:'kg', emoji:'⚖️'},
+];
+let convIdx = 0;
+function loadConvQuestion() {
+  document.getElementById('convFeedback').classList.remove('show');
+  document.getElementById('convAnswer').value = '';
+  const q = convQuestions[convIdx % convQuestions.length];
+  convIdx++;
+  currentConvQ = q;
+  document.getElementById('convEmoji').textContent = q.emoji;
+  document.getElementById('convQuestion').textContent = q.q;
+  document.getElementById('convUnit').value = q.unit;
+}
+function checkConvert() {
+  const ans = parseInt(document.getElementById('convAnswer').value);
+  const fb = document.getElementById('convFeedback');
+  if (isNaN(ans)) {
+    fb.className = 'feedback-box show wrong-fb';
+    fb.textContent = '⚠️ අගයක් ඇතුළත් කරන්න';
+    return;
+  }
+  if (ans === currentConvQ.ans) {
+    score += 15; correct++; streak++;
+    updateScoreBar();
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `✅ නිවැරදියි! සුපිරි! 🎉`;
+    playCorrect();
+    if (streak % 3 === 0 && streak > 0) showCelebration();
+  } else {
+    wrong++; streak = 0; updateScoreBar();
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ වැරදියි! නිවැරදි: ${currentConvQ.ans} ${currentConvQ.unit}`;
+    playWrong();
+  }
+  fb.classList.add('show');
+}
+loadConvQuestion();
+
+// ===== COMPARISON QUIZ =====
+const compareItems = [
+  {le:'🍎',lw:200,re:'🥕',rw:500,lu:'200 g',ru:'500 g',sign:'<'},
+  {le:'🍚',lw:5000,re:'🧼',rw:125,lu:'5 kg',ru:'125 g',sign:'>'},
+  {le:'🍊',lw:200,re:'🍌',rw:150,lu:'200 g',ru:'150 g',sign:'>'},
+  {le:'💧',lw:1000,re:'🍬',rw:1000,lu:'1 kg',ru:'1000 g',sign:'='},
+  {le:'📚',lw:1500,re:'🥚',rw:60,lu:'1 kg 500 g',ru:'60 g',sign:'>'},
+  {le:'🥦',lw:500,re:'🧅',rw:500,lu:'500 g',ru:'500 g',sign:'='},
+  {le:'🍗',lw:800,re:'🍞',rw:400,lu:'800 g',ru:'400 g',sign:'>'},
+  {le:'🥝',lw:100,re:'🍇',rw:250,lu:'100 g',ru:'250 g',sign:'<'},
+  {le:'🥛',lw:1000,re:'🧃',rw:500,lu:'1 kg',ru:'500 g',sign:'>'},
+  {le:'🍫',lw:250,re:'🍭',rw:250,lu:'250 g',ru:'250 g',sign:'='},
+];
+function loadCompare() {
+  document.getElementById('compareFeedback').classList.remove('show');
+  document.querySelectorAll('#page-compare .option-btn').forEach(b => {
+    b.classList.remove('correct','wrong');
+    b.disabled = false;
+  });
+  const q = compareItems[Math.floor(Math.random()*compareItems.length)];
+  currentCompare = q;
+  document.getElementById('compLeftEmoji').textContent = q.le;
+  document.getElementById('compRightEmoji').textContent = q.re;
+  document.getElementById('compLeftW').textContent = q.lu;
+  document.getElementById('compRightW').textContent = q.ru;
+  document.getElementById('compSign').textContent = '?';
+}
+function checkCompare(btn, sign) {
+  document.querySelectorAll('#page-compare .option-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('compareFeedback');
+  const signDisplay = sign === '>' ? '> (වැඩිය)' : sign === '<' ? '< (අඩුය)' : '= (සමානයි)';
+  if (sign === currentCompare.sign) {
+    btn.classList.add('correct');
+    score += 15; correct++; streak++;
+    updateScoreBar();
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `✅ නිවැරදියි! ${currentCompare.lu} ${currentCompare.sign} ${currentCompare.ru}`;
+    document.getElementById('compSign').textContent = currentCompare.sign;
+    playCorrect();
+    if (streak % 3 === 0 && streak > 0) showCelebration();
+  } else {
+    btn.classList.add('wrong');
+    wrong++; streak = 0; updateScoreBar();
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ වැරදියි! නිවැරදි: ${currentCompare.lu} <strong>${currentCompare.sign}</strong> ${currentCompare.ru}`;
+    document.getElementById('compSign').textContent = currentCompare.sign;
+    // Highlight correct button
+    document.querySelectorAll('#page-compare .option-btn').forEach(b => {
+      if ((b.textContent.includes('>') && currentCompare.sign === '>') ||
+          (b.textContent.includes('=') && currentCompare.sign === '=') ||
+          (b.textContent.includes('<') && currentCompare.sign === '<')) {
+        b.classList.add('correct');
+      }
+    });
+    playWrong();
+  }
+  fb.classList.add('show');
+}
+loadCompare();
+
+// ===== COLUMN ADD/SUB =====
+const addProblems = [
+  {akg:2,ag:450,bkg:3,bg:300,rkg:5,rg:750},
+  {akg:5,ag:750,bkg:1,bg:500,rkg:7,rg:250},
+  {akg:4,ag:200,bkg:2,bg:800,rkg:7,rg:0},
+  {akg:3,ag:500,bkg:4,bg:600,rkg:8,rg:100},
+  {akg:6,ag:250,bkg:2,bg:750,rkg:9,rg:0},
+  {akg:1,ag:800,bkg:5,bg:300,rkg:7,rg:100},
+  {akg:7,ag:100,bkg:2,bg:900,rkg:10,rg:0},
+  {akg:3,ag:0,bkg:1,bg:250,rkg:4,rg:250},
+];
+const subProblems = [
+  {akg:5,ag:800,bkg:2,bg:300,rkg:3,rg:500},
+  {akg:7,ag:450,bkg:3,bg:250,rkg:4,rg:200},
+  {akg:4,ag:100,bkg:1,bg:50,rkg:3,rg:50},
+  {akg:10,ag:0,bkg:4,bg:500,rkg:5,rg:500},
+  {akg:8,ag:50,bkg:3,bg:100,rkg:4,rg:950},
+  {akg:6,ag:0,bkg:1,bg:250,rkg:4,rg:750},
+  {akg:12,ag:500,bkg:9,bg:900,rkg:2,rg:600},
+  {akg:3,ag:0,bkg:1,bg:250,rkg:1,rg:750},
+];
+let currentColProblem = null;
+function setColMode(mode, btn) {
+  colMode = mode;
+  document.querySelectorAll('.col-mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadColProblem();
+}
+function loadColProblem() {
+  document.getElementById('colFeedback').classList.remove('show');
+  document.getElementById('ansKg').value = '';
+  document.getElementById('ansG').value = '';
+  const pool = colMode === 'add' ? addProblems : subProblems;
+  const p = pool[Math.floor(Math.random()*pool.length)];
+  currentColProblem = p;
+  document.getElementById('cp_a_kg').textContent = p.akg;
+  document.getElementById('cp_a_g').textContent = String(p.ag).padStart(3,'0');
+  document.getElementById('cp_b_kg').textContent = p.bkg;
+  document.getElementById('cp_b_g').textContent = String(p.bg).padStart(3,'0');
+  document.getElementById('cp_op').textContent = colMode === 'add' ? '+' : '−';
+}
+function checkColumn() {
+  const ansKg = parseInt(document.getElementById('ansKg').value);
+  const ansG = parseInt(document.getElementById('ansG').value);
+  const p = currentColProblem;
+  const fb = document.getElementById('colFeedback');
+  if (isNaN(ansKg) || isNaN(ansG)) {
+    fb.className = 'feedback-box show wrong-fb';
+    fb.textContent = '⚠️ kg සහ g දෙකම ඇතුළත් කරන්න';
+    fb.classList.add('show');
+    return;
+  }
+  if (ansKg === p.rkg && ansG === p.rg) {
+    score += 25; correct++; streak++;
+    updateScoreBar();
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `✅ නිවැරදියි! 🎉 = ${p.rkg} kg ${String(p.rg).padStart(3,'0')} g`;
+    playCorrect();
+    if (streak % 3 === 0 && streak > 0) showCelebration();
+  } else {
+    wrong++; streak = 0; updateScoreBar();
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ වැරදියි! නිවැරදි: ${p.rkg} kg ${String(p.rg).padStart(3,'0')} g`;
+    playWrong();
+  }
+  fb.classList.add('show');
+}
+loadColProblem();
+
+// Generate calc problems list
+function renderCalcProblems() {
+  const probs = [
+    '2 kg 450 g + 3 kg 300 g',
+    '5 kg 750 g + 1 kg 500 g',
+    '8 kg 900 g − 3 kg 400 g',
+    '5 kg 250 g − 2 kg 500 g',
+    '7 kg 450 g − 3 kg 250 g',
+    '4 kg 100 g + 1 kg 050 g',
+    '10 kg − 4 kg 500 g',
+    '6 kg 250 g − 2 kg 750 g',
+  ];
+  const el = document.getElementById('calcProblems');
+  el.innerHTML = probs.map((p,i) => `<div class="prob-item">${i+1}. ${p}</div>`).join('');
+}
+renderCalcProblems();
+
+// ===== DRAG & DROP =====
+const dragItemsPool = [
+  {emoji:'🍚',name:'සහල්',weight:'5 kg',cat:'kg'},
+  {emoji:'🧼',name:'සබන්',weight:'125 g',cat:'g'},
+  {emoji:'📚',name:'පොත් බෑගය',weight:'2 kg',cat:'kg'},
+  {emoji:'🥚',name:'බිත්තරය',weight:'60 g',cat:'g'},
+  {emoji:'🥛',name:'කිරි',weight:'1 kg',cat:'kg'},
+  {emoji:'🍬',name:'සිනිඳු',weight:'500 g',cat:'g'},
+  {emoji:'🧅',name:'ළූනු',weight:'300 g',cat:'g'},
+  {emoji:'🍉',name:'කොමඩු',weight:'3 kg',cat:'kg'},
+  {emoji:'🧃',name:'ජූස්',weight:'200 g',cat:'g'},
+  {emoji:'🌾',name:'පිටි',weight:'1 kg',cat:'kg'},
+];
+let dragCurrentItems = [];
+function loadDragGame() {
+  droppedKg = []; droppedG = [];
+  document.getElementById('kg-dropped').innerHTML = '';
+  document.getElementById('g-dropped').innerHTML = '';
+  document.getElementById('dragFeedback').classList.remove('show');
+  document.getElementById('zone-kg').classList.remove('correct-zone','wrong-zone');
+  document.getElementById('zone-g').classList.remove('correct-zone','wrong-zone');
+
+  const shuffled = [...dragItemsPool].sort(()=>Math.random()-0.5).slice(0,6);
+  dragCurrentItems = shuffled;
+  const row = document.getElementById('dragItems');
+  row.innerHTML = '';
+  shuffled.forEach((item,i) => {
+    const el = document.createElement('div');
+    el.className = 'drag-item';
+    el.draggable = true;
+    el.dataset.idx = i;
+    el.innerHTML = `<div class="di-emoji">${item.emoji}</div><div class="di-weight">${item.weight}</div>`;
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('idx', i);
+      el.classList.add('dragging');
+    });
+    el.addEventListener('dragend', () => el.classList.remove('dragging'));
+    // Touch support
+    let touchItem = null;
+    el.addEventListener('touchstart', e => {
+      touchItem = e.target.closest('.drag-item');
+      touchItem.style.opacity = '0.5';
+    }, {passive:true});
+    el.addEventListener('touchend', e => {
+      if (!touchItem) return;
+      touchItem.style.opacity = '1';
+      const touch = e.changedTouches[0];
+      const target = document.elementFromPoint(touch.clientX, touch.clientY);
+      const zone = target ? target.closest('.drop-zone') : null;
+      if (zone) {
+        const cat = zone.id.replace('zone-','');
+        if (cat === 'kg') droppedKg.push(i);
+        else droppedG.push(i);
+        const span = document.createElement('span');
+        span.className = 'dropped-item';
+        span.textContent = dragCurrentItems[i].emoji + ' ' + dragCurrentItems[i].weight;
+        zone.querySelector('[id$="-dropped"]').appendChild(span);
+      }
+    });
+    row.appendChild(el);
+  });
+}
+function handleDrop(e, cat) {
+  e.preventDefault();
+  const i = parseInt(e.dataTransfer.getData('idx'));
+  e.currentTarget.classList.remove('dragover');
+  if (cat === 'kg') droppedKg.push(i);
+  else droppedG.push(i);
+  const span = document.createElement('span');
+  span.className = 'dropped-item';
+  span.textContent = dragCurrentItems[i].emoji + ' ' + dragCurrentItems[i].weight;
+  document.getElementById(cat+'-dropped').appendChild(span);
+}
+function checkDrag() {
+  const fb = document.getElementById('dragFeedback');
+  const allDropped = [...droppedKg,...droppedG];
+  if (allDropped.length < dragCurrentItems.length) {
+    fb.className = 'feedback-box show wrong-fb';
+    fb.textContent = '⚠️ සියලු බඩු වෙන් කරන්න!';
+    return;
+  }
+  let correctCount = 0;
+  droppedKg.forEach(i => { if (dragCurrentItems[i].cat === 'kg') correctCount++; });
+  droppedG.forEach(i => { if (dragCurrentItems[i].cat === 'g') correctCount++; });
+  const total = dragCurrentItems.length;
+  if (correctCount === total) {
+    score += 30; correct++; streak++;
+    updateScoreBar();
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `✅ ඉතා සුපිරි! සියල්ල නිවැරදියි! 🌟`;
+    playCorrect();
+    showCelebration();
+  } else {
+    wrong++; streak = 0; updateScoreBar();
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ ${correctCount}/${total} නිවැරදි. නැවත උත්සාහ කරන්න!`;
+    playWrong();
+  }
+  fb.classList.add('show');
+}
+loadDragGame();
+
+// Sort game
+const sortSets = [
+  [{emoji:'🍊',w:200,label:'200 g'},{emoji:'🥝',w:100,label:'100 g'},{emoji:'🥛',w:1000,label:'1 kg'},{emoji:'🧅',w:300,label:'300 g'}],
+  [{emoji:'🍚',w:5000,label:'5 kg'},{emoji:'🥚',w:60,label:'60 g'},{emoji:'🧼',w:125,label:'125 g'},{emoji:'💧',w:1000,label:'1 kg'}],
+  [{emoji:'🍬',w:500,label:'500 g'},{emoji:'🌾',w:1000,label:'1 kg'},{emoji:'🍉',w:3000,label:'3 kg'},{emoji:'🥦',w:400,label:'400 g'}],
+];
+let sortSet = [];
+let sortUserOrder = [];
+function loadSortGame() {
+  const s = sortSets[Math.floor(Math.random()*sortSets.length)];
+  sortSet = [...s].sort(()=>Math.random()-0.5);
+  sortUserOrder = new Array(s.length).fill(null);
+  document.getElementById('sortFeedback').classList.remove('show');
+
+  const itemsEl = document.getElementById('sortItems');
+  itemsEl.innerHTML = '';
+  sortSet.forEach((item,i) => {
+    const el = document.createElement('div');
+    el.className = 'drag-item';
+    el.style.cursor = 'pointer';
+    el.innerHTML = `<div class="di-emoji">${item.emoji}</div><div class="di-weight">${item.label}</div>`;
+    el.onclick = () => {
+      const slot = sortUserOrder.indexOf(null);
+      if (slot === -1) return;
+      sortUserOrder[slot] = i;
+      renderSortSlots();
+      playClick();
+      if (!sortUserOrder.includes(null)) checkSort();
+    };
+    itemsEl.appendChild(el);
+  });
+  renderSortSlots();
+}
+function renderSortSlots() {
+  const el = document.getElementById('sortSlots');
+  el.innerHTML = '';
+  sortUserOrder.forEach((idx,slot) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'width:60px;height:60px;border:3px dashed #FFB300;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FFF9C4;font-size:1.2rem;cursor:pointer;';
+    if (idx !== null) {
+      div.innerHTML = `<span>${sortSet[idx].emoji}</span><span style="font-size:0.6rem;font-weight:700;color:#E65100;">${sortSet[idx].label}</span>`;
+      div.onclick = () => { sortUserOrder[slot] = null; renderSortSlots(); };
+    } else {
+      div.innerHTML = `<span style="font-size:0.8rem;color:#aaa;">${slot+1}</span>`;
+    }
+    el.appendChild(div);
+  });
+}
+function checkSort() {
+  const fb = document.getElementById('sortFeedback');
+  if (sortUserOrder.includes(null)) {
+    fb.className = 'feedback-box show wrong-fb';
+    fb.textContent = '⚠️ සියලු අයිතම ගොඩ ගන්න!';
+    return;
+  }
+  const expected = [...sortSet].map((_,i)=>i).sort((a,b)=>sortSet[a].w-sortSet[b].w);
+  const correct_order = JSON.stringify(sortUserOrder) === JSON.stringify(expected);
+  if (correct_order) {
+    score += 20; correct++; streak++;
+    updateScoreBar();
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = '✅ නිවැරදිව අනුපිළිවෙළ කළා! 🌟';
+    playCorrect();
+    if (streak % 3 === 0 && streak > 0) showCelebration();
+  } else {
+    wrong++; streak = 0; updateScoreBar();
+    const sortedLabels = expected.map(i => sortSet[i].emoji + sortSet[i].label).join(' < ');
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ නිවැරදි: ${sortedLabels}`;
+    playWrong();
+  }
+  fb.classList.add('show');
+}
+loadSortGame();
+
+// ===== QUIZ =====
+const easyQs = [
+  {q:'1 kg = ? g', opts:['100 g','1000 g','500 g','10000 g'], a:'1000 g', e:'⚖️'},
+  {q:'5000 g = ? kg', opts:['500 kg','5 kg','50 kg','0.5 kg'], a:'5 kg', e:'🔄'},
+  {q:'සබන් කැටයක බර කොපමණද?', opts:['125 g','5 kg','2 kg','500 kg'], a:'125 g', e:'🧼'},
+  {q:'2 kg = ? g', opts:['200 g','20 g','2000 g','2200 g'], a:'2000 g', e:'🔄'},
+  {q:'3000 g = ? kg', opts:['300 kg','30 kg','0.3 kg','3 kg'], a:'3 kg', e:'⚖️'},
+  {q:'සහල් මල්ලක් kg හෝ g?', opts:['kg','g','m','cm'], a:'kg', e:'🍚'},
+  {q:'රත්තරන් ආභරණ kg හෝ g?', opts:['g','kg','mg','ton'], a:'g', e:'💍'},
+  {q:'4 kg = ? g', opts:['40 g','400 g','4000 g','40000 g'], a:'4000 g', e:'🔄'},
+  {q:'6000 g = ? kg', opts:['600 kg','60 kg','6 kg','0.6 kg'], a:'6 kg', e:'⚖️'},
+  {q:'1 kg 500 g = ? g', opts:['150 g','1050 g','1500 g','15000 g'], a:'1500 g', e:'🔄'},
+];
+const mediumQs = [
+  {q:'2 kg 450 g + 3 kg 300 g = ?', opts:['5 kg 750 g','5 kg 650 g','6 kg 50 g','4 kg 750 g'], a:'5 kg 750 g', e:'➕'},
+  {q:'5 kg 800 g − 2 kg 300 g = ?', opts:['3 kg 500 g','2 kg 500 g','3 kg 600 g','7 kg 100 g'], a:'3 kg 500 g', e:'➖'},
+  {q:'4500 g = ?', opts:['4 kg 500 g','45 kg','450 g','4 kg 5 g'], a:'4 kg 500 g', e:'🔄'},
+  {q:'5 kg 750 g + 1 kg 500 g = ?', opts:['6 kg 250 g','7 kg 250 g','6 kg 1250 g','7 kg 750 g'], a:'7 kg 250 g', e:'➕'},
+  {q:'7 kg 450 g − 3 kg 250 g = ?', opts:['4 kg 200 g','3 kg 200 g','4 kg 300 g','3 kg 800 g'], a:'4 kg 200 g', e:'➖'},
+  {q:'8 kg 250 g = ? g', opts:['825 g','8025 g','8250 g','8520 g'], a:'8250 g', e:'🔄'},
+  {q:'250 g × 4 = ?', opts:['500 g','1 kg','1000 g','2 kg'], a:'1000 g', e:'✖️'},
+  {q:'10 kg − 4 kg 500 g = ?', opts:['5 kg','5 kg 500 g','6 kg 500 g','4 kg 500 g'], a:'5 kg 500 g', e:'➖'},
+  {q:'6 kg 250 g − 2 kg 750 g = ?', opts:['3 kg 500 g','3 kg 250 g','4 kg 500 g','3 kg 750 g'], a:'3 kg 500 g', e:'➖'},
+  {q:'2 kg මල්ලක ග්‍රෑම් 200 ක packets කීයද?', opts:['5','10','20','100'], a:'10', e:'📦'},
+];
+const hardQs = [
+  {q:'සීනි 2 kg 500 g + පරිප්පු 1 kg 750 g = ?', opts:['4 kg 250 g','3 kg 250 g','4 kg 500 g','3 kg 750 g'], a:'4 kg 250 g', e:'🛒'},
+  {q:'හාල් 5 kg මල්ලකින් දිනකට 800 g ගිය දින 2 කට ඉතිරි?', opts:['3 kg 200 g','3 kg 400 g','4 kg 200 g','3 kg 600 g'], a:'3 kg 400 g', e:'🍚'},
+  {q:'වෙළෙන්දෙක් 25 kg in from 18 kg 500 g off → ඉතිරි?', opts:['6 kg 500 g','7 kg','6 kg','7 kg 500 g'], a:'6 kg 500 g', e:'🏪'},
+  {q:'1 kg 5 packets ඇති බිස්කට් → 1 packet = ?', opts:['200 g','500 g','100 g','250 g'], a:'200 g', e:'🍪'},
+  {q:'කේක් 750 g + සීනි 500 g + බටර් 250 g = ? kg', opts:['1.5 kg','1 kg 500 g','1 kg 750 g','2 kg'], a:'1 kg 500 g', e:'🎂'},
+  {q:'පළල් 5 kg ෙකොතෙකින් 2 kg + 1 kg 500 g ➜ ඉතිරි?', opts:['1 kg 500 g','2 kg','1 kg','500 g'], a:'1 kg 500 g', e:'🛍️'},
+  {q:'ළමයෙකු 32 kg 400 g + 1 kg 200 g book ⇒ total?', opts:['33 kg 600 g','33 kg 400 g','34 kg','32 kg 600 g'], a:'33 kg 600 g', e:'🎒'},
+  {q:'12 kg 500 g − 9 kg 900 g = ?', opts:['2 kg 600 g','3 kg 400 g','2 kg 400 g','3 kg 600 g'], a:'2 kg 600 g', e:'➖'},
+];
+
+function setDiff(d, btn) {
+  currentDiff = d;
+  document.querySelectorAll('#page-quiz .diff-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (d === 'easy') qPool = [...easyQs];
+  else if (d === 'medium') qPool = [...mediumQs];
+  else qPool = [...hardQs];
+  usedQs = []; qNum = 0;
+  updateProgressBar();
+  loadNextQuestion();
+  playClick();
+}
+function loadNextQuestion() {
+  document.getElementById('feedbackBox').classList.remove('show');
+  document.getElementById('nextBtn').classList.remove('show');
+  document.querySelectorAll('#optionsGrid .option-btn').forEach(b => {
+    b.classList.remove('correct','wrong');
+    b.disabled = false;
+  });
+  if (!qPool.length) qPool = [...easyQs];
+  if (usedQs.length >= qPool.length) usedQs = [];
+  const avail = qPool.filter((_,i) => !usedQs.includes(i));
+  const rIdx = Math.floor(Math.random()*avail.length);
+  const origIdx = qPool.indexOf(avail[rIdx]);
+  usedQs.push(origIdx);
+  currentQuestion = qPool[origIdx];
+  qNum++;
+  document.getElementById('questionEmoji').textContent = currentQuestion.e;
+  document.getElementById('questionText').textContent = currentQuestion.q;
+  const shuffled = [...currentQuestion.opts].sort(()=>Math.random()-0.5);
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(btn, opt);
+    grid.appendChild(btn);
+  });
+  updateProgressBar();
+}
+function updateProgressBar() {
+  const pct = Math.min(100, Math.round((qNum-1)/10*100));
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `ප‍ශ්නය ${qNum}/10`;
+}
+function checkAnswer(btn, opt) {
+  document.querySelectorAll('#optionsGrid .option-btn').forEach(b => b.disabled = true);
+  const isCorrect = opt === currentQuestion.a;
+  const fb = document.getElementById('feedbackBox');
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score += currentDiff === 'easy' ? 10 : currentDiff === 'medium' ? 20 : 30;
+    correct++; streak++;
+    updateScoreBar();
+    const msgs = ['✅ සුපිරි! 🌟','✅ ඉතා දක්ෂයි! 🎉','✅ නිවැරදියි! ⭐'];
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = msgs[Math.floor(Math.random()*msgs.length)] + `<br><small>පිළිතුර: ${currentQuestion.a}</small>`;
+    playCorrect();
+    if (streak >= 3 && streak % 3 === 0) showCelebration();
+  } else {
+    btn.classList.add('wrong');
+    wrong++; streak = 0; updateScoreBar();
+    document.querySelectorAll('#optionsGrid .option-btn').forEach(b => {
+      if (b.textContent === currentQuestion.a) b.classList.add('correct');
+    });
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ වැරදියි!<br><small>නිවැරදි: ${currentQuestion.a}</small>`;
+    playWrong();
+  }
+  history.unshift({q:currentQuestion.q, correct:isCorrect, a:currentQuestion.a});
+  if (history.length > 20) history.pop();
+  document.getElementById('nextBtn').classList.add('show');
+}
+qPool = [...easyQs];
+loadNextQuestion();
+
+// ===== WORD PROBLEMS =====
+function renderWordProblems() {
+  const problems = [
+    {emoji:'🛒',q:'අම්මා වෙළදසැලෙන් සීනි 1 kg 500 g ක් ද, පිටි 2 kg 250 g ක් ද මිලදී ගත්තාය. ඇය මිලදී ගත් මුළු බර කොපමණද?',hint:'1500 + 2250 = ?'},
+    {emoji:'🐢',q:'පළතුරු වෙළෙන්දෙකු සතුව තිබූ 10 kg ක අඹ මල්ලකින් 4 kg 750 g ක් විකුණා අවසන් විය. ඉතිරි අඹ ප්‍රමාණය කොපමණද?',hint:'10000 − 4750 = ?'},
+    {emoji:'🍪',q:'එකම බරැති බිස්කට් පැකෙට් 5ක මුළු බර 1 kg කි. එක් පැකෙට්ටුවක බර ග්‍රෑම් කීයද?',hint:'1000 ÷ 5 = ?'},
+    {emoji:'☕',q:'තේ කොළ 1 kg ක් ග්‍රෑම් 100 බැගින් වූ පැකෙට් වලට ඇසිරූ විට පැකෙට් කීයක් සෑදිය හැකිද?',hint:'1000 ÷ 100 = ?'},
+    {emoji:'🍊',q:'අඹ ගෙඩි 4ක බර පිළිවෙළින් 250 g, 300 g, 200 g සහ 250 g වේ. මේවායේ මුළු බර කිලෝග්‍රෑම් වලින් කොපමණද?',hint:'250+300+200+250 = 1000g = ? kg'},
+    {emoji:'🎒',q:'ළමයෙකුගේ බර 32 kg 400 g කි. ඔහු තවත් 1 kg 200 g බරැති පොත් බෑගයක් කර තබා ගත් විට මුළු බර කීයද?',hint:'32400 + 1200 = ?'},
+    {emoji:'🍚',q:'හාල් 5 kg මල්ලකින් දිනකට 800 g බැගින් දින 2ක් ආහාරයට ගත්තේ නම් ඉතිරි හාල් ප්‍රමාණය කොපමණද?',hint:'5000 − (800×2) = ?'},
+    {emoji:'🧃',q:'සියල්ල 5 kg ක බඩු මල්ලක් ඔසවාගෙන යෑය. එහි හාල් 2 kg ක් ද, අල 1 kg 500 g ක් ද තිබේ නම් ඉතිරි බඩු වල බර සොයන්න.',hint:'5000 − 2000 − 1500 = ?'},
+  ];
+  const el = document.getElementById('wordProblems');
+  el.innerHTML = problems.map((p,i) => `
+    <div class="concept-card" style="border-left-color:#7E57C2;margin-bottom:12px;">
+      <h3>${p.emoji} ${i+1}. ගැටලුව</h3>
+      <p style="margin-bottom:8px;">${p.q}</p>
+      <div id="hint-box-${i}" style="background:#F3E5F5;border-radius:10px;padding:8px 12px;border:2px dashed #9C27B0;cursor:pointer;" onclick="showHint(${i}, '${p.hint.replace(/'/g,"\\'")}')">
+        <span id="hint-label-${i}" style="font-size:0.85rem;color:#7E57C2;font-weight:700;">💡 හින්ට් බලන්න (touch)</span>
+      </div>
+    </div>
+  `).join('');
+}
+renderWordProblems();
+
+function showHint(i, hint) {
+  const box = document.getElementById('hint-box-' + i);
+  const lbl = document.getElementById('hint-label-' + i);
+  if (!box || !lbl) return;
+  box.style.background = '#EDE7F6';
+  box.style.borderStyle = 'solid';
+  box.style.borderColor = '#7E57C2';
+  box.style.cursor = 'default';
+  lbl.innerHTML = '<span style="font-family:\'Baloo 2\',cursive;font-size:0.9rem;font-weight:800;color:#4A148C;">💡 <u>පිළිතුර සොයන ආකාරය:</u><br>' + hint + '</span>';
+  box.onclick = null;
+  playSound(660,'sine',0.1);
+}
+
+// ===== CELEBRATION =====
+const celebMsgs = [
+  {e:'🎉',t:'සුපිරි!',m:'ඔබ ඉතා දක්ෂ ශිෂ්‍යයෙකි!'},
+  {e:'🌟',t:'ඉතා සුපිරි!',m:'ගණිතය ඔබට ආදරයි!'},
+  {e:'🏆',t:'Champion!',m:'3 streak! හොඳයි!'},
+  {e:'🎊',t:'Excellent!',m:'දිගටම කරගෙන යන්න!'},
+  {e:'⭐',t:'දක්ෂයි!',m:'ඔබ ඉතා 똑똑하다!'},
+];
+function showCelebration() {
+  const m = celebMsgs[Math.floor(Math.random()*celebMsgs.length)];
+  document.getElementById('celebEmoji').textContent = m.e;
+  document.getElementById('celebTitle').textContent = m.t;
+  document.getElementById('celebMsg').textContent = m.m;
+  document.getElementById('celebration').classList.add('show');
+  launchConfetti();
+  playSound(1046,'sine',0.3);
+  setTimeout(()=>playSound(1318,'sine',0.3),200);
+  setTimeout(()=>playSound(1568,'sine',0.4),400);
+}
+function closeCelebration() {
+  document.getElementById('celebration').classList.remove('show');
+}
+function launchConfetti() {
+  const colors = ['#FF7043','#42A5F5','#66BB6A','#FFD54F','#EC407A','#7E57C2','#FFB300'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random()*100+'vw';
+    p.style.top = '-20px';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay = Math.random()*0.8+'s';
+    p.style.animationDuration = (1.2+Math.random()*0.8)+'s';
+    p.style.width = (8+Math.random()*8)+'px';
+    p.style.height = (8+Math.random()*8)+'px';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 3000);
+  }
+}
+
+// ===== PROGRESS =====
+const badges = [
+  {score:50,e:'🥉',t:'ආරම්භකයා',d:'50+ ලකුණු'},
+  {score:100,e:'🥈',t:'ශිෂ්‍ය',d:'100+ ලකුණු'},
+  {score:200,e:'🥇',t:'දක්ෂ ශිෂ්‍ය',d:'200+ ලකුණු'},
+  {score:500,e:'🏆',t:'ගණිත වීරයා',d:'500+ ලකුණු'},
+  {score:1000,e:'👑',t:'ගණිත ශූරයා',d:'1000+ ලකුණු'},
+];
+function updateProgress() {
+  document.getElementById('totalScore').textContent = score;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('streakCount').textContent = streak;
+  const bl = document.getElementById('badgesList');
+  bl.innerHTML = badges.map(b => {
+    const earned = score >= b.score;
+    return `<div class="badge-item ${earned?'earned':''}">
+      <span class="badge-emoji">${b.e}</span>
+      <div class="badge-info">
+        <div class="badge-name" style="color:${earned?'#2E7D32':'#999'}">${b.t}</div>
+        <div class="badge-req">${b.d}</div>
+      </div>
+      ${earned?'<span class="earned-label">✅ ලැබුණා</span>':''}
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

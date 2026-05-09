@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ගණිත ක්වීස් | Math Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;600;700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d1a; --surface: #161628; --card: #1e1e38;
+    --accent1: #f7c948; --accent2: #ff6b6b; --accent3: #4ecdc4; --accent4: #a855f7;
+    --text: #f0eeff; --text-muted: #9090b0;
+    --success: #22c55e; --error: #ef4444;
+    --radius: 20px; --shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    background:var(--bg); color:var(--text);
+    font-family:'Poppins','Noto Sans Sinhala',sans-serif;
+    min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
+    overflow-x:hidden; position:relative;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 20%,rgba(168,85,247,0.12) 0%,transparent 70%),
+      radial-gradient(ellipse 50% 50% at 80% 80%,rgba(78,205,196,0.10) 0%,transparent 70%),
+      radial-gradient(ellipse 40% 60% at 50% 50%,rgba(247,201,72,0.05) 0%,transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+  .orb { position:fixed; border-radius:50%; filter:blur(60px); opacity:.15; animation:float 8s ease-in-out infinite; pointer-events:none; z-index:0; }
+  .orb1 { width:200px;height:200px;background:var(--accent4);top:-50px;left:-50px;animation-delay:0s; }
+  .orb2 { width:150px;height:150px;background:var(--accent3);bottom:100px;right:-30px;animation-delay:3s; }
+  .orb3 { width:120px;height:120px;background:var(--accent1);top:50%;left:20px;animation-delay:5s; }
+  @keyframes float { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.1)} }
+
+  .app { position:relative;z-index:1;width:100%;max-width:420px;min-height:100vh;display:flex;flex-direction:column; }
+
+  .screen { display:none;flex-direction:column;min-height:100vh;padding:24px 20px 100px;animation:slideIn .4s cubic-bezier(.34,1.56,.64,1) both; }
+  .screen.active { display:flex; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(30px) scale(.96)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+  /* HOME */
+  .home-header { text-align:center;margin-top:40px;margin-bottom:32px; }
+  .app-logo {
+    width:90px;height:90px;background:linear-gradient(135deg,var(--accent4),var(--accent3));
+    border-radius:28px;display:flex;align-items:center;justify-content:center;
+    font-size:42px;margin:0 auto 20px;box-shadow:0 12px 40px rgba(168,85,247,.4);
+    animation:pulse-logo 2s ease-in-out infinite;
+  }
+  @keyframes pulse-logo { 0%,100%{box-shadow:0 12px 40px rgba(168,85,247,.4)} 50%{box-shadow:0 12px 60px rgba(168,85,247,.7)} }
+  .app-title {
+    font-family:'Poppins',sans-serif;font-size:28px;font-weight:800;
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;
+  }
+  .app-subtitle { font-family:'Noto Sans Sinhala',sans-serif;font-size:15px;color:var(--text-muted);line-height:1.5; }
+
+  .stats-row { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px; }
+  .stat-card { background:var(--card);border-radius:16px;padding:16px 10px;text-align:center;border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden; }
+  .stat-card::before { content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0; }
+  .stat-card:nth-child(1)::before{background:var(--accent1)} .stat-card:nth-child(2)::before{background:var(--accent3)} .stat-card:nth-child(3)::before{background:var(--accent4)}
+  .stat-value { font-size:26px;font-weight:800;line-height:1;margin-bottom:4px; }
+  .stat-card:nth-child(1) .stat-value{color:var(--accent1)} .stat-card:nth-child(2) .stat-value{color:var(--accent3)} .stat-card:nth-child(3) .stat-value{color:var(--accent4)}
+  .stat-label { font-family:'Noto Sans Sinhala',sans-serif;font-size:10px;color:var(--text-muted); }
+
+  .section-title { font-family:'Noto Sans Sinhala',sans-serif;font-size:15px;color:var(--text-muted);margin-bottom:14px;padding-left:4px; }
+
+  .q-list { flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:20px;padding-right:2px; }
+  .q-list::-webkit-scrollbar{width:4px} .q-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+  .q-item {
+    background:var(--card);border-radius:14px;padding:14px 16px;
+    display:flex;align-items:center;gap:12px;cursor:pointer;
+    border:1px solid rgba(255,255,255,.05);transition:all .25s ease;
+  }
+  .q-item:hover,.q-item:active { border-color:rgba(247,201,72,.3);transform:translateX(4px);background:rgba(247,201,72,.05); }
+  .q-num { width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent4),var(--accent3));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0; }
+  .q-text { font-family:'Noto Sans Sinhala',sans-serif;font-size:12.5px;color:var(--text);line-height:1.4;flex:1; }
+  .q-status { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0; }
+  .q-status.done{background:rgba(34,197,94,.2);color:var(--success)} .q-status.pending{background:rgba(255,255,255,.06);color:var(--text-muted)}
+
+  .btn-primary {
+    background:linear-gradient(135deg,var(--accent4),var(--accent3));color:white;border:none;
+    border-radius:16px;padding:18px;font-size:16px;font-weight:700;
+    font-family:'Noto Sans Sinhala',sans-serif;cursor:pointer;width:100%;
+    box-shadow:0 8px 24px rgba(168,85,247,.35);transition:all .2s;
+  }
+  .btn-primary:active{transform:scale(.97)}
+
+  /* STUDY */
+  .study-header { display:flex;align-items:center;gap:12px;margin-bottom:24px; }
+  .btn-back {
+    width:44px;height:44px;background:var(--card);border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:18px;transition:all .2s;flex-shrink:0;color:var(--text);
+  }
+  .btn-back:active{transform:scale(.93)}
+  .study-title { font-family:'Noto Sans Sinhala',sans-serif;font-size:17px;font-weight:700;flex:1; }
+  .q-badge { background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#1a1a1a;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700; }
+
+  .study-card {
+    background:var(--card);border-radius:var(--radius);padding:28px 22px;
+    border:1px solid rgba(255,255,255,.07);margin-bottom:20px;
+    position:relative;overflow:hidden;box-shadow:var(--shadow);
+  }
+  .study-card::before{content:'📐';position:absolute;top:-20px;right:-10px;font-size:80px;opacity:.06;transform:rotate(-20deg);}
+  .study-q-num { font-size:11px;font-weight:700;color:var(--accent3);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px; }
+  .study-question { font-family:'Noto Sans Sinhala',sans-serif;font-size:17px;line-height:1.85;color:var(--text);margin-bottom:24px; }
+  .study-divider { height:1px;background:rgba(255,255,255,.08);margin-bottom:20px; }
+
+  .solution-section { display:none;animation:fadeUp .35s ease; }
+  .solution-section.visible{display:block}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .solution-label { font-size:11px;font-weight:700;color:var(--accent1);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px; }
+  .solution-steps { display:flex;flex-direction:column;gap:10px;margin-bottom:16px; }
+  .step {
+    background:rgba(255,255,255,.04);border-left:3px solid var(--accent3);
+    border-radius:0 10px 10px 0;padding:10px 14px;
+    font-size:13px;line-height:1.65;font-family:'Noto Sans Sinhala',sans-serif;
+  }
+  .answer-box {
+    background:linear-gradient(135deg,rgba(247,201,72,.15),rgba(255,107,107,.1));
+    border:2px solid var(--accent1);border-radius:14px;
+    padding:16px 18px;display:flex;align-items:center;justify-content:space-between;
+  }
+  .answer-label { font-family:'Noto Sans Sinhala',sans-serif;font-size:13px;color:var(--accent1);font-weight:600; }
+  .answer-value { font-size:32px;font-weight:900;color:var(--accent1);font-family:'Poppins',sans-serif; }
+
+  .btn-show-answer {
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#1a1a1a;
+    border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;
+    font-family:'Noto Sans Sinhala',sans-serif;cursor:pointer;width:100%;
+    transition:all .2s;margin-bottom:12px;box-shadow:0 6px 20px rgba(247,201,72,.3);
+  }
+  .btn-show-answer:active{transform:scale(.97)}
+  .btn-mark-done {
+    background:rgba(34,197,94,.1);color:var(--success);border:1px solid rgba(34,197,94,.3);
+    border-radius:14px;padding:14px;font-size:14px;font-weight:600;
+    font-family:'Noto Sans Sinhala',sans-serif;cursor:pointer;width:100%;margin-bottom:12px;transition:all .2s;
+  }
+  .btn-mark-done.marked{background:rgba(34,197,94,.2);border-color:var(--success)}
+  .btn-mark-done:active{transform:scale(.97)}
+  .study-nav { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+  .btn-nav {
+    background:var(--card);color:var(--text);border:1px solid rgba(255,255,255,.1);
+    border-radius:14px;padding:14px;font-size:14px;font-weight:600;
+    font-family:'Noto Sans Sinhala',sans-serif;cursor:pointer;transition:all .2s;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .btn-nav:active{transform:scale(.97)}
+  .btn-nav.next{background:linear-gradient(135deg,var(--accent4),var(--accent3));border:none;color:white;box-shadow:0 6px 20px rgba(168,85,247,.3)}
+  .btn-nav:disabled{opacity:.3;pointer-events:none}
+
+  /* QUIZ */
+  .quiz-header{margin-bottom:20px}
+  .quiz-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .quiz-progress-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
+  .quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent4),var(--accent3));border-radius:6px;transition:width .4s ease}
+  .quiz-count{font-size:13px;font-weight:700;color:var(--accent3);white-space:nowrap}
+  .quiz-score-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .quiz-score-pill{background:var(--card);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.07);flex:1;justify-content:center}
+  .quiz-card {
+    background:var(--card);border-radius:var(--radius);padding:28px 22px;
+    margin-bottom:20px;border:1px solid rgba(255,255,255,.07);box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .quiz-card::after{content:'?';position:absolute;right:16px;top:12px;font-size:80px;font-weight:900;color:rgba(255,255,255,.03);font-family:'Poppins',sans-serif}
+  .quiz-q-label{font-size:11px;font-weight:700;color:var(--accent4);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+  .quiz-question{font-family:'Noto Sans Sinhala',sans-serif;font-size:17px;line-height:1.85;color:var(--text)}
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .option-btn {
+    background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:14px;
+    padding:18px 12px;font-size:22px;font-weight:800;color:var(--text);
+    font-family:'Poppins',sans-serif;cursor:pointer;transition:all .2s;text-align:center;
+  }
+  .option-btn:hover,.option-btn:active{border-color:rgba(168,85,247,.4);transform:scale(.97)}
+  .option-btn.correct{background:rgba(34,197,94,.15);border-color:var(--success);color:var(--success);animation:correctPop .4s cubic-bezier(.34,1.56,.64,1)}
+  .option-btn.wrong{background:rgba(239,68,68,.15);border-color:var(--error);color:var(--error);animation:shake .4s ease}
+  .option-btn.reveal-correct{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.4);color:var(--success)}
+  .option-btn:disabled{cursor:default}
+  @keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+  .feedback-box{border-radius:14px;padding:14px 18px;margin-bottom:14px;display:none;align-items:center;gap:12px;animation:fadeUp .3s ease}
+  .feedback-box.show{display:flex}
+  .feedback-box.correct-fb{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25)}
+  .feedback-box.wrong-fb{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25)}
+  .feedback-icon{font-size:24px;flex-shrink:0}
+  .feedback-text{font-family:'Noto Sans Sinhala',sans-serif;font-size:13px;line-height:1.5}
+  .correct-fb .feedback-text{color:var(--success)} .wrong-fb .feedback-text{color:var(--error)}
+  .btn-next-q {
+    background:linear-gradient(135deg,var(--accent4),var(--accent3));color:white;border:none;
+    border-radius:14px;padding:16px;font-size:15px;font-weight:700;
+    font-family:'Noto Sans Sinhala',sans-serif;cursor:pointer;width:100%;
+    display:none;transition:all .2s;box-shadow:0 6px 20px rgba(168,85,247,.3);
+  }
+  .btn-next-q.show{display:block;animation:fadeUp .3s ease}
+  .btn-next-q:active{transform:scale(.97)}
+
+  /* RESULTS */
+  .results-screen{justify-content:center;align-items:center;text-align:center;gap:20px}
+  .result-trophy{font-size:80px;animation:trophyBounce 1s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes trophyBounce{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+  .result-title{font-family:'Noto Sans Sinhala',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .score-circle{width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
+  .score-circle-inner{width:110px;height:110px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .score-pct{font-size:34px;font-weight:900;color:var(--accent3);line-height:1}
+  .score-sub{font-size:11px;color:var(--text-muted);font-family:'Noto Sans Sinhala',sans-serif}
+  .result-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+  .result-stat{background:var(--card);border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,.06)}
+  .result-stat-val{font-size:28px;font-weight:900;margin-bottom:4px}
+  .result-stat-val.green{color:var(--success)} .result-stat-val.red{color:var(--error)}
+  .result-msg{font-family:'Noto Sans Sinhala',sans-serif;font-size:14px;color:var(--text-muted);line-height:1.6;max-width:280px}
+  .btn-group{display:flex;flex-direction:column;gap:10px;width:100%}
+  .btn-secondary{background:var(--card);color:var(--text);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;font-size:14px;font-weight:600;font-family:'Noto Sans Sinhala',sans-serif;cursor:pointer;transition:all .2s}
+  .btn-secondary:active{transform:scale(.97)}
+
+  /* CONFETTI */
+  .confetti{position:fixed;top:0;pointer-events:none;z-index:100;width:100%;height:100%;overflow:hidden}
+  .confetti-piece{position:absolute;top:-20px;border-radius:2px;animation:confettiFall linear forwards}
+  @keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+  /* TAB BAR */
+  .tab-bar {
+    position:fixed;bottom:0;left:0;right:0;max-width:420px;margin:0 auto;
+    background:rgba(22,22,40,.97);backdrop-filter:blur(20px);
+    border-top:1px solid rgba(255,255,255,.06);
+    display:flex;padding:8px 0 20px;z-index:10;
+  }
+  .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;cursor:pointer;transition:all .2s;border:none;background:transparent;color:var(--text-muted)}
+  .tab-btn.active{color:var(--accent3)}
+  .tab-btn .tab-icon{font-size:22px} .tab-btn .tab-label{font-size:10px;font-family:'Noto Sans Sinhala',sans-serif;font-weight:600}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+<div class="confetti" id="confetti"></div>
+
+<div class="app">
+
+  <!-- HOME -->
+  <div class="screen active" id="homeScreen">
+    <div class="home-header">
+      <div class="app-logo">🧮</div>
+      <div class="app-title">ගණිත ක්වීස්</div>
+      <div class="app-subtitle">භාග සහ ගණන් කිරීම් ප්‍රශ්න</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value">10</div><div class="stat-label">ප්‍රශ්න</div></div>
+      <div class="stat-card"><div class="stat-value" id="doneCount">0</div><div class="stat-label">ඉගෙනගත්</div></div>
+      <div class="stat-card"><div class="stat-value" id="bestScore">—</div><div class="stat-label">හොඳම</div></div>
+    </div>
+    <div class="section-title">📋 ප්‍රශ්න ලැයිස්තුව</div>
+    <div class="q-list" id="qList"></div>
+    <button class="btn-primary" onclick="startQuiz()">🎯 ක්වීස් ආරම්භ කරන්න</button>
+  </div>
+
+  <!-- STUDY -->
+  <div class="screen" id="studyScreen">
+    <div class="study-header">
+      <button class="btn-back" onclick="showHome()">←</button>
+      <div class="study-title" id="studyTitle">ප්‍රශ්නය</div>
+      <div class="q-badge" id="studyBadge">1/10</div>
+    </div>
+    <div class="study-card">
+      <div class="study-q-num" id="studyQNum">ප්‍රශ්නය 01</div>
+      <div class="study-question" id="studyQuestion"></div>
+      <div class="study-divider"></div>
+      <div class="solution-section" id="solutionSection">
+        <div class="solution-label">✨ විසඳීමේ ක්‍රමය</div>
+        <div class="solution-steps" id="solutionSteps"></div>
+        <div class="answer-box">
+          <div class="answer-label">✅ නිවැරදි පිළිතුර</div>
+          <div class="answer-value" id="studyAnswer"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-show-answer" id="btnShowAnswer" onclick="showAnswer()">💡 පිළිතුර බලන්න</button>
+    <button class="btn-mark-done" id="btnMarkDone" onclick="toggleDone()">☑️ ඉගෙනගත්තා ලෙස සලකුණු කරන්න</button>
+    <div class="study-nav">
+      <button class="btn-nav" id="btnPrev" onclick="prevQuestion()">← කලින්</button>
+      <button class="btn-nav next" id="btnNext" onclick="nextStudyQuestion()">ඊළඟ →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="quizScreen">
+    <div class="quiz-header">
+      <div class="quiz-top">
+        <button class="btn-back" onclick="showHome()">←</button>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+        <div class="quiz-count" id="quizCount">1/10</div>
+      </div>
+      <div class="quiz-score-row">
+        <div class="quiz-score-pill">✅ <span id="correctCount">0</span></div>
+        <div class="quiz-score-pill">❌ <span id="wrongCount">0</span></div>
+        <div class="quiz-score-pill">⏱️ <span id="timerDisplay">0:00</span></div>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-q-label" id="quizQLabel">ප්‍රශ්නය 01</div>
+      <div class="quiz-question" id="quizQuestion"></div>
+    </div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="feedback-box" id="feedbackBox">
+      <div class="feedback-icon" id="feedbackIcon"></div>
+      <div class="feedback-text" id="feedbackText"></div>
+    </div>
+    <button class="btn-next-q" id="btnNextQ" onclick="nextQuizQuestion()">ඊළඟ ප්‍රශ්නය →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen results-screen" id="resultsScreen">
+    <div class="result-trophy" id="resultTrophy">🏆</div>
+    <div class="result-title" id="resultTitle">නිර්භීත!</div>
+    <div class="score-circle" id="scoreCircle">
+      <div class="score-circle-inner">
+        <div class="score-pct" id="scorePct">0%</div>
+        <div class="score-sub">ලකුණු</div>
+      </div>
+    </div>
+    <div class="result-stats">
+      <div class="result-stat"><div class="result-stat-val green" id="rCorrect">0</div><div class="result-stat-lbl">නිවැරදි</div></div>
+      <div class="result-stat"><div class="result-stat-val red"   id="rWrong">0</div><div class="result-stat-lbl">වැරදි</div></div>
+      <div class="result-stat"><div class="result-stat-val" style="color:var(--accent1)" id="rTime">0s</div><div class="result-stat-lbl">කාලය</div></div>
+      <div class="result-stat"><div class="result-stat-val" style="color:var(--accent4)" id="rBest">—</div><div class="result-stat-lbl">හොඳම</div></div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="btn-group">
+      <button class="btn-primary"   onclick="startQuiz()">🔄 නැවත ක්‍රීඩා කරන්න</button>
+      <button class="btn-secondary" onclick="showHome()">🏠 මුල් පිටුව</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-home"  onclick="showHome()"><div class="tab-icon">🏠</div><div class="tab-label">මුල් පිටුව</div></button>
+  <button class="tab-btn"        id="tab-study" onclick="startStudy(0)"><div class="tab-icon">📖</div><div class="tab-label">ඉගෙනීම</div></button>
+  <button class="tab-btn"        id="tab-quiz"  onclick="startQuiz()"><div class="tab-icon">🎯</div><div class="tab-label">ක්‍රීඩාව</div></button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// නිවැරදි ගැටලු සහ පිළිතුරු
+// Q1–Q5, Q7, Q9  : "භාගයෙන්" = ÷2 කළ පසු fraction
+// Q6, Q8         : "භාගය" නොමැති — කෙලින්ම fraction
+// Q10            : "භාගය" නොමැති — කෙලින්ම fraction + ÷2
+// ═══════════════════════════════════════════════════
+const questions = [
+  {
+    q:  "100න් භාගයෙන් පහෙන් එකට 10ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 20,
+    steps: [
+      "100 ÷ 2 = 50  (100ේ භාගය)",
+      "50 ÷ 5 = 10  (50ේ පහෙන් එක)",
+      "10 + 10 = 20  ✅"
+    ]
+  },
+  {
+    q:  "40න් භාගයෙන් හතරෙන් එකට 10ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 15,
+    steps: [
+      "40 ÷ 2 = 20  (40ේ භාගය)",
+      "20 ÷ 4 = 5  (20ේ හතරෙන් එක)",
+      "5 + 10 = 15  ✅"
+    ]
+  },
+  {
+    q:  "60න් භාගයෙන් තුනෙන් එකට 5ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 15,
+    steps: [
+      "60 ÷ 2 = 30  (60ේ භාගය)",
+      "30 ÷ 3 = 10  (30ේ තුනෙන් එක)",
+      "10 + 5 = 15  ✅"
+    ]
+  },
+  {
+    q:  "50න් භාගයෙන් පහෙන් එකට 5ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 10,
+    steps: [
+      "50 ÷ 2 = 25  (50ේ භාගය)",
+      "25 ÷ 5 = 5  (25ේ පහෙන් එක)",
+      "5 + 5 = 10  ✅"
+    ]
+  },
+  {
+    q:  "80න් භාගයෙන් හතරෙන් එකට 20ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 30,
+    steps: [
+      "80 ÷ 2 = 40  (80ේ භාගය)",
+      "40 ÷ 4 = 10  (40ේ හතරෙන් එක)",
+      "10 + 20 = 30  ✅"
+    ]
+  },
+  {
+    q:  "30න් තුනෙන් එකට 5ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 15,
+    steps: [
+      "30 ÷ 3 = 10  (30ේ තුනෙන් එක)",
+      "10 + 5 = 15  ✅"
+    ]
+  },
+  {
+    q:  "70ේ භාගයට 5ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 40,
+    steps: [
+      "70 ÷ 2 = 35  (70ේ භාගය)",
+      "35 + 5 = 40  ✅"
+    ]
+  },
+  {
+    q:  "80ේ හතරෙන් එකට 15ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 35,
+    steps: [
+      "80 ÷ 4 = 20  (80ේ හතරෙන් එක)",
+      "20 + 15 = 35  ✅"
+    ]
+  },
+  {
+    q:  "20ේ භාගයෙන් දෙකෙන් එකට 10ක් එකතු කළ විට ලැබෙන අගය කීයද?",
+    answer: 15,
+    steps: [
+      "20 ÷ 2 = 10  (20ේ භාගය)",
+      "10 ÷ 2 = 5  (10ේ දෙකෙන් එක)",
+      "5 + 10 = 15  ✅"
+    ]
+  },
+  {
+    q:  "30ේ තුනෙන් එකට 10ක් එකතු කර ලැබෙන අගය දෙකෙන් බෙදූ විට ලැබෙන අගය කීයද?",
+    answer: 10,
+    steps: [
+      "30 ÷ 3 = 10  (30ේ තුනෙන් එක)",
+      "10 + 10 = 20  (10ක් එකතු කිරීම)",
+      "20 ÷ 2 = 10  (දෙකෙන් බෙදීම)  ✅"
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let doneSet   = new Set(JSON.parse(localStorage.getItem('mathDoneSet') || '[]'));
+let bestScore = localStorage.getItem('mathBestScore') || null;
+let currentStudyIdx = 0;
+let quizOrder = [], quizIdx = 0, quizCorrect = 0, quizWrong = 0;
+let timerInterval = null, timerSecs = 0, answered = false;
+
+function saveDone(){ localStorage.setItem('mathDoneSet', JSON.stringify([...doneSet])); }
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function setTab(id){ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function showHome(){ setTab('tab-home'); showScreen('homeScreen'); renderQList(); updateStats(); }
+
+// ═══════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════
+function updateStats(){
+  document.getElementById('doneCount').textContent = doneSet.size;
+  document.getElementById('bestScore').textContent = bestScore ? bestScore+'%' : '—';
+}
+function renderQList(){
+  const list = document.getElementById('qList');
+  list.innerHTML = '';
+  questions.forEach((q,i)=>{
+    const done = doneSet.has(i);
+    const div  = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `<div class="q-num">${i+1}</div><div class="q-text">${q.q.substring(0,50)}…</div><div class="q-status ${done?'done':'pending'}">${done?'✓':'○'}</div>`;
+    div.onclick = ()=>startStudy(i);
+    list.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// STUDY
+// ═══════════════════════════════════════════════════
+function startStudy(idx){ currentStudyIdx=idx; setTab('tab-study'); showScreen('studyScreen'); renderStudy(); }
+function renderStudy(){
+  const q=questions[currentStudyIdx], i=currentStudyIdx;
+  document.getElementById('studyTitle').textContent   = `ප්‍රශ්නය ${i+1}`;
+  document.getElementById('studyBadge').textContent   = `${i+1}/10`;
+  document.getElementById('studyQNum').textContent    = `ප්‍රශ්නය ${String(i+1).padStart(2,'0')}`;
+  document.getElementById('studyQuestion').textContent= q.q;
+  document.getElementById('studyAnswer').textContent  = q.answer;
+  document.getElementById('solutionSteps').innerHTML  = q.steps.map(s=>`<div class="step">👉 ${s}</div>`).join('');
+  document.getElementById('solutionSection').classList.remove('visible');
+  document.getElementById('btnShowAnswer').style.display='block';
+  const btn=document.getElementById('btnMarkDone');
+  if(doneSet.has(i)){ btn.classList.add('marked'); btn.textContent='✅ ඉගෙනගත්තා'; }
+  else { btn.classList.remove('marked'); btn.textContent='☑️ ඉගෙනගත්තා ලෙස සලකුණු කරන්න'; }
+  document.getElementById('btnPrev').disabled=(i===0);
+  document.getElementById('btnNext').disabled=(i===questions.length-1);
+}
+function showAnswer(){ document.getElementById('solutionSection').classList.add('visible'); document.getElementById('btnShowAnswer').style.display='none'; }
+function toggleDone(){ if(doneSet.has(currentStudyIdx)) doneSet.delete(currentStudyIdx); else doneSet.add(currentStudyIdx); saveDone(); renderStudy(); }
+function prevQuestion(){ if(currentStudyIdx>0){ currentStudyIdx--; renderStudy(); } }
+function nextStudyQuestion(){ if(currentStudyIdx<questions.length-1){ currentStudyIdx++; renderStudy(); } }
+
+// ═══════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function startQuiz(){
+  setTab('tab-quiz'); showScreen('quizScreen');
+  quizOrder=shuffle([...Array(questions.length).keys()]);
+  quizIdx=0; quizCorrect=0; quizWrong=0;
+  clearInterval(timerInterval); timerSecs=0;
+  timerInterval=setInterval(()=>{
+    timerSecs++;
+    const m=Math.floor(timerSecs/60),s=timerSecs%60;
+    document.getElementById('timerDisplay').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  },1000);
+  renderQuiz();
+}
+
+function genOptions(correct){
+  const opts=new Set([correct]);
+  const deltas=shuffle([-5,-10,-15,5,10,15,-20,20,-25,25,-30,30]);
+  for(const d of deltas){ if(opts.size>=4) break; const v=correct+d; if(v>0) opts.add(v); }
+  while(opts.size<4){ const v=correct+Math.floor(Math.random()*40)-20; if(v>0&&!opts.has(v)) opts.add(v); }
+  return shuffle([...opts]);
+}
+
+function renderQuiz(){
+  if(quizIdx>=quizOrder.length){ showResults(); return; }
+  answered=false;
+  const qi=quizOrder[quizIdx], q=questions[qi];
+  document.getElementById('quizQLabel').textContent   =`ප්‍රශ්නය ${String(qi+1).padStart(2,'0')}`;
+  document.getElementById('quizQuestion').textContent =q.q;
+  document.getElementById('quizCount').textContent    =`${quizIdx+1}/${questions.length}`;
+  document.getElementById('quizProgressFill').style.width=`${(quizIdx/questions.length)*100}%`;
+  document.getElementById('correctCount').textContent =quizCorrect;
+  document.getElementById('wrongCount').textContent   =quizWrong;
+
+  const grid=document.getElementById('optionsGrid');
+  grid.innerHTML='';
+  genOptions(q.answer).forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn'; btn.textContent=opt;
+    btn.onclick=()=>checkAns(btn,opt,q.answer);
+    grid.appendChild(btn);
+  });
+  document.getElementById('feedbackBox').className='feedback-box';
+  document.getElementById('btnNextQ').className='btn-next-q';
+}
+
+function checkAns(btn,selected,correctAns){
+  if(answered) return;
+  answered=true;
+  document.querySelectorAll('.option-btn').forEach(b=>{ b.disabled=true; if(parseInt(b.textContent)===correctAns) b.classList.add('reveal-correct'); });
+  const fb=document.getElementById('feedbackBox');
+  if(selected===correctAns){
+    btn.classList.remove('reveal-correct'); btn.classList.add('correct');
+    quizCorrect++; document.getElementById('correctCount').textContent=quizCorrect;
+    fb.className='feedback-box correct-fb show';
+    document.getElementById('feedbackIcon').textContent='🎉';
+    document.getElementById('feedbackText').textContent='නිවැරදි! ඉතා හොඳයි! 🌟';
+  } else {
+    btn.classList.add('wrong');
+    quizWrong++; document.getElementById('wrongCount').textContent=quizWrong;
+    fb.className='feedback-box wrong-fb show';
+    document.getElementById('feedbackIcon').textContent='😔';
+    document.getElementById('feedbackText').textContent=`නිවැරදි පිළිතුර: ${correctAns}`;
+  }
+  document.getElementById('btnNextQ').className='btn-next-q show';
+}
+function nextQuizQuestion(){ quizIdx++; renderQuiz(); }
+
+// ═══════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════
+function showResults(){
+  clearInterval(timerInterval);
+  const pct=Math.round((quizCorrect/questions.length)*100);
+  if(!bestScore||pct>parseInt(bestScore)){ bestScore=pct; localStorage.setItem('mathBestScore',bestScore); }
+  document.getElementById('scoreCircle').style.background=`conic-gradient(var(--accent3) ${pct*3.6}deg,rgba(255,255,255,.05) 0deg)`;
+  document.getElementById('scorePct').textContent=pct+'%';
+  document.getElementById('rCorrect').textContent=quizCorrect;
+  document.getElementById('rWrong').textContent=quizWrong;
+  const m=Math.floor(timerSecs/60),s=timerSecs%60;
+  document.getElementById('rTime').textContent=m>0?`${m}m ${s}s`:`${s}s`;
+  document.getElementById('rBest').textContent=bestScore+'%';
+  let trophy,title,msg;
+  if(pct===100){trophy='🏆';title='සම්පූර්ණ ජය!';msg='සියලු ප්‍රශ්නම නිවැරදිව! ඔබ ගණිත ශූරයෙකි!';launchConfetti();}
+  else if(pct>=80){trophy='🥇';title='ඉතා හොඳයි!';msg='ඔබ ඉතා ඉහළ ලකුණු ලබාගත්තා! දිගටම ඉගෙනගන්න!';}
+  else if(pct>=60){trophy='🥈';title='හොඳයි!';msg='හොඳ ප්‍රයත්නයක්! ටිකක් නැවත ඉගෙනගන්න.';}
+  else{trophy='📚';title='නැවත උත්සාහ කරන්න!';msg='ඉගෙනීම් කොටස නැවත හදාරා ක්‍රීඩා කරන්න.';}
+  document.getElementById('resultTrophy').textContent=trophy;
+  document.getElementById('resultTitle').textContent=title;
+  document.getElementById('resultMsg').textContent=msg;
+  setTab('tab-quiz'); showScreen('resultsScreen');
+}
+function launchConfetti(){
+  const c=document.getElementById('confetti'); c.innerHTML='';
+  const cols=['#f7c948','#ff6b6b','#4ecdc4','#a855f7','#22c55e','#fff'];
+  for(let i=0;i<70;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*cols.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'};animation:confettiFall ${1.5+Math.random()*2}s linear ${Math.random()*1.5}s forwards;`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.innerHTML='',6000);
+}
+
+// INIT
+renderQList(); updateStats();
+</script>
+</body>
+</html>

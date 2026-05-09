@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>සතුන් හඳුනා ගනිමු! 🐾</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans+Sinhala:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #87CEEB;
+    --grass: #4CAF50;
+    --sun: #FFD700;
+    --coral: #FF6B6B;
+    --purple: #9B59B6;
+    --teal: #1ABC9C;
+    --orange: #FF8C00;
+    --pink: #FF69B4;
+    --navy: #1a1a4e;
+    --card-bg: #FFFDE7;
+    --shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans Sinhala', 'Baloo 2', sans-serif;
+    background: linear-gradient(160deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Floating background bubbles */
+  .bubbles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .bubble {
+    position: absolute; border-radius: 50%; opacity: 0.18;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) scale(1); opacity: 0.18; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  }
+
+  /* ===== SCREENS ===== */
+  .screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-bottom: 30px; }
+
+  /* ===== HEADER ===== */
+  .main-header {
+    width: 100%; text-align: center; padding: 28px 16px 12px;
+    background: linear-gradient(90deg, #ff9a9e, #fad0c4, #ffecd2, #a1c4fd, #c2e9fb);
+    background-size: 300% 100%; animation: gradShift 6s ease infinite;
+    border-bottom: 4px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    position: relative; overflow: hidden;
+  }
+  @keyframes gradShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+  .main-header h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 800; color: var(--navy);
+    text-shadow: 3px 3px 0 #fff, 5px 5px 0 rgba(0,0,0,0.08);
+    letter-spacing: 1px;
+  }
+  .main-header .subtitle {
+    font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+    color: #444; margin-top: 4px; font-weight: 600;
+  }
+  .stars-row { font-size: 1.4rem; margin-top: 4px; animation: starSpin 3s linear infinite; display: inline-block; }
+  @keyframes starSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+  /* ===== HOME SCREEN ===== */
+  .home-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 18px; padding: 24px 16px; width: 100%; max-width: 480px;
+  }
+  .level-card {
+    background: white; border-radius: 24px;
+    padding: 22px 14px; text-align: center;
+    box-shadow: var(--shadow); cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+    border: 3px solid transparent; position: relative; overflow: hidden;
+  }
+  .level-card:hover, .level-card:active {
+    transform: scale(1.07) rotate(-1deg);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+  }
+  .level-card .lv-emoji { font-size: 3rem; display: block; margin-bottom: 8px; animation: bounce 1.6s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .level-card .lv-title { font-size: 1rem; font-weight: 800; color: var(--navy); }
+  .level-card .lv-desc { font-size: 0.75rem; color: #666; margin-top: 4px; }
+  .level-card.easy   { border-color: #4CAF50; background: linear-gradient(135deg,#e8f5e9,#fff); }
+  .level-card.medium { border-color: #FF9800; background: linear-gradient(135deg,#fff3e0,#fff); }
+  .level-card.hard   { border-color: #F44336; background: linear-gradient(135deg,#fce4ec,#fff); }
+  .level-card.learn  { border-color: #2196F3; background: linear-gradient(135deg,#e3f2fd,#fff); grid-column: span 2; }
+
+  .lv-badge {
+    position: absolute; top: 8px; right: 10px;
+    font-size: 0.65rem; font-weight: 800; padding: 2px 8px;
+    border-radius: 99px; color: white;
+  }
+  .easy .lv-badge   { background: #4CAF50; }
+  .medium .lv-badge { background: #FF9800; }
+  .hard .lv-badge   { background: #F44336; }
+  .learn .lv-badge  { background: #2196F3; }
+
+  /* ===== ANIMAL ENCYCLOPEDIA ===== */
+  .enc-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; padding: 16px; width: 100%; max-width: 540px;
+  }
+  .enc-card {
+    background: white; border-radius: 20px;
+    padding: 14px 12px; box-shadow: var(--shadow);
+    text-align: center; cursor: pointer;
+    transition: transform 0.15s;
+    border: 2px solid #eee;
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .enc-card:hover { transform: scale(1.05); }
+  @keyframes popIn { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+  .enc-card .a-emoji { font-size: 2.8rem; }
+  .enc-card .a-name  { font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-top: 6px; }
+  .enc-card .a-feature { font-size: 0.72rem; color: #555; margin-top: 4px; line-height: 1.4; }
+  .enc-card .a-highlight { display: inline-block; background: #FFF9C4; border: 1.5px solid #FFD600; border-radius: 8px; padding: 2px 7px; font-size: 0.7rem; font-weight: 700; color: #333; margin-top: 5px; }
+
+  /* ===== GAME SCREEN ===== */
+  .game-top {
+    width: 100%; max-width: 540px; padding: 12px 16px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .score-box {
+    background: white; border-radius: 16px; padding: 6px 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    font-weight: 800; font-size: 1rem; color: var(--navy);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .back-btn {
+    background: white; border: none; border-radius: 16px;
+    padding: 6px 14px; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    color: var(--navy); transition: transform 0.1s;
+  }
+  .back-btn:hover { transform: scale(1.08); }
+
+  .game-question {
+    width: 100%; max-width: 540px; padding: 14px 16px 0;
+    text-align: center;
+  }
+  .q-label {
+    font-size: 0.8rem; font-weight: 700; color: #888; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .q-feature {
+    font-size: clamp(1rem, 4vw, 1.35rem); font-weight: 900; color: var(--navy);
+    background: white; border-radius: 18px; padding: 12px 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10); margin-top: 8px;
+    border-left: 5px solid var(--coral);
+    animation: slideIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+  .options-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; padding: 16px; width: 100%; max-width: 540px;
+  }
+  .opt-card {
+    background: white; border-radius: 22px;
+    padding: 18px 10px; text-align: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    border: 3px solid #eee; position: relative; overflow: hidden;
+  }
+  .opt-card:hover { transform: scale(1.06); box-shadow: 0 10px 32px rgba(0,0,0,0.16); }
+  .opt-card.correct {
+    border-color: #4CAF50; background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    animation: correctPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .opt-card.wrong {
+    border-color: #F44336; background: linear-gradient(135deg, #fce4ec, #ffcdd2);
+    animation: wrongShake 0.45s ease;
+  }
+  @keyframes correctPop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
+  @keyframes wrongShake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
+  .opt-card .opt-emoji { font-size: 3rem; display: block; }
+  .opt-card .opt-name  { font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-top: 6px; }
+  .result-icon { position: absolute; top: 6px; right: 10px; font-size: 1.6rem; }
+
+  /* Progress bar */
+  .progress-wrap { width: 100%; max-width: 540px; padding: 0 16px; margin-top: 8px; }
+  .progress-bar-bg { background: rgba(255,255,255,0.6); border-radius: 99px; height: 10px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #43e97b, #38f9d7); transition: width 0.5s ease; }
+
+  /* ===== MATCH MODE ===== */
+  .match-container {
+    width: 100%; max-width: 540px; padding: 10px 16px;
+    display: flex; gap: 12px;
+  }
+  .match-col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .match-item {
+    background: white; border-radius: 16px; padding: 12px 10px;
+    text-align: center; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    border: 3px solid #eee; transition: transform 0.15s, border-color 0.15s;
+    font-size: 0.85rem; font-weight: 700; color: var(--navy);
+    user-select: none;
+  }
+  .match-item.animal { font-size: 1.8rem; }
+  .match-item:hover { transform: scale(1.04); }
+  .match-item.selected { border-color: #FF9800; background: #FFF8E1; transform: scale(1.06); }
+  .match-item.matched  { border-color: #4CAF50; background: #E8F5E9; opacity: 0.7; cursor: default; }
+  .match-item.wrong-flash { animation: wrongShake 0.45s ease; border-color: #F44336; background: #FFEBEE; }
+
+  /* ===== RESULT / CELEBRATION ===== */
+  .result-screen {
+    text-align: center; padding: 30px 20px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .result-trophy { font-size: 5rem; animation: trophyBounce 1s ease infinite; }
+  @keyframes trophyBounce { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-15px) rotate(5deg)} }
+  .result-title { font-size: 2rem; font-weight: 900; color: var(--navy); margin-top: 12px; }
+  .result-score { font-size: 1.2rem; color: #555; margin-top: 8px; }
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+  .confetti-piece {
+    position: absolute; width: 12px; height: 12px; border-radius: 3px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0%  { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100%{ transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+  .play-again-btn, .home-btn {
+    margin-top: 16px; padding: 14px 36px; border: none;
+    border-radius: 99px; font-size: 1.1rem; font-weight: 800;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  .play-again-btn { background: linear-gradient(135deg, #43e97b, #38f9d7); color: var(--navy); }
+  .home-btn       { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); color: var(--navy); }
+  .play-again-btn:hover, .home-btn:hover { transform: scale(1.08); }
+
+  /* Feedback popup */
+  .feedback-popup {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0);
+    background: white; border-radius: 28px; padding: 28px 36px;
+    text-align: center; z-index: 500; box-shadow: 0 16px 60px rgba(0,0,0,0.22);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+  .feedback-popup.show { transform: translate(-50%,-50%) scale(1); pointer-events: auto; }
+  .feedback-popup .fb-emoji { font-size: 3.5rem; }
+  .feedback-popup .fb-text  { font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-top: 8px; }
+
+  /* ===== TIPS BAR ===== */
+  .tips-bar {
+    width: 100%; max-width: 540px; margin: 0 auto;
+    background: rgba(255,255,255,0.75); border-radius: 16px;
+    padding: 10px 16px; text-align: center;
+    font-size: 0.8rem; color: #555; font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* Category chips */
+  .cat-chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 8px 16px 0; width: 100%; max-width: 540px; }
+  .cat-chip {
+    padding: 5px 14px; border-radius: 99px; font-size: 0.78rem;
+    font-weight: 700; cursor: pointer; transition: transform 0.12s;
+    border: 2px solid transparent;
+  }
+  .cat-chip:hover { transform: scale(1.08); }
+  .cat-chip.active { border-color: var(--navy); }
+
+  /* Scrollable enc area */
+  .enc-scroll { width: 100%; overflow-y: auto; flex: 1; }
+
+</style>
+</head>
+<body>
+
+<!-- Floating bubbles -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- Feedback popup -->
+<div class="feedback-popup" id="feedbackPopup">
+  <div class="fb-emoji" id="fbEmoji">🎉</div>
+  <div class="fb-text" id="fbText">නිවැරදියි!</div>
+</div>
+
+<!-- =================== HOME SCREEN =================== -->
+<div class="screen active" id="homeScreen">
+  <div class="main-header">
+    <div class="stars-row">⭐🌟✨🌟⭐</div>
+    <h1>🐾 සතුන් හඳුනා ගනිමු!</h1>
+    <div class="subtitle">Animals Matching Game • Grade 1</div>
+  </div>
+
+  <div class="home-grid">
+    <div class="level-card learn" onclick="showScreen('encScreen')">
+      <span class="lv-badge">ඉගෙනිමු</span>
+      <span class="lv-emoji">📚</span>
+      <div class="lv-title">සතුන් ගැන ඉගෙනිමු</div>
+      <div class="lv-desc">Animals Encyclopedia</div>
+    </div>
+
+    <div class="level-card easy" onclick="startGame('easy')">
+      <span class="lv-badge">පහසු</span>
+      <span class="lv-emoji" style="animation-delay:0.2s">🌟</span>
+      <div class="lv-title">පහසු මට්ටම</div>
+      <div class="lv-desc">Easy Level – 4 choices</div>
+    </div>
+
+    <div class="level-card medium" onclick="startGame('medium')">
+      <span class="lv-badge">මධ්‍යම</span>
+      <span class="lv-emoji" style="animation-delay:0.5s">🔥</span>
+      <div class="lv-title">මධ්‍යම මට්ටම</div>
+      <div class="lv-desc">Medium Level – 6 choices</div>
+    </div>
+
+    <div class="level-card hard" onclick="startGame('hard')">
+      <span class="lv-badge">දුෂ්කර</span>
+      <span class="lv-emoji" style="animation-delay:0.8s">💎</span>
+      <div class="lv-title">දුෂ්කර මට්ටම</div>
+      <div class="lv-desc">Hard Level – Match all!</div>
+    </div>
+  </div>
+
+  <div class="tips-bar">
+    💡 ඉගෙනගෙන ක්‍රීඩාව කරන්න — ලකුණු ගන්න — ජය ගන්න! 🏆
+  </div>
+</div>
+
+<!-- =================== ENCYCLOPEDIA SCREEN =================== -->
+<div class="screen" id="encScreen">
+  <div class="main-header">
+    <h1>📚 සතුන් ගැන ඉගෙනිමු</h1>
+    <div class="subtitle">ස්ථාන ඇති සතුන් හඳුනා ගනිමු</div>
+  </div>
+
+  <div class="cat-chips" id="catChips"></div>
+
+  <div class="enc-scroll">
+    <div class="enc-grid" id="encGrid"></div>
+  </div>
+
+  <div style="padding:14px 16px; width:100%; max-width:540px;">
+    <button class="home-btn" style="width:100%;" onclick="showScreen('homeScreen')">🏠 නිවසට යමු</button>
+  </div>
+</div>
+
+<!-- =================== GAME SCREEN (MCQ) =================== -->
+<div class="screen" id="gameScreen">
+  <div class="main-header" style="padding:14px 16px 10px;">
+    <h1 id="gameLevelTitle">🌟 ක්‍රීඩාව</h1>
+  </div>
+
+  <div class="game-top">
+    <button class="back-btn" onclick="showScreen('homeScreen')">← නිවස</button>
+    <div class="score-box">⭐ <span id="scoreDisplay">0</span> / <span id="totalDisplay">0</span></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="game-question">
+    <div class="q-label">📋 මෙම ලක්ෂණය ඇති සතා කවරේද?</div>
+    <div class="q-feature" id="qFeature">...</div>
+  </div>
+
+  <div class="options-grid" id="optionsGrid"></div>
+</div>
+
+<!-- =================== MATCH SCREEN (Hard) =================== -->
+<div class="screen" id="matchScreen">
+  <div class="main-header" style="padding:14px 16px 10px;">
+    <h1>💎 සම්පූර්ණ ගැළපීම</h1>
+  </div>
+
+  <div class="game-top">
+    <button class="back-btn" onclick="showScreen('homeScreen')">← නිවස</button>
+    <div class="score-box">🔗 <span id="matchedCount">0</span> / <span id="matchTotal">0</span></div>
+  </div>
+
+  <div class="tips-bar" style="margin:8px 16px 0;">
+    ← සතාව තෝරා → ලක්ෂණය හා ගළපන්න
+  </div>
+
+  <div class="match-container" id="matchContainer">
+    <div class="match-col" id="matchAnimals"></div>
+    <div class="match-col" id="matchFeatures"></div>
+  </div>
+</div>
+
+<!-- =================== RESULT SCREEN =================== -->
+<div class="screen" id="resultScreen">
+  <div class="main-header">
+    <h1>🏆 ප්‍රතිඵලය!</h1>
+  </div>
+  <div class="result-screen">
+    <div class="result-trophy" id="resultTrophy">🏆</div>
+    <div class="result-title" id="resultTitle">නියමයි!</div>
+    <div class="result-score" id="resultScore"></div>
+    <div id="resultStars" style="font-size:2.5rem; margin-top:12px;"></div>
+    <button class="play-again-btn" id="playAgainBtn" onclick="playAgain()">🔄 නැවත ක්‍රීඩා කරමු</button>
+    <button class="home-btn" onclick="showScreen('homeScreen')" style="margin-top:10px;">🏠 නිවසට</button>
+  </div>
+</div>
+
+<!-- Confetti container -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<script>
+// =================== DATA ===================
+const animals = [
+  { name:"කැස්බෑවා",  emoji:"🐢", feature:"පිටේ ඇති කටුව සහ කෙටි පාද",      category:"ගොඩ/දිය",  color:"#4CAF50" },
+  { name:"කකුළුවා",   emoji:"🦀", feature:"දෙපසට විහිදුණු අඩු සහ කකුල්",   category:"දිය",      color:"#FF6B6B" },
+  { name:"මාළුවා",    emoji:"🐟", feature:"වල්ගය සහ පිහාටු (Fins)",           category:"දිය",      color:"#2196F3" },
+  { name:"කුරුල්ලා",  emoji:"🐦", feature:"විහිද ඇති පියාපත් දෙක",            category:"ගුවන්",    color:"#FF9800" },
+  { name:"බැටළුවා",   emoji:"🐑", feature:"ඇඟ වටා ඇති ලොම් සහිත රවුම් හැඩය", category:"ගොඩ",      color:"#9E9E9E" },
+  { name:"පූසා",      emoji:"🐱", feature:"උල් වූ කන් සහ දිගු වල්ගය",         category:"ගොඩ",      color:"#FF69B4" },
+  { name:"බල්ලා",     emoji:"🐶", feature:"එල්ලෙන කන් සහ සිටගෙන සිටින ඉරියව", category:"ගොඩ",     color:"#795548" },
+  { name:"තාරාවා",    emoji:"🦆", feature:"පැතලි හොට සහ ජලයේ පාවෙන ඉරියව",   category:"දිය/ගොඩ", color:"#00BCD4" },
+  { name:"මූවා",      emoji:"🐁", feature:"අතු බෙදුණු අං තව්තුව",              category:"ගොඩ",      color:"#607D8B" },
+  { name:"ගෙම්බා",    emoji:"🐸", feature:"වාඩි වී සිටින ඉරියව සහ නමයසීලී පාද", category:"දිය/ගොඩ",color:"#8BC34A" },
+  { name:"කැන්ගරු",   emoji:"🦘", feature:"බඩේ ඇති මල්ල සහ ශක්තිමත් පසුපස පාද", category:"ගොඩ",   color:"#FF8C00" },
+  { name:"මකුළුවා",   emoji:"🕷", feature:"දෙපසට විහිදුණු දිගු කකුල් අට",      category:"ගොඩ",     color:"#9C27B0" },
+  { name:"පෙංගුයින්",  emoji:"🐧", feature:"කෙළින් සිටගෙන සිටින හැඩය සහ කෙටි පියාපත්", category:"ගොඩ/දිය",color:"#000" },
+  { name:"ගොළුබෙල්ලා", emoji:"🐌", feature:"කරකැවිලු කටුව (Spiral shell)",    category:"ගොඩ",     color:"#795548" },
+  { name:"අලියා",     emoji:"🐘", feature:"දිග හොඩවැල සහ විශාල කන් දෙක",     category:"ගොඩ",     color:"#9E9E9E" },
+  { name:"සිංහයා",    emoji:"🦁", feature:"හිස වටා ඇති කේසර මිටිය",           category:"ගොඩ",     color:"#FF8C00" },
+  { name:"කිරාල්",    emoji:"🦒", feature:"ඉතා දිගු බෙල්ල සහ කුඩා අං දෙක",   category:"ගොඩ",     color:"#FF9800" },
+  { name:"ගිරවා",     emoji:"🦜", feature:"වකු වූ හොට සහ වල්ගයේ හැඩය",        category:"ගුවන්",   color:"#4CAF50" },
+  { name:"හාවා",      emoji:"🐰", feature:"උඩට ඉස්සී ඇති දිගු කන් දෙක",      category:"ගොඩ",     color:"#F8BBD0" },
+  { name:"සමනලයා",    emoji:"🦋", feature:"විහිද ඇති පියාපත් වල හැඩය",         category:"ගුවන්",   color:"#FF4081" },
+];
+
+const categories = ["සියල්ල", "ගොඩ", "දිය", "ගුවන්", "දිය/ගොඩ", "ගොඩ/දිය"];
+
+let currentLevel = 'easy';
+let score = 0, total = 0, currentQ = 0;
+let questions = [];
+let answered = false;
+let currentCategory = 'සියල්ල';
+
+// =================== BUBBLES ===================
+(function() {
+  const wrap = document.getElementById('bubbles');
+  const colors = ['#FF6B6B','#4ECDC4','#FFD93D','#6BCB77','#4D96FF','#FF6BB5'];
+  for(let i=0;i<18;i++){
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const s = 20+Math.random()*80;
+    b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${8+Math.random()*12}s;
+      animation-delay:${Math.random()*10}s;`;
+    wrap.appendChild(b);
+  }
+})();
+
+// =================== SCREENS ===================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id === 'encScreen') buildEncyclopedia();
+}
+
+// =================== ENCYCLOPEDIA ===================
+function buildEncyclopedia() {
+  // Category chips
+  const chips = document.getElementById('catChips');
+  chips.innerHTML = '';
+  categories.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'cat-chip' + (c === currentCategory ? ' active' : '');
+    d.style.background = c === 'සියල්ල' ? '#FFD700' :
+      c === 'ගොඩ' ? '#A5D6A7' : c === 'දිය' ? '#90CAF9' : c === 'ගුවන්' ? '#CE93D8' : '#FFCCBC';
+    d.textContent = c;
+    d.onclick = () => { currentCategory = c; buildEncyclopedia(); };
+    chips.appendChild(d);
+  });
+
+  const grid = document.getElementById('encGrid');
+  grid.innerHTML = '';
+  const filtered = currentCategory === 'සියල්ල'
+    ? animals
+    : animals.filter(a => a.category.includes(currentCategory));
+
+  filtered.forEach((a, i) => {
+    const card = document.createElement('div');
+    card.className = 'enc-card';
+    card.style.animationDelay = (i * 0.06) + 's';
+    card.style.borderColor = a.color + '55';
+    card.innerHTML = `
+      <div class="a-emoji">${a.emoji}</div>
+      <div class="a-name">${a.name}</div>
+      <div class="a-feature">${a.feature}</div>
+      <div class="a-highlight">${a.category}</div>`;
+    card.onclick = () => playAnimalSound(a.name);
+    grid.appendChild(card);
+  });
+}
+
+// =================== GAME - MCQ ===================
+function startGame(level) {
+  currentLevel = level;
+  score = 0; total = 0; currentQ = 0; answered = false;
+
+  if(level === 'hard') {
+    startMatchGame();
+    return;
+  }
+
+  const choiceCount = level === 'easy' ? 4 : 6;
+
+  // Build questions (shuffle)
+  const pool = [...animals].sort(() => Math.random() - 0.5);
+  questions = pool.slice(0, level === 'easy' ? 8 : 12).map(a => {
+    const wrong = animals.filter(x => x.name !== a.name).sort(() => Math.random()-0.5).slice(0, choiceCount-1);
+    const opts = [...wrong, a].sort(() => Math.random()-0.5);
+    return { animal: a, options: opts };
+  });
+  total = questions.length;
+
+  document.getElementById('gameLevelTitle').textContent = level === 'easy' ? '🌟 පහසු මට්ටම' : '🔥 මධ්‍යම මට්ටම';
+  document.getElementById('totalDisplay').textContent = total;
+  document.getElementById('scoreDisplay').textContent = 0;
+
+  showScreen('gameScreen');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if(currentQ >= questions.length) { showResult(); return; }
+  answered = false;
+
+  const q = questions[currentQ];
+  document.getElementById('qFeature').textContent = q.animal.feature;
+  document.getElementById('progressFill').style.width = ((currentQ / total) * 100) + '%';
+  document.getElementById('scoreDisplay').textContent = score;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  const cols = q.options.length <= 4 ? '1fr 1fr' : '1fr 1fr 1fr';
+  grid.style.gridTemplateColumns = cols;
+
+  q.options.forEach(opt => {
+    const card = document.createElement('div');
+    card.className = 'opt-card';
+    card.innerHTML = `<span class="opt-emoji">${opt.emoji}</span><div class="opt-name">${opt.name}</div>`;
+    card.onclick = () => handleAnswer(card, opt, q.animal);
+    grid.appendChild(card);
+  });
+}
+
+function handleAnswer(card, chosen, correct) {
+  if(answered) return;
+  answered = true;
+
+  if(chosen.name === correct.name) {
+    card.classList.add('correct');
+    card.innerHTML += `<div class="result-icon">✅</div>`;
+    score++;
+    showFeedback(true, correct.name);
+    playBeep(true);
+  } else {
+    card.classList.add('wrong');
+    card.innerHTML += `<div class="result-icon">❌</div>`;
+    // Highlight correct
+    document.querySelectorAll('.opt-card').forEach(c => {
+      if(c.querySelector('.opt-name')?.textContent === correct.name) {
+        c.classList.add('correct');
+        c.innerHTML += `<div class="result-icon">✅</div>`;
+      }
+    });
+    showFeedback(false, correct.name);
+    playBeep(false);
+  }
+
+  document.getElementById('scoreDisplay').textContent = score;
+  setTimeout(() => { currentQ++; renderQuestion(); }, 1600);
+}
+
+// =================== MATCH GAME (Hard) ===================
+let selectedAnimal = null, selectedFeature = null;
+let matchPairs = [];
+let matchedCount = 0;
+
+function startMatchGame() {
+  matchedCount = 0; selectedAnimal = null; selectedFeature = null;
+  matchPairs = animals.slice(0, 8).sort(() => Math.random()-0.5);
+  const shuffledFeatures = [...matchPairs].sort(() => Math.random()-0.5);
+
+  document.getElementById('matchedCount').textContent = 0;
+  document.getElementById('matchTotal').textContent = matchPairs.length;
+
+  const aCol = document.getElementById('matchAnimals');
+  const fCol = document.getElementById('matchFeatures');
+  aCol.innerHTML = ''; fCol.innerHTML = '';
+
+  matchPairs.forEach(a => {
+    const item = document.createElement('div');
+    item.className = 'match-item animal';
+    item.textContent = a.emoji + ' ' + a.name.substring(0,3);
+    item.dataset.name = a.name;
+    item.onclick = () => selectAnimal(item, a.name);
+    aCol.appendChild(item);
+  });
+
+  shuffledFeatures.forEach(a => {
+    const item = document.createElement('div');
+    item.className = 'match-item';
+    item.textContent = a.feature.substring(0, 30) + (a.feature.length>30?'…':'');
+    item.dataset.name = a.name;
+    item.onclick = () => selectFeature(item, a.name);
+    fCol.appendChild(item);
+  });
+
+  showScreen('matchScreen');
+}
+
+function selectAnimal(el, name) {
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#matchAnimals .match-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedAnimal = name;
+  checkMatch();
+}
+
+function selectFeature(el, name) {
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#matchFeatures .match-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedFeature = name;
+  checkMatch();
+}
+
+function checkMatch() {
+  if(!selectedAnimal || !selectedFeature) return;
+
+  if(selectedAnimal === selectedFeature) {
+    // Correct match
+    document.querySelectorAll('.match-item').forEach(i => {
+      if(i.dataset.name === selectedAnimal) {
+        i.classList.remove('selected');
+        i.classList.add('matched');
+      }
+    });
+    matchedCount++;
+    document.getElementById('matchedCount').textContent = matchedCount;
+    playBeep(true);
+    showFeedback(true, selectedAnimal);
+    selectedAnimal = null; selectedFeature = null;
+
+    if(matchedCount >= matchPairs.length) {
+      score = matchedCount; total = matchPairs.length;
+      setTimeout(showResult, 800);
+    }
+  } else {
+    // Wrong
+    document.querySelectorAll('.match-item.selected').forEach(i => {
+      i.classList.add('wrong-flash');
+      setTimeout(()=>{ i.classList.remove('wrong-flash','selected'); },600);
+    });
+    playBeep(false);
+    selectedAnimal = null; selectedFeature = null;
+  }
+}
+
+// =================== RESULT ===================
+function showResult() {
+  const pct = Math.round((score/total)*100);
+  let trophy = '🏆', title = 'නියමයි!', stars = '⭐⭐⭐';
+
+  if(pct < 40)      { trophy='😢'; title='නැවත උත්සාහ කරන්න!'; stars='⭐'; }
+  else if(pct < 70) { trophy='😊'; title='හොඳයි! තවත් ඉගෙනගන්න.'; stars='⭐⭐'; }
+  else if(pct >= 90){ trophy='🏆'; title='සුපිරිසිදු!'; stars='⭐⭐⭐'; }
+
+  document.getElementById('resultTrophy').textContent = trophy;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent = `ලකුණු: ${score} / ${total} (${pct}%)`;
+  document.getElementById('resultStars').textContent = stars;
+  document.getElementById('playAgainBtn').onclick = playAgain;
+
+  if(pct >= 70) launchConfetti();
+  showScreen('resultScreen');
+}
+
+function playAgain() {
+  document.getElementById('confettiWrap').innerHTML = '';
+  startGame(currentLevel);
+}
+
+// =================== CONFETTI ===================
+function launchConfetti() {
+  const wrap = document.getElementById('confettiWrap');
+  wrap.innerHTML = '';
+  const colors = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6BB5','#A78BFA'];
+  for(let i=0;i<80;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;
+      border-radius:${Math.random()>0.5?'50%':'3px'};
+      animation-duration:${2+Math.random()*2.5}s;
+      animation-delay:${Math.random()*1.5}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{ wrap.innerHTML=''; }, 5000);
+}
+
+// =================== FEEDBACK ===================
+function showFeedback(correct, name) {
+  const popup = document.getElementById('feedbackPopup');
+  const messages = correct
+    ? ['නිවැරදියි! 🎉','ඉතා හොඳයි! 🌟','අපූරුයි! 🏆','නියමයි! ✨','ජය! 🎊']
+    : ['නොකළ නොහැකි! 😅','නැවත උත්සාහ කරන්න! 💪','හොඳ ප්‍රශ්නයක්! 🤔'];
+
+  document.getElementById('fbEmoji').textContent = correct ? '🎉' : '😅';
+  document.getElementById('fbText').textContent = messages[Math.floor(Math.random()*messages.length)];
+  popup.classList.add('show');
+  setTimeout(()=>{ popup.classList.remove('show'); }, 1000);
+}
+
+// =================== SOUND ===================
+function playBeep(success) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+
+    if(success) {
+      osc.frequency.setValueAtTime(523, ctx.currentTime);
+      osc.frequency.setValueAtTime(659, ctx.currentTime+0.1);
+      osc.frequency.setValueAtTime(784, ctx.currentTime+0.2);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.5);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.5);
+    } else {
+      osc.frequency.setValueAtTime(200, ctx.currentTime);
+      osc.frequency.setValueAtTime(150, ctx.currentTime+0.15);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.4);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.4);
+    }
+  } catch(e) {}
+}
+
+function playAnimalSound(name) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const freqs = [261,294,329,349,392,440,494,523];
+    freqs.forEach((f,i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = f;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.15, ctx.currentTime + i*0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.08 + 0.15);
+      osc.start(ctx.currentTime + i*0.08);
+      osc.stop(ctx.currentTime + i*0.08 + 0.2);
+    });
+  } catch(e) {}
+}
+
+// Init encyclopedia
+buildEncyclopedia();
+</script>
+</body>
+</html>

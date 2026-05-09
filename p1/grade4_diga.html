@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>දිග මැනීම - 5 වන ශ්‍රේණිය</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --sky: #4FC3F7;
+    --sun: #FFD54F;
+    --grass: #66BB6A;
+    --coral: #FF7043;
+    --purple: #7E57C2;
+    --pink: #EC407A;
+    --teal: #26C6DA;
+    --orange: #FFA726;
+    --bg: #E3F2FD;
+    --card: #fff;
+    --text: #1A237E;
+    --shadow: 0 8px 32px rgba(30,60,120,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #bbdefb 0%, #e3f2fd 60%, #f0f4c3 100%);
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #1565C0 0%, #0288D1 50%, #00BCD4 100%);
+    color: white;
+    text-align: center;
+    padding: 18px 16px 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -20px;
+    width: 90px; height: 90px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .header p {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top: 3px;
+    position: relative;
+  }
+  .stars-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .star { font-size: 1.2rem; animation: twinkle 2s infinite alternate; }
+  .star:nth-child(2) { animation-delay: 0.3s; }
+  .star:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes twinkle { from{opacity:0.5;transform:scale(0.9)} to{opacity:1;transform:scale(1.1)} }
+
+  /* ===== RULER ANIMATION ===== */
+  .ruler-section {
+    background: linear-gradient(135deg, #FFF9C4, #FFF3E0);
+    margin: 14px;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border: 3px solid #FFD54F;
+  }
+  .ruler-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #E65100;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .ruler-container {
+    position: relative;
+    margin: 10px 0;
+  }
+  .ruler {
+    width: 100%;
+    height: 54px;
+    background: linear-gradient(to bottom, #FFF176, #FFD54F);
+    border-radius: 8px;
+    border: 2px solid #F9A825;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(249,168,37,0.3);
+  }
+  .ruler-mark {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ruler-mark .line {
+    width: 1.5px;
+    background: #795548;
+  }
+  .ruler-mark .label {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: #4E342E;
+    margin-bottom: 2px;
+  }
+  .measure-obj {
+    position: relative;
+    height: 34px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin: 8px 0 4px;
+    transition: all 0.4s ease;
+  }
+  .measure-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #FF7043, #FF5722);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 15px rgba(255,87,34,0.35);
+    transition: all 0.2s;
+  }
+  .measure-btn:active { transform: scale(0.97); }
+
+  /* ===== CONCEPT CARDS ===== */
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text);
+    padding: 10px 14px 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 8px 14px;
+  }
+  .concept-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.25s;
+    border: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .concept-card:active { transform: scale(0.97); }
+  .concept-card.active { border-color: var(--coral); transform: scale(1.03); }
+  .concept-card .icon { font-size: 2rem; margin-bottom: 6px; }
+  .concept-card h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .concept-card p { font-size: 0.7rem; color: #666; margin-top: 4px; }
+
+  /* ===== 1M = 100CM VISUAL ===== */
+  .visual-section {
+    margin: 10px 14px;
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border: 3px solid #E1F5FE;
+  }
+  .meter-bar-wrap { position: relative; margin: 12px 0 8px; }
+  .meter-bar {
+    height: 44px;
+    background: linear-gradient(to right, #42A5F5, #1565C0);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(21,101,192,0.3);
+  }
+  .cm-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-top: 8px;
+  }
+  .cm-block {
+    width: calc((100% - 198px) / 100);
+    min-width: 4px;
+    height: 22px;
+    border-radius: 3px;
+    transition: all 0.05s;
+    cursor: pointer;
+  }
+  .cm-block.filled { background: linear-gradient(135deg, #66BB6A, #2E7D32); }
+  .cm-block.empty { background: #E8F5E9; border: 1px solid #A5D6A7; }
+  .count-label {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1565C0;
+    margin-top: 6px;
+  }
+
+  /* ===== LESSON TABS ===== */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    padding: 6px 14px;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 2px solid #ccc;
+    background: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #666;
+    white-space: nowrap;
+  }
+  .tab.active {
+    background: linear-gradient(135deg, #1565C0, #0288D1);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(21,101,192,0.3);
+  }
+
+  /* ===== LESSON CONTENT ===== */
+  .lesson-content {
+    margin: 0 14px 14px;
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    min-height: 200px;
+  }
+  .lesson-header {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px dashed #E3F2FD;
+  }
+  .example-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    background: #F8F9FF;
+    border-radius: 12px;
+    margin-bottom: 7px;
+    border-left: 4px solid #42A5F5;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .example-row .arrow { color: #42A5F5; font-size: 1.2rem; }
+  .example-row .result { color: #E65100; font-weight: 800; }
+
+  /* ===== COLUMN ADDITION ===== */
+  .col-add-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .col-add-box {
+    background: #F3E5F5;
+    border-radius: 16px;
+    padding: 14px 20px;
+    border: 3px solid #CE93D8;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text);
+    text-align: right;
+    min-width: 180px;
+  }
+  .col-add-box .op-row { display: flex; align-items: center; gap: 10px; }
+  .col-add-box .op-sym { color: #7B1FA2; font-size: 1.3rem; }
+  .col-add-box .line { border-top: 3px solid #7B1FA2; margin: 8px 0; }
+  .col-add-box .ans { color: #2E7D32; font-size: 1.2rem; }
+  .col-header { font-size: 0.75rem; color: #888; text-align: right; }
+
+  /* ===== QUIZ SECTION ===== */
+  .quiz-wrap {
+    margin: 0 14px 14px;
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+  .quiz-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .quiz-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .score-badge {
+    background: linear-gradient(135deg, #FFD54F, #FFA726);
+    color: #4E342E;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+  .difficulty-btns {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .diff-btn {
+    flex: 1;
+    padding: 8px 6px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #666;
+  }
+  .diff-btn.easy.active { background: #E8F5E9; border-color: #66BB6A; color: #2E7D32; }
+  .diff-btn.medium.active { background: #FFF8E1; border-color: #FFD54F; color: #F57F17; }
+  .diff-btn.hard.active { background: #FCE4EC; border-color: #EF9A9A; color: #B71C1C; }
+
+  .question-box {
+    background: linear-gradient(135deg, #E3F2FD, #F3E5F5);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #BBDEFB;
+  }
+  .question-text {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .question-sub { font-size: 0.82rem; color: #666; margin-top: 4px; }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .option-btn {
+    padding: 13px 8px;
+    border: 3px solid #E3F2FD;
+    border-radius: 14px;
+    background: #F8FBFF;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn:active { transform: scale(0.96); }
+  .option-btn.correct { background: #E8F5E9; border-color: #66BB6A; color: #2E7D32; animation: correctPulse 0.5s; }
+  .option-btn.wrong { background: #FFEBEE; border-color: #EF9A9A; color: #C62828; animation: wrongShake 0.4s; }
+  @keyframes correctPulse { 0%{transform:scale(1)} 50%{transform:scale(1.06)} 100%{transform:scale(1)} }
+  @keyframes wrongShake { 0%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} 100%{transform:translateX(0)} }
+
+  .feedback-box {
+    border-radius: 14px;
+    padding: 12px 16px;
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: #E8F5E9; color: #1B5E20; border: 2px solid #A5D6A7; }
+  .feedback-box.wrong-fb { background: #FFEBEE; color: #B71C1C; border: 2px solid #FFCDD2; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+
+  .next-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #66BB6A, #2E7D32);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(46,125,50,0.3);
+    transition: all 0.2s;
+    display: none;
+  }
+  .next-btn.show { display: block; }
+  .next-btn:active { transform: scale(0.97); }
+
+  /* ===== COLUMN QUIZ ===== */
+  .col-quiz-box {
+    background: linear-gradient(135deg, #EDE7F6, #F3E5F5);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+    border: 2px solid #CE93D8;
+  }
+  .col-problem {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    display: inline-block;
+    text-align: right;
+  }
+  .col-problem .p-row { display: flex; gap: 20px; justify-content: flex-end; align-items: center; }
+  .col-problem .p-unit { font-size: 0.7rem; color: #9C27B0; font-weight: 700; min-width: 28px; text-align: center; }
+  .col-problem .p-val { min-width: 28px; text-align: center; }
+  .col-problem .p-op { color: #7B1FA2; margin-right: 6px; }
+  .col-problem .p-line { border-top: 2.5px solid #7B1FA2; width: 100%; margin: 6px 0; }
+  .col-input-row { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
+  .col-input {
+    width: 70px;
+    padding: 8px;
+    text-align: center;
+    border: 2.5px solid #CE93D8;
+    border-radius: 10px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    background: white;
+    outline: none;
+  }
+  .col-input:focus { border-color: #9C27B0; }
+  .col-input-label { font-size: 0.72rem; color: #888; text-align: center; font-weight: 700; }
+  .check-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #7E57C2, #4527A0);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(69,39,160,0.3);
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .check-btn:active { transform: scale(0.97); }
+
+  /* ===== CELEBRATION ===== */
+  .celebration {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    display: none;
+  }
+  .celebration.show { display: flex; }
+  .celeb-box {
+    background: white;
+    border-radius: 24px;
+    padding: 30px 24px;
+    text-align: center;
+    max-width: 300px;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  @keyframes popIn { from{transform:scale(0.3);opacity:0} to{transform:scale(1);opacity:1} }
+  .celeb-emoji { font-size: 4rem; display: block; margin-bottom: 10px; animation: bounce 0.6s infinite alternate; }
+  @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-12px)} }
+  .celeb-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #E65100;
+    margin-bottom: 6px;
+  }
+  .celeb-msg { font-size: 0.9rem; color: #666; margin-bottom: 16px; }
+  .celeb-close {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #FF7043, #E53935);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: confettiFall 2s linear forwards;
+    pointer-events: none;
+    z-index: 1001;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-section {
+    margin: 0 14px 8px;
+    background: white;
+    border-radius: 16px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+  }
+  .progress-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-bar {
+    height: 14px;
+    background: #E3F2FD;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #42A5F5, #66BB6A);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    display: flex;
+    border-top: 2px solid #E3F2FD;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 10px 6px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #999;
+  }
+  .nav-btn.active { color: #1565C0; }
+  .nav-btn .nav-icon { font-size: 1.3rem; }
+  .nav-btn .nav-label { font-family: 'Baloo 2', cursive; font-size: 0.65rem; font-weight: 700; }
+
+  /* ===== PAGES ===== */
+  .page { display: none; padding-bottom: 80px; }
+  .page.active { display: block; }
+
+  /* ===== ANIMATE ===== */
+  .bounce-in { animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  @keyframes bounceIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+  .floating { animation: floating 3s ease-in-out infinite; }
+  @keyframes floating { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+  /* ===== MEASURE DEMO ===== */
+  .obj-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .obj-item {
+    background: #F8F9FF;
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid #E3F2FD;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .obj-item:active { transform: scale(0.98); }
+  .obj-item.selected { border-color: #42A5F5; background: #E3F2FD; }
+  .obj-icon { font-size: 2rem; }
+  .obj-info h4 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .obj-info p { font-size: 0.78rem; color: #666; }
+  .obj-length {
+    margin-left: auto;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #E65100;
+    background: #FFF3E0;
+    padding: 4px 10px;
+    border-radius: 10px;
+  }
+  .mini-ruler {
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to bottom, #FFF9C4, #FFD54F);
+    border-radius: 6px;
+    border: 1.5px solid #F9A825;
+    position: relative;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .mini-ruler-fill {
+    height: 100%;
+    background: linear-gradient(to right, #42A5F5aa, #1565C0aa);
+    border-radius: 4px;
+    transition: width 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  /* scroll indicator */
+  .scroll-hint {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #999;
+    padding: 4px;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📏 දිග මැනීම</h1>
+  <p>5 වන ශ්‍රේණිය · සෙ.මී. සහ මීටර්</p>
+  <div class="stars-row">
+    <span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>
+  </div>
+</div>
+
+<!-- PAGES -->
+<!-- PAGE 1: HOME / LEARN -->
+<div class="page active" id="page-learn">
+
+  <!-- Ruler Demo Section -->
+  <div class="ruler-section">
+    <div class="ruler-title">📏 දිග මැනීම ඉගෙන ගනිමු!</div>
+
+    <div class="obj-list" id="objList">
+      <div class="obj-item" onclick="selectObj(this,15,'#FF7043')" data-len="15" data-pct="50">
+        <span class="obj-icon">✏️</span>
+        <div class="obj-info">
+          <h4>පැන්සල</h4>
+          <p>Pencil</p>
+        </div>
+        <span class="obj-length">15 cm</span>
+      </div>
+      <div class="obj-item" onclick="selectObj(this,20,'#7E57C2')" data-len="20" data-pct="67">
+        <span class="obj-icon">📚</span>
+        <div class="obj-info">
+          <h4>පොත</h4>
+          <p>Book</p>
+        </div>
+        <span class="obj-length">20 cm</span>
+      </div>
+      <div class="obj-item" onclick="selectObj(this,5,'#26C6DA')" data-len="5" data-pct="17">
+        <span class="obj-icon">🔲</span>
+        <div class="obj-info">
+          <h4>මකනය</h4>
+          <p>Eraser</p>
+        </div>
+        <span class="obj-length">5 cm</span>
+      </div>
+      <div class="obj-item" onclick="selectObj(this,30,'#66BB6A')" data-len="30" data-pct="100">
+        <span class="obj-icon">📐</span>
+        <div class="obj-info">
+          <h4>රූල්</h4>
+          <p>Ruler (30 cm)</p>
+        </div>
+        <span class="obj-length">30 cm</span>
+      </div>
+    </div>
+
+    <div class="mini-ruler" style="margin-top:12px">
+      <div class="mini-ruler-fill" id="rulerFill" style="width:0%">0 cm</div>
+    </div>
+    <p id="rulerMsg" style="text-align:center;font-size:0.8rem;color:#666;margin-top:6px">↑ කිසියම් වස්තුවක් තෝරන්න</p>
+  </div>
+
+  <!-- 1m = 100cm Visual -->
+  <div class="section-title">🎯 1m = 100 cm සංකල්පය</div>
+  <div class="visual-section">
+    <div style="text-align:center;font-family:'Baloo 2',cursive;font-size:1rem;color:#666;margin-bottom:8px">
+      සෙ.මී. ගඩොල් 100ක් = 1 මීටරයක් !
+    </div>
+    <div class="meter-bar">
+      <span id="meterLabel">1 m = 100 cm</span>
+    </div>
+    <div class="cm-blocks" id="cmBlocks"></div>
+    <div class="count-label" id="cmCount">0 / 100 cm</div>
+    <button class="measure-btn" onclick="animateCM()" id="cmBtn">
+      🎬 සෙ.මී. ගණන් කරමු!
+    </button>
+  </div>
+
+  <!-- Concept Tabs -->
+  <div class="section-title">📖 පාඩම් කාණ්ඩ</div>
+  <div class="tabs" id="lessonTabs">
+    <div class="tab active" onclick="showLesson(0,this)">m→cm</div>
+    <div class="tab" onclick="showLesson(1,this)">m+cm→cm</div>
+    <div class="tab" onclick="showLesson(2,this)">cm→m</div>
+    <div class="tab" onclick="showLesson(3,this)">cm→m+cm</div>
+    <div class="tab" onclick="showLesson(4,this)">➕ එකතු</div>
+    <div class="tab" onclick="showLesson(5,this)">➖ අඩු</div>
+  </div>
+
+  <div class="lesson-content" id="lessonContent"></div>
+
+</div>
+
+<!-- PAGE 2: QUIZ -->
+<div class="page" id="page-quiz">
+  <div style="padding:14px 14px 6px">
+    <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--text)">
+      🧠 ප්‍රශ්නාවලිය
+    </div>
+    <div style="font-size:0.82rem;color:#666;margin-top:2px">ඔබේ දැනුම පරීක්ෂා කරන්න!</div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span id="progressText">ප්‍රශ්නය 1 / 10</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="quiz-wrap">
+    <div class="quiz-header-row">
+      <div class="quiz-title">🎯 ප්‍රශ්නය</div>
+      <div class="score-badge">⭐ <span id="scoreDisplay">0</span></div>
+    </div>
+
+    <div class="difficulty-btns">
+      <button class="diff-btn easy active" onclick="setDiff('easy',this)">🟢 සරල</button>
+      <button class="diff-btn medium" onclick="setDiff('medium',this)">🟡 මධ්‍යම</button>
+      <button class="diff-btn hard" onclick="setDiff('hard',this)">🔴 සංකීර්ණ</button>
+    </div>
+
+    <div class="question-box">
+      <div class="question-text" id="questionText">ලෑස්ති වෙන්න...</div>
+      <div class="question-sub" id="questionSub"></div>
+    </div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+
+    <div class="feedback-box" id="feedbackBox"></div>
+    <button class="next-btn" id="nextBtn" onclick="loadNextQuestion()">ඊළඟ ප්‍රශ්නය ➡️</button>
+  </div>
+</div>
+
+<!-- PAGE 3: COLUMN PROBLEMS -->
+<div class="page" id="page-column">
+  <div style="padding:14px 14px 6px">
+    <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--text)">
+      🧮 ලිඛිත ගැටලු
+    </div>
+    <div style="font-size:0.82rem;color:#666;margin-top:2px">ඒකක වෙන් වෙන් ව ලියා ගණනය කරන්න</div>
+  </div>
+
+  <div class="quiz-wrap">
+    <div class="quiz-header-row">
+      <div class="quiz-title">📝 ගැටලුව</div>
+      <div class="score-badge">⭐ <span id="colScoreDisplay">0</span></div>
+    </div>
+
+    <div class="difficulty-btns">
+      <button class="diff-btn easy active" onclick="setColDiff('add',this)">➕ එකතු කිරීම</button>
+      <button class="diff-btn medium" onclick="setColDiff('sub',this)">➖ අඩු කිරීම</button>
+    </div>
+
+    <div class="col-quiz-box">
+      <div class="col-problem" id="colProblem">
+        <div class="p-row">
+          <div>
+            <div class="p-unit">m</div>
+            <div class="p-val" id="cp_a_m">-</div>
+          </div>
+          <div>
+            <div class="p-unit">cm</div>
+            <div class="p-val" id="cp_a_cm">-</div>
+          </div>
+        </div>
+        <div class="p-row" style="margin-top:4px">
+          <div style="display:flex;align-items:center">
+            <span class="p-op" id="cp_op">+</span>
+          </div>
+          <div>
+            <div class="p-val" id="cp_b_m">-</div>
+          </div>
+          <div>
+            <div class="p-val" id="cp_b_cm">-</div>
+          </div>
+        </div>
+        <div class="p-line"></div>
+        <div style="font-size:0.8rem;color:#aaa;text-align:right">?</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:0.8rem;color:#666;margin-bottom:10px">
+      ✏️ පිළිතුර ඇතුළත් කරන්න
+    </div>
+    <div class="col-input-row">
+      <div>
+        <div class="col-input-label">m</div>
+        <input class="col-input" type="number" id="ansM" placeholder="?" min="0">
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:8px;font-size:1.4rem;color:#666">
+        <span>m</span>
+      </div>
+      <div>
+        <div class="col-input-label">cm</div>
+        <input class="col-input" type="number" id="ansCm" placeholder="?" min="0" max="99">
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:8px;font-size:1.4rem;color:#666">
+        <span>cm</span>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkColumn()">✅ පරීක්ෂා කරන්න</button>
+
+    <div class="feedback-box" id="colFeedback" style="margin-top:10px"></div>
+    <button class="next-btn" id="colNextBtn" onclick="loadColProblem()" style="margin-top:8px">ඊළඟ ගැටලුව ➡️</button>
+  </div>
+
+  <!-- How to do column addition explanation -->
+  <div class="visual-section" style="margin:0 14px 14px">
+    <div style="font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:800;color:#7B1FA2;margin-bottom:10px">
+      💡 ක්‍රමය
+    </div>
+    <div style="font-size:0.82rem;color:#444;line-height:1.7">
+      1. <b>m</b> සහ <b>cm</b> ඒකක වෙන්ව ලියන්න<br>
+      2. <b>cm</b> ගණනය කරන්න (100+ නම් m ලෙස ගෙනයන්න)<br>
+      3. <b>m</b> ගණනය කරන්න<br><br>
+      <span style="color:#E65100;font-weight:700">උදාහරණ:</span><br>
+      &nbsp;&nbsp;2m 50cm<br>
+      +&nbsp;4m 30cm<br>
+      ──────────<br>
+      &nbsp;&nbsp;6m 80cm ✅
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: PROGRESS -->
+<div class="page" id="page-progress">
+  <div style="padding:14px 14px 6px">
+    <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--text)">
+      🏆 ප්‍රගතිය
+    </div>
+  </div>
+
+  <div class="progress-section" style="margin-top:10px">
+    <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--text);margin-bottom:10px">
+      📊 ඔබේ ලකුණු
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:#E3F2FD;border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:2rem;font-weight:800;color:#1565C0;font-family:'Baloo 2',cursive" id="totalScore">0</div>
+        <div style="font-size:0.78rem;color:#666">මුළු ලකුණු</div>
+      </div>
+      <div style="background:#E8F5E9;border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:2rem;font-weight:800;color:#2E7D32;font-family:'Baloo 2',cursive" id="correctCount">0</div>
+        <div style="font-size:0.78rem;color:#666">නිවැරදි</div>
+      </div>
+      <div style="background:#FFF3E0;border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:2rem;font-weight:800;color:#E65100;font-family:'Baloo 2',cursive" id="wrongCount">0</div>
+        <div style="font-size:0.78rem;color:#666">වැරදි</div>
+      </div>
+      <div style="background:#FCE4EC;border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:2rem;font-weight:800;color:#880E4F;font-family:'Baloo 2',cursive" id="streakCount">0</div>
+        <div style="font-size:0.78rem;color:#666">Streak 🔥</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin:14px;background:white;border-radius:20px;padding:16px;box-shadow:var(--shadow)">
+    <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--text);margin-bottom:12px">
+      🎖️ ලකුණු ශ්‍රේණිය
+    </div>
+    <div id="badgesList"></div>
+  </div>
+
+  <div style="margin:0 14px;background:white;border-radius:20px;padding:16px;box-shadow:var(--shadow)">
+    <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--text);margin-bottom:12px">
+      📋 මෑත ප්‍රශ්නාවලිය ඉතිහාසය
+    </div>
+    <div id="historyList" style="font-size:0.82rem;color:#666">
+      <p>ප්‍රශ්නාවලිය ආරම්භ කර නොමැත</p>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav0" onclick="showPage('learn',0)">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">ඉගෙනීම</span>
+  </button>
+  <button class="nav-btn" id="nav1" onclick="showPage('quiz',1)">
+    <span class="nav-icon">🧠</span>
+    <span class="nav-label">ප්‍රශ්නාවලිය</span>
+  </button>
+  <button class="nav-btn" id="nav2" onclick="showPage('column',2)">
+    <span class="nav-icon">🧮</span>
+    <span class="nav-label">ලිඛිත</span>
+  </button>
+  <button class="nav-btn" id="nav3" onclick="showPage('progress',3)">
+    <span class="nav-icon">🏆</span>
+    <span class="nav-label">ප්‍රගතිය</span>
+  </button>
+</div>
+
+<!-- CELEBRATION OVERLAY -->
+<div class="celebration" id="celebration">
+  <div class="celeb-box">
+    <span class="celeb-emoji" id="celebEmoji">🎉</span>
+    <div class="celeb-title" id="celebTitle">නිවැරදියි!</div>
+    <div class="celeb-msg" id="celebMsg">ඉතා හොඳයි!</div>
+    <button class="celeb-close" onclick="closeCelebration()">ඉදිරියට →</button>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let score = 0, correct = 0, wrong = 0, streak = 0, qNum = 0;
+let colScore = 0, colMode = 'add';
+let currentDiff = 'easy';
+let currentQuestion = null;
+let history = [];
+let cmAnimating = false;
+
+// ===== SOUNDS =====
+const AC = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function getAC() {
+  if (!audioCtx) audioCtx = new AC();
+  return audioCtx;
+}
+
+function playCorrect() {
+  try {
+    const ac = getAC();
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((f, i) => {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = f;
+      o.type = 'sine';
+      g.gain.setValueAtTime(0.3, ac.currentTime + i*0.1);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + i*0.1 + 0.3);
+      o.start(ac.currentTime + i*0.1);
+      o.stop(ac.currentTime + i*0.1 + 0.35);
+    });
+  } catch(e) {}
+}
+
+function playWrong() {
+  try {
+    const ac = getAC();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.setValueAtTime(300, ac.currentTime);
+    o.frequency.exponentialRampToValueAtTime(120, ac.currentTime + 0.4);
+    o.type = 'sawtooth';
+    g.gain.setValueAtTime(0.3, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.5);
+    o.start(ac.currentTime);
+    o.stop(ac.currentTime + 0.5);
+  } catch(e) {}
+}
+
+function playClick() {
+  try {
+    const ac = getAC();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value = 800;
+    g.gain.setValueAtTime(0.1, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
+    o.start(ac.currentTime);
+    o.stop(ac.currentTime + 0.1);
+  } catch(e) {}
+}
+
+// ===== PAGE NAV =====
+function showPage(name, idx) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav' + idx).classList.add('active');
+  if (name === 'progress') updateProgress();
+  if (name === 'quiz' && qNum === 0) loadNextQuestion();
+  if (name === 'column') loadColProblem();
+  playClick();
+}
+
+// ===== OBJECT SELECTION =====
+function selectObj(el, len, color) {
+  document.querySelectorAll('.obj-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  const pct = el.dataset.pct;
+  const fill = document.getElementById('rulerFill');
+  fill.style.background = `linear-gradient(to right, ${color}99, ${color})`;
+  fill.style.width = '0%';
+  document.getElementById('rulerMsg').textContent = '📏 මැනෙමින් පවතී...';
+  setTimeout(() => {
+    fill.style.width = pct + '%';
+    fill.textContent = len + ' cm';
+    document.getElementById('rulerMsg').textContent = `✅ දිග: ${len} සෙ.මී. (${len < 100 ? len + ' cm' : len/100 + ' m'})`;
+  }, 100);
+  playClick();
+}
+
+// ===== CM ANIMATION =====
+function buildCmBlocks() {
+  const container = document.getElementById('cmBlocks');
+  container.innerHTML = '';
+  for (let i = 0; i < 100; i++) {
+    const b = document.createElement('div');
+    b.className = 'cm-block empty';
+    b.id = 'cm' + i;
+    b.style.flex = '0 0 calc(10% - 2px)';
+    b.style.margin = '1px';
+    container.appendChild(b);
+  }
+}
+
+function animateCM() {
+  if (cmAnimating) return;
+  cmAnimating = true;
+  buildCmBlocks();
+  document.getElementById('cmBtn').textContent = '⏳ ගණනය වෙමින්...';
+  document.getElementById('cmCount').textContent = '0 / 100 cm';
+
+  let i = 0;
+  const interval = setInterval(() => {
+    const block = document.getElementById('cm' + i);
+    if (block) block.className = 'cm-block filled';
+    document.getElementById('cmCount').textContent = (i+1) + ' / 100 cm';
+
+    if (i === 99) {
+      clearInterval(interval);
+      cmAnimating = false;
+      document.getElementById('cmBtn').textContent = '🔄 නැවත කරන්න';
+      document.getElementById('cmCount').textContent = '100 cm = 1 m 🎉';
+      playCorrect();
+      setTimeout(() => {
+        document.getElementById('meterLabel').textContent = '🎉 100 cm = 1 m!';
+        setTimeout(() => { document.getElementById('meterLabel').textContent = '1 m = 100 cm'; }, 2000);
+      }, 200);
+    }
+    i++;
+  }, 30);
+}
+
+// ===== LESSONS =====
+const lessons = [
+  {
+    title: 'කාණ්ඩය 01: මීටර් (m) සෙ.මී. (cm) වලට හැරවීම',
+    hint: 'දිගින් 100 ගුණ කරන්න',
+    rows: [
+      ['1m', '=', '100cm'], ['2m', '=', '200cm'], ['3m', '=', '300cm'],
+      ['4m', '=', '400cm'], ['5m', '=', '500cm'], ['6m', '=', '600cm'],
+      ['7m', '=', '700cm'], ['8m', '=', '800cm'], ['9m', '=', '900cm'], ['10m', '=', '1000cm']
+    ]
+  },
+  {
+    title: 'කාණ්ඩය 02: m සහ cm → cm',
+    hint: 'උදා: 2m 25cm = 225cm',
+    rows: [
+      ['1m 10cm', '=', '110cm'], ['1m 50cm', '=', '150cm'], ['2m 25cm', '=', '225cm'],
+      ['3m 45cm', '=', '345cm'], ['4m 75cm', '=', '475cm'], ['5m 05cm', '=', '505cm'],
+      ['6m 20cm', '=', '620cm'], ['7m 80cm', '=', '780cm'], ['8m 15cm', '=', '815cm'], ['9m 99cm', '=', '999cm']
+    ]
+  },
+  {
+    title: 'කාණ්ඩය 03: සෙ.මී. (cm) → මීටර් (m)',
+    hint: '100 න් බෙදන්න',
+    rows: [
+      ['100cm', '=', '1m'], ['200cm', '=', '2m'], ['300cm', '=', '3m'],
+      ['400cm', '=', '4m'], ['500cm', '=', '5m'], ['600cm', '=', '6m'],
+      ['800cm', '=', '8m'], ['1000cm', '=', '10m'], ['1500cm', '=', '15m'], ['5000cm', '=', '50m']
+    ]
+  },
+  {
+    title: 'කාණ්ඩය 04: cm → m සහ cm',
+    hint: 'උදා: 450cm = 4m 50cm',
+    rows: [
+      ['125cm', '=', '1m 25cm'], ['240cm', '=', '2m 40cm'], ['365cm', '=', '3m 65cm'],
+      ['450cm', '=', '4m 50cm'], ['508cm', '=', '5m 08cm'], ['610cm', '=', '6m 10cm'],
+      ['735cm', '=', '7m 35cm'], ['890cm', '=', '8m 90cm'], ['920cm', '=', '9m 20cm'], ['1050cm', '=', '10m 50cm']
+    ]
+  },
+  {
+    title: 'කාණ්ඩය 05: m සහ cm සිරස් ලෙස එකතු කිරීම',
+    hint: 'ඒකක වෙන්ව ලියා ගණනය කරන්න',
+    isTable: true,
+    headers: ['අංකය', 'ගැටලුව', 'පිළිතුර'],
+    tableRows: [
+      ['1', '2m 25cm + 3m 10cm', '5m 35cm'],
+      ['2', '4m 50cm + 1m 20cm', '5m 70cm'],
+      ['3', '6m 30cm + 2m 40cm', '8m 70cm'],
+      ['4', '5m 15cm + 4m 60cm', '9m 75cm'],
+      ['5', '3m 05cm + 2m 80cm', '5m 85cm'],
+      ['6', '1m 45cm + 7m 15cm', '8m 60cm'],
+      ['7', '8m 20cm + 1m 20cm', '9m 40cm'],
+      ['8', '2m 50cm + 4m 30cm', '6m 80cm'],
+      ['9', '7m 10cm + 2m 10cm', '9m 20cm'],
+      ['10', '5m 40cm + 3m 40cm', '8m 80cm'],
+    ]
+  },
+  {
+    title: 'කාණ්ඩය 06: m සහ cm සිරස් ලෙස අඩු කිරීම',
+    hint: 'ඒකක වෙන්ව ලියා ගණනය කරන්න',
+    isTable: true,
+    headers: ['අංකය', 'ගැටලුව', 'පිළිතුර'],
+    tableRows: [
+      ['1', '5m 80cm − 2m 30cm', '3m 50cm'],
+      ['2', '7m 60cm − 3m 40cm', '4m 20cm'],
+      ['3', '9m 75cm − 4m 25cm', '5m 50cm'],
+      ['4', '8m 90cm − 5m 70cm', '3m 20cm'],
+      ['5', '6m 45cm − 2m 15cm', '4m 30cm'],
+      ['6', '10m 80cm − 6m 50cm', '4m 30cm'],
+      ['7', '4m 55cm − 1m 35cm', '3m 20cm'],
+      ['8', '7m 30cm − 3m 10cm', '4m 20cm'],
+      ['9', '9m 00cm − 5m 00cm', '4m 00cm'],
+      ['10', '8m 50cm − 4m 25cm', '4m 25cm'],
+    ]
+  }
+];
+
+function showLesson(idx, tab) {
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const l = lessons[idx];
+  const cont = document.getElementById('lessonContent');
+
+  let html = `<div class="lesson-header">${l.title}</div>`;
+  html += `<div style="background:#E3F2FD;border-radius:10px;padding:8px 12px;font-size:0.82rem;color:#1565C0;font-weight:600;margin-bottom:12px">💡 ${l.hint}</div>`;
+
+  if (l.isTable) {
+    html += `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-family:'Baloo 2',cursive;font-size:0.88rem">
+      <thead><tr style="background:#E3F2FD">`;
+    l.headers.forEach(h => { html += `<th style="padding:8px 10px;text-align:left;font-weight:800;color:#1565C0;border-bottom:2px solid #BBDEFB">${h}</th>`; });
+    html += `</tr></thead><tbody>`;
+    l.tableRows.forEach((row, i) => {
+      html += `<tr style="background:${i%2===0?'white':'#F8F9FF'};border-bottom:1px solid #E3F2FD">`;
+      row.forEach((cell, ci) => {
+        html += `<td style="padding:9px 10px;font-weight:${ci===2?'800':'600'};color:${ci===2?'#E65100':'var(--text)'}">${cell}</td>`;
+      });
+      html += `</tr>`;
+    });
+    html += `</tbody></table></div>`;
+  } else {
+    l.rows.forEach(row => {
+      html += `<div class="example-row">
+        <span>${row[0]}</span>
+        <span class="arrow">→</span>
+        <span class="result">${row[2]}</span>
+      </div>`;
+    });
+  }
+
+  cont.innerHTML = html;
+  cont.classList.add('bounce-in');
+  setTimeout(() => cont.classList.remove('bounce-in'), 600);
+  playClick();
+}
+
+// ===== QUIZ QUESTIONS =====
+const easyQs = [
+  {q:'1m = ? cm', a:'100', opts:['100','10','1000','50']},
+  {q:'2m = ? cm', a:'200', opts:['200','20','2000','100']},
+  {q:'5m = ? cm', a:'500', opts:['500','50','5000','200']},
+  {q:'100cm = ? m', a:'1', opts:['1','10','100','0.1']},
+  {q:'300cm = ? m', a:'3', opts:['3','30','300','0.3']},
+  {q:'10m = ? cm', a:'1000', opts:['1000','100','10000','500']},
+  {q:'400cm = ? m', a:'4', opts:['4','40','400','0.4']},
+  {q:'7m = ? cm', a:'700', opts:['700','70','7000','300']},
+  {q:'500cm = ? m', a:'5', opts:['5','50','500','0.5']},
+  {q:'9m = ? cm', a:'900', opts:['900','90','9000','450']},
+];
+
+const mediumQs = [
+  {q:'1m 25cm = ? cm', a:'125', opts:['125','115','135','150']},
+  {q:'2m 50cm = ? cm', a:'250', opts:['250','205','260','240']},
+  {q:'3m 75cm = ? cm', a:'375', opts:['375','357','350','380']},
+  {q:'240cm = ? m ? cm', a:'2m 40cm', opts:['2m 40cm','2m 4cm','24m','20m 40cm']},
+  {q:'365cm = ? m ? cm', a:'3m 65cm', opts:['3m 65cm','3m 6cm','36m 5cm','3m 55cm']},
+  {q:'4m 08cm = ? cm', a:'408', opts:['408','48','480','400']},
+  {q:'508cm = ? m ? cm', a:'5m 08cm', opts:['5m 08cm','5m 8cm','50m 8cm','5m 80cm']},
+  {q:'6m 20cm = ? cm', a:'620', opts:['620','62','6020','600']},
+  {q:'735cm = ? m ? cm', a:'7m 35cm', opts:['7m 35cm','7m 3cm','73m 5cm','7m 53cm']},
+  {q:'8m 15cm = ? cm', a:'815', opts:['815','851','8015','800']},
+];
+
+const hardQs = [
+  {q:'2m 25cm + 3m 10cm = ?', a:'5m 35cm', opts:['5m 35cm','5m 25cm','6m 35cm','5m 45cm']},
+  {q:'4m 50cm + 1m 20cm = ?', a:'5m 70cm', opts:['5m 70cm','5m 60cm','6m 70cm','5m 80cm']},
+  {q:'5m 80cm − 2m 30cm = ?', a:'3m 50cm', opts:['3m 50cm','3m 40cm','4m 50cm','3m 60cm']},
+  {q:'6m 30cm + 2m 40cm = ?', a:'8m 70cm', opts:['8m 70cm','8m 60cm','7m 70cm','9m 70cm']},
+  {q:'7m 60cm − 3m 40cm = ?', a:'4m 20cm', opts:['4m 20cm','4m 30cm','5m 20cm','3m 20cm']},
+  {q:'3m 05cm + 2m 80cm = ?', a:'5m 85cm', opts:['5m 85cm','5m 75cm','6m 85cm','5m 95cm']},
+  {q:'9m 75cm − 4m 25cm = ?', a:'5m 50cm', opts:['5m 50cm','5m 40cm','6m 50cm','4m 50cm']},
+  {q:'1m 45cm + 7m 15cm = ?', a:'8m 60cm', opts:['8m 60cm','8m 50cm','9m 60cm','7m 60cm']},
+  {q:'8m 90cm − 5m 70cm = ?', a:'3m 20cm', opts:['3m 20cm','3m 10cm','4m 20cm','2m 20cm']},
+  {q:'5m 40cm + 3m 40cm = ?', a:'8m 80cm', opts:['8m 80cm','8m 70cm','9m 80cm','7m 80cm']},
+];
+
+let qPool = [...easyQs];
+let usedQs = [];
+
+function setDiff(d, btn) {
+  currentDiff = d;
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (d === 'easy') qPool = [...easyQs];
+  else if (d === 'medium') qPool = [...mediumQs];
+  else qPool = [...hardQs];
+  usedQs = [];
+  qNum = 0; correct = 0; wrong = 0;
+  updateProgressBar();
+  loadNextQuestion();
+  playClick();
+}
+
+function loadNextQuestion() {
+  document.getElementById('feedbackBox').classList.remove('show');
+  document.getElementById('nextBtn').classList.remove('show');
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.remove('correct','wrong');
+    b.disabled = false;
+  });
+
+  if (usedQs.length >= qPool.length) usedQs = [];
+  const available = qPool.filter((_,i) => !usedQs.includes(i));
+  const qIdx = Math.floor(Math.random() * available.length);
+  const origIdx = qPool.indexOf(available[qIdx]);
+  usedQs.push(origIdx);
+  currentQuestion = qPool[origIdx];
+  qNum++;
+
+  document.getElementById('questionText').textContent = currentQuestion.q;
+
+  // shuffle options
+  const shuffled = [...currentQuestion.opts].sort(() => Math.random()-0.5);
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(btn, opt);
+    grid.appendChild(btn);
+  });
+
+  updateProgressBar();
+}
+
+function updateProgressBar() {
+  const total = 10;
+  const pct = Math.min(100, Math.round((qNum-1)/total*100));
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `ප්‍රශ්නය ${qNum} / ${total}`;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function checkAnswer(btn, opt) {
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const isCorrect = opt === currentQuestion.a;
+  const fb = document.getElementById('feedbackBox');
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score += currentDiff === 'easy' ? 10 : currentDiff === 'medium' ? 20 : 30;
+    correct++;
+    streak++;
+    document.getElementById('scoreDisplay').textContent = score;
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `✅ නිවැරදියි! <br><small style="font-size:0.8rem">පිළිතුර: ${currentQuestion.a}</small>`;
+    playCorrect();
+    if (streak >= 3 && streak % 3 === 0) showCelebration();
+  } else {
+    btn.classList.add('wrong');
+    wrong++;
+    streak = 0;
+    // Show correct answer
+    allBtns.forEach(b => { if (b.textContent === currentQuestion.a) b.classList.add('correct'); });
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ වැරදියි! <br><small style="font-size:0.8rem">නිවැරදි පිළිතුර: ${currentQuestion.a}</small>`;
+    playWrong();
+  }
+
+  history.unshift({q: currentQuestion.q, correct: isCorrect, a: currentQuestion.a});
+  if (history.length > 20) history.pop();
+
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+// ===== CELEBRATION =====
+function showCelebration() {
+  const messages = [
+    {e:'🎉', t:'අනූ! නිවැරදියි!', m:'ඉදිරිය ද එසේම!'},
+    {e:'🌟', t:'Super!', m:'ඔබ ඉතා දක්ෂයි!'},
+    {e:'🏆', t:'Champion!', m:'3 streak! හොඳයි!'},
+    {e:'🎊', t:'Excellent!', m:'ගණිතය ඔබට ආදරයි!'},
+  ];
+  const m = messages[Math.floor(Math.random()*messages.length)];
+  document.getElementById('celebEmoji').textContent = m.e;
+  document.getElementById('celebTitle').textContent = m.t;
+  document.getElementById('celebMsg').textContent = m.m;
+  document.getElementById('celebration').classList.add('show');
+  launchConfetti();
+}
+
+function closeCelebration() {
+  document.getElementById('celebration').classList.remove('show');
+}
+
+function launchConfetti() {
+  const colors = ['#FF7043','#42A5F5','#66BB6A','#FFD54F','#EC407A','#7E57C2'];
+  for (let i = 0; i < 30; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random()*100 + 'vw';
+    piece.style.top = '-20px';
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDelay = Math.random()*1 + 's';
+    piece.style.animationDuration = (1 + Math.random()) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 3000);
+  }
+}
+
+// ===== COLUMN PROBLEMS =====
+const addProblems = [
+  {am:2,ac:25,bm:3,bc:10,rm:5,rc:35},
+  {am:4,ac:50,bm:1,bc:20,rm:5,rc:70},
+  {am:6,ac:30,bm:2,bc:40,rm:8,rc:70},
+  {am:5,ac:15,bm:4,bc:60,rm:9,rc:75},
+  {am:3,ac:5,bm:2,bc:80,rm:5,rc:85},
+  {am:1,ac:45,bm:7,bc:15,rm:8,rc:60},
+  {am:8,ac:20,bm:1,bc:20,rm:9,rc:40},
+  {am:2,ac:50,bm:4,bc:30,rm:6,rc:80},
+  {am:7,ac:10,bm:2,bc:10,rm:9,rc:20},
+  {am:5,ac:40,bm:3,bc:40,rm:8,rc:80},
+];
+const subProblems = [
+  {am:5,ac:80,bm:2,bc:30,rm:3,rc:50},
+  {am:7,ac:60,bm:3,bc:40,rm:4,rc:20},
+  {am:9,ac:75,bm:4,bc:25,rm:5,rc:50},
+  {am:8,ac:90,bm:5,bc:70,rm:3,rc:20},
+  {am:6,ac:45,bm:2,bc:15,rm:4,rc:30},
+  {am:10,ac:80,bm:6,bc:50,rm:4,rc:30},
+  {am:4,ac:55,bm:1,bc:35,rm:3,rc:20},
+  {am:7,ac:30,bm:3,bc:10,rm:4,rc:20},
+  {am:9,ac:0,bm:5,bc:0,rm:4,rc:0},
+  {am:8,ac:50,bm:4,bc:25,rm:4,rc:25},
+];
+
+let currentColProblem = null;
+
+function setColDiff(mode, btn) {
+  colMode = mode;
+  document.querySelectorAll('#page-column .diff-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadColProblem();
+  playClick();
+}
+
+function loadColProblem() {
+  document.getElementById('colFeedback').classList.remove('show');
+  document.getElementById('colNextBtn').classList.remove('show');
+  document.getElementById('ansM').value = '';
+  document.getElementById('ansCm').value = '';
+
+  const pool = colMode === 'add' ? addProblems : subProblems;
+  const p = pool[Math.floor(Math.random()*pool.length)];
+  currentColProblem = p;
+
+  document.getElementById('cp_a_m').textContent = p.am;
+  document.getElementById('cp_a_cm').textContent = String(p.ac).padStart(2,'0');
+  document.getElementById('cp_b_m').textContent = p.bm;
+  document.getElementById('cp_b_cm').textContent = String(p.bc).padStart(2,'0');
+  document.getElementById('cp_op').textContent = colMode === 'add' ? '+' : '−';
+}
+
+function checkColumn() {
+  const ansM = parseInt(document.getElementById('ansM').value);
+  const ansCm = parseInt(document.getElementById('ansCm').value);
+  const p = currentColProblem;
+  const fb = document.getElementById('colFeedback');
+
+  if (isNaN(ansM) || isNaN(ansCm)) {
+    fb.className = 'feedback-box show wrong-fb';
+    fb.textContent = '⚠️ කරුණාකර අගයන් ඇතුළත් කරන්න';
+    fb.classList.add('show');
+    return;
+  }
+
+  const isCorrect = ansM === p.rm && ansCm === p.rc;
+
+  if (isCorrect) {
+    colScore += 25;
+    score += 25;
+    correct++;
+    streak++;
+    document.getElementById('colScoreDisplay').textContent = colScore;
+    document.getElementById('scoreDisplay').textContent = score;
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `✅ නිවැරදියි! <span style="font-size:1.2rem">🎉</span><br><small>පිළිතුර: ${p.rm}m ${String(p.rc).padStart(2,'0')}cm</small>`;
+    playCorrect();
+    if (streak >= 3) showCelebration();
+  } else {
+    wrong++;
+    streak = 0;
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `❌ වැරදියි!<br><small>නිවැරදි පිළිතුර: ${p.rm}m ${String(p.rc).padStart(2,'0')}cm</small>`;
+    playWrong();
+  }
+
+  fb.classList.add('show');
+  document.getElementById('colNextBtn').classList.add('show');
+}
+
+// ===== PROGRESS PAGE =====
+const badges = [
+  {score:50, e:'🥉', t:'ආරම්භකයා', d:'50+ ලකුණු'},
+  {score:100, e:'🥈', t:'ශිෂ්‍ය', d:'100+ ලකුණු'},
+  {score:200, e:'🥇', t:'දක්ෂ ශිෂ්‍ය', d:'200+ ලකුණු'},
+  {score:500, e:'🏆', t:'ගණිත වීරයා', d:'500+ ලකුණු'},
+  {score:1000, e:'👑', t:'ගණිත ශූරයා', d:'1000+ ලකුණු'},
+];
+
+function updateProgress() {
+  document.getElementById('totalScore').textContent = score;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('streakCount').textContent = streak;
+
+  const bl = document.getElementById('badgesList');
+  bl.innerHTML = '';
+  badges.forEach(b => {
+    const earned = score >= b.score;
+    bl.innerHTML += `<div style="display:flex;align-items:center;gap:12px;padding:10px;background:${earned?'#E8F5E9':'#F5F5F5'};border-radius:12px;margin-bottom:8px;opacity:${earned?1:0.4}">
+      <span style="font-size:1.8rem">${b.e}</span>
+      <div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:0.9rem;color:${earned?'#2E7D32':'#999'}">${b.t}</div>
+        <div style="font-size:0.75rem;color:#999">${b.d}</div>
+      </div>
+      ${earned ? '<span style="margin-left:auto;font-size:0.75rem;background:#66BB6A;color:white;padding:3px 8px;border-radius:8px;font-weight:700">✅ ලැබුණා</span>' : ''}
+    </div>`;
+  });
+
+  const hl = document.getElementById('historyList');
+  if (history.length === 0) {
+    hl.innerHTML = '<p>ප්‍රශ්නාවලිය ආරම්භ කර නොමැත</p>';
+  } else {
+    hl.innerHTML = history.slice(0,10).map(h =>
+      `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F5F5F5">
+        <span>${h.q}</span>
+        <span>${h.correct ? '✅' : '❌'}</span>
+      </div>`
+    ).join('');
+  }
+}
+
+// ===== INIT =====
+buildCmBlocks();
+showLesson(0, document.querySelector('.tabs .tab'));
+loadNextQuestion();
+loadColProblem();
+</script>
+</body>
+</html>

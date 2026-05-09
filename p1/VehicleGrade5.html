@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 ශ්‍රේණිය - වාහන</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);min-height:100vh;color:white;}
+.topbar{display:flex;align-items:center;padding:12px 16px;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);border-bottom:2px solid rgba(255,215,0,0.3);position:sticky;top:0;z-index:100;}
+.back-btn{text-decoration:none;background:linear-gradient(135deg,#FFD700,#FF6B35);color:white;padding:8px 16px;border-radius:20px;font-size:0.85em;font-weight:700;}
+.topbar h2{font-family:'Fredoka One',cursive;font-size:1.3em;color:#FFD700;margin:0 auto;padding-right:70px;text-shadow:0 0 10px rgba(255,215,0,0.5);}
+.container{padding:16px;max-width:480px;margin:0 auto;}
+
+.hero-card{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,107,53,0.1));border:1px solid rgba(255,215,0,0.3);border-radius:24px;padding:20px;margin:12px 0;backdrop-filter:blur(10px);}
+.hero-card h3{font-family:'Fredoka One',cursive;font-size:1.3em;color:#FFD700;margin-bottom:8px;}
+.hero-card p{font-size:0.86em;color:rgba(255,255,255,0.8);line-height:1.5;}
+
+/* Timeline */
+.timeline-section{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:16px;margin:12px 0;}
+.timeline-section h3{font-family:'Fredoka One',cursive;font-size:1.2em;color:#FFD700;margin-bottom:14px;}
+.timeline-item{display:flex;gap:12px;margin-bottom:12px;position:relative;}
+.timeline-line{position:absolute;left:19px;top:40px;width:2px;height:calc(100% + 4px);background:linear-gradient(180deg,#FFD700,transparent);}
+.timeline-dot{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FF6B35);display:flex;align-items:center;justify-content:center;font-size:1.3em;flex-shrink:0;box-shadow:0 4px 12px rgba(255,215,0,0.4);}
+.timeline-info{flex:1;padding-top:4px;}
+.timeline-info h4{font-family:'Fredoka One',cursive;font-size:1em;color:#FFD700;}
+.timeline-info p{font-size:0.78em;color:rgba(255,255,255,0.7);line-height:1.4;margin-top:2px;}
+.era-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.65em;font-weight:700;background:rgba(255,215,0,0.2);color:#FFD700;border:1px solid rgba(255,215,0,0.3);margin-top:4px;}
+
+/* Speed comparison */
+.speed-section{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:16px;margin:12px 0;}
+.speed-section h3{font-family:'Fredoka One',cursive;font-size:1.2em;color:#FFD700;margin-bottom:14px;}
+.speed-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.speed-emoji{font-size:1.8em;width:40px;text-align:center;}
+.speed-name{font-size:0.82em;font-weight:700;color:rgba(255,255,255,0.9);width:90px;flex-shrink:0;}
+.speed-bar-wrap{flex:1;background:rgba(255,255,255,0.1);border-radius:20px;height:14px;overflow:hidden;}
+.speed-bar{height:100%;border-radius:20px;animation:growBar 1.5s ease-out forwards;}
+@keyframes growBar{from{width:0;}to{width:var(--w);}}
+.speed-val{font-family:'Fredoka One',cursive;font-size:0.78em;color:#FFD700;width:55px;text-align:right;flex-shrink:0;}
+
+/* Complex quiz */
+.quiz-section{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:18px;margin:12px 0;}
+.quiz-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.quiz-hdr h3{font-family:'Fredoka One',cursive;font-size:1.3em;color:#FFD700;}
+.q-score{background:linear-gradient(135deg,#FFD700,#FF6B35);color:white;padding:5px 14px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.95em;}
+.q-scenario{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:14px;font-size:0.9em;color:rgba(255,255,255,0.9);font-weight:700;line-height:1.6;margin-bottom:12px;}
+.q-scenario .scenario-emoji{font-size:2.5em;display:block;text-align:center;margin-bottom:8px;animation:scenFloat 2s ease-in-out infinite;}
+@keyframes scenFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.05);}}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.q-opt{padding:12px 14px;border:2px solid rgba(255,255,255,0.15);border-radius:14px;background:rgba(255,255,255,0.05);font-weight:700;font-size:0.9em;cursor:pointer;transition:all 0.3s;text-align:left;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:8px;}
+.q-opt span:first-child{font-size:1.5em;flex-shrink:0;}
+.q-opt:hover{border-color:#FFD700;background:rgba(255,215,0,0.1);transform:translateX(6px);}
+.q-opt.correct{border-color:#4CAF50;background:rgba(76,175,80,0.15);}
+.q-opt.wrong{border-color:#F44336;background:rgba(244,67,54,0.15);animation:shk 0.4s;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.q-fb{text-align:center;padding:10px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:0.95em;margin-top:10px;display:none;line-height:1.4;}
+.q-fb.show{display:block;animation:popIn 0.4s;}
+.q-fb.good{background:rgba(76,175,80,0.2);color:#A5D6A7;border:1px solid rgba(76,175,80,0.3);}
+.q-fb.bad{background:rgba(244,67,54,0.2);color:#EF9A9A;border:1px solid rgba(244,67,54,0.3);}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+.next-btn{width:100%;padding:13px;background:linear-gradient(135deg,#FFD700,#FF6B35);color:white;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.1em;cursor:pointer;margin-top:10px;display:none;transition:all 0.3s;}
+.next-btn.show{display:block;animation:popIn 0.3s;}
+.next-btn:hover{transform:scale(1.03);box-shadow:0 8px 20px rgba(255,215,0,0.3);}
+.confetti-emoji{position:fixed;pointer-events:none;font-size:2em;animation:fall 1.5s ease-in forwards;z-index:999;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="back-btn">← ආපසු</a>
+  <h2>🎓 5 ශ්‍රේණිය</h2>
+</div>
+<div class="container">
+  <div class="hero-card">
+    <h3>🧠 උසස් දැනුම - වාහන ලෝකය</h3>
+    <p>ඉතිහාසය, වේගය, ඉන්ධන සහ පරිසරය ගැන ගැඹුරු දැනුමෙන් ගොඩ නගනු ලැබ ඇත. ශ්‍රී ලංකා සන්දර්භය ඇතුළත් යයි!</p>
+  </div>
+
+  <!-- Historical Timeline -->
+  <div class="timeline-section">
+    <h3>📜 ශ්‍රී ලංකාවේ ප්‍රවාහනයේ ඉතිහාසය</h3>
+    <div class="timeline-item">
+      <div class="timeline-dot">🐘</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-info">
+        <h4>පුරාණ යුගය</h4>
+        <p>රජවරු ගත්ත, ශ්‍රී ලංකාවේ ඇතුන් ප්‍රවාහනය සඳහා යොදා ගත්හ. නදී-ගංගා ගමනාගමනයේ ඔරු ප්‍රධාන විය.</p>
+        <span class="era-tag">ක්‍රිශ්ත පූ. 500 - ක්‍රිශ්ත 1800</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🚂</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-info">
+        <h4>ශ්‍රී ලංකා දුම්රිය</h4>
+        <p>1864 දී ශ්‍රී ලංකාවේ පළමු දුම්රිය සේවා ආරම්භ. කොළඹ-ඇඹේ මාර්ගය.</p>
+        <span class="era-tag">1864</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🚗</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-info">
+        <h4>මෝටර් රථ</h4>
+        <p>20 වන සියවස ආරම්භයේ ශ්‍රී ලංකාවේ ඇතුළු විය. ජනතාව ගොඩ-ගෙ-ගෙ ගමන් කළ ආකාරය ප්‍රශ්නාකාරී ලෙස වෙනස් කළේය.</p>
+        <span class="era-tag">1900+</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">✈️</div>
+      <div class="timeline-info">
+        <h4>ගුවන් ගමනාගමනය</h4>
+        <p>1947 දී ශ්‍රී ලංකා ගුවන් සේවා ආරම්භ. 2018 දී ශ්‍රී ලංකා ගුවන් සේවා. ලෝකය ළඟ කරගෙන ඒමේ ශ්‍රේෂ්ඨ ක්‍රමය.</p>
+        <span class="era-tag">1947 - වර්තමාන</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Speed Comparison -->
+  <div class="speed-section">
+    <h3>⚡ වේග සංසන්දනය (km/h)</h3>
+    <div class="speed-item">
+      <span class="speed-emoji">🚲</span>
+      <span class="speed-name">පාපැදිය</span>
+      <div class="speed-bar-wrap"><div class="speed-bar" style="--w:5%;background:linear-gradient(90deg,#4CAF50,#81C784);"></div></div>
+      <span class="speed-val">~20</span>
+    </div>
+    <div class="speed-item">
+      <span class="speed-emoji">🚌</span>
+      <span class="speed-name">බස් රථය</span>
+      <div class="speed-bar-wrap"><div class="speed-bar" style="--w:22%;background:linear-gradient(90deg,#2196F3,#64B5F6);"></div></div>
+      <span class="speed-val">~80</span>
+    </div>
+    <div class="speed-item">
+      <span class="speed-emoji">🚂</span>
+      <span class="speed-name">දුම්රිය</span>
+      <div class="speed-bar-wrap"><div class="speed-bar" style="--w:34%;background:linear-gradient(90deg,#FF9800,#FFB74D);"></div></div>
+      <span class="speed-val">~120</span>
+    </div>
+    <div class="speed-item">
+      <span class="speed-emoji">🚢</span>
+      <span class="speed-name">නැව</span>
+      <div class="speed-bar-wrap"><div class="speed-bar" style="--w:11%;background:linear-gradient(90deg,#00BCD4,#80DEEA);"></div></div>
+      <span class="speed-val">~40</span>
+    </div>
+    <div class="speed-item">
+      <span class="speed-emoji">✈️</span>
+      <span class="speed-name">ගුවන් යානය</span>
+      <div class="speed-bar-wrap"><div class="speed-bar" style="--w:100%;background:linear-gradient(90deg,#FFD700,#FF6B35);"></div></div>
+      <span class="speed-val">~900</span>
+    </div>
+    <div class="speed-item">
+      <span class="speed-emoji">🚀</span>
+      <span class="speed-name">රොකට්ටුව</span>
+      <div class="speed-bar-wrap"><div class="speed-bar" style="--w:100%;background:linear-gradient(90deg,#E91E63,#F48FB1);animation-delay:0.5s;"></div></div>
+      <span class="speed-val">28,000+</span>
+    </div>
+  </div>
+
+  <!-- Complex Quiz -->
+  <div class="quiz-section">
+    <div class="quiz-hdr">
+      <h3>🏆 ශ්‍රේෂ්ඨ ප්‍රශ්නාවලිය</h3>
+      <span class="q-score" id="qSc">0/0</span>
+    </div>
+    <div class="q-scenario" id="qScen"></div>
+    <div class="q-opts" id="qOpts"></div>
+    <div class="q-fb" id="qFb"></div>
+    <button class="next-btn" id="nBtn" onclick="loadQ()">ඊළඟ ප්‍රශ්නය →</button>
+  </div>
+</div>
+
+<script>
+const qs=[
+  {
+    scenario:'🤔 ශ්‍රී ලංකාවේ 1864 දී ආරම්භ කළ ප්‍රථම ප්‍රවාහන සේවාව කුමක්ද?',
+    opts:[
+      {e:'🚂',t:'දුම්රිය සේවා',c:true},
+      {e:'🚌',t:'බස් සේවා',c:false},
+      {e:'✈️',t:'ගුවන් සේවා',c:false},
+      {e:'🚗',t:'කාර් සේවා',c:false},
+    ],
+    explain:'1864 දී කොළඹ-ඇඹේ ලෙස ශ්‍රී ලංකාවේ ප්‍රථම දුම්රිය ධාවනය!'
+  },
+  {
+    scenario:'🌍 CO₂ ශ්‍රේෂ්ඨ ලෙස අඩු ගමන් ක්‍රමය කුමක්ද?',
+    opts:[
+      {e:'🚗',t:'පෞද්ගලික කාර්',c:false},
+      {e:'🚲',t:'පාපැදිය',c:true},
+      {e:'🚢',t:'නැව',c:false},
+      {e:'✈️',t:'ගුවන් යානය',c:false},
+    ],
+    explain:'පාපැදිය CO₂ ශ්‍රේෂ්ඨ ලෙස ශුන්‍ය! ඉතා සෞඛ්‍ය හිතකාමී!'
+  },
+  {
+    scenario:'🚁 ජලයෙන් ඇතිවූ ආපදාවකදී ගිලෙන ජනතාව ගලවා ගැනීමට ශ්‍රේෂ්ඨ ගුවන් වාහනය?',
+    opts:[
+      {e:'✈️',t:'ගුවන් යානය',c:false},
+      {e:'🪂',t:'පැරෂූටය',c:false},
+      {e:'🚁',t:'හෙලිකොප්ටරය',c:true},
+      {e:'🚀',t:'රොකට්ටුව',c:false},
+    ],
+    explain:'හෙලිකොප්ටරය ඉහළ-යටට ගමන් කළ හැකි නිසා ස්ථිර ගොඩ-යෑමකින් ඉදිරිපත් නොවේ!'
+  },
+  {
+    scenario:'⚡ ශ්‍රී ලංකාවේ රේල් පීලිවල ධාවනය වන නවීන ශ්‍රේෂ්ඨ ශක්ති ක්‍රමය?',
+    opts:[
+      {e:'⛽',t:'ඩීසල් ඉන්ධන',c:false},
+      {e:'⚡',t:'විදුලිය',c:true},
+      {e:'💨',t:'සුළං',c:false},
+      {e:'☀️',t:'සූර්ය',c:false},
+    ],
+    explain:'නවීන දුම්රිය පද්ධති විදුලිය භාවිතා කරයි. CO₂ ශ්‍රේෂ්ඨ ලෙස අඩු!'
+  },
+  {
+    scenario:'🌊 සාගර ගමනාගමනය සඳහා ශ්‍රේෂ්ඨ ලෙස ශ්‍රී ලංකාව යොදා ගන්නා ජල යාත්‍රාව?',
+    opts:[
+      {e:'🛶',t:'ඔරුව',c:false},
+      {e:'⛵',t:'බෝට්ටුව',c:false},
+      {e:'🚢',t:'නැව',c:true},
+      {e:'🛥️',t:'තෙප්පම',c:false},
+    ],
+    explain:'ශ්‍රී ලංකාව දූපතක් නිසා නාවික ගමනාගමනයේ දී නැව ශ්‍රේෂ්ඨ!'
+  },
+  {
+    scenario:'📊 ශ්‍රී ලංකාවේ ජනතාව ශ්‍රේෂ්ඨ ලෙස භාවිතා කරන ගොඩබිම් ප්‍රවාහනය?',
+    opts:[
+      {e:'🚂',t:'දුම්රිය',c:false},
+      {e:'🚌',t:'පොදු බස් සේවා',c:true},
+      {e:'🚗',t:'පෞද්ගලික කාර්',c:false},
+      {e:'🛺',t:'තී රෝද රථය',c:false},
+    ],
+    explain:'ශ්‍රී ලංකාවේ බස් සේවා ශ්‍රේෂ්ඨ ලෙස ලාබ හා ජනප්‍රිය ගොඩ-ගෙ-ගෙ ක්‍රමය!'
+  },
+];
+let sc=0,tot=0,answered=false,cur=null;
+function loadQ(){
+  answered=false;
+  document.getElementById('qFb').className='q-fb';
+  document.getElementById('nBtn').className='next-btn';
+  document.querySelectorAll('.q-opt').forEach(b=>{b.className='q-opt';b.disabled=false;});
+  cur=qs[Math.floor(Math.random()*qs.length)];
+  document.getElementById('qScen').textContent=cur.scenario;
+  const opts=[...cur.opts].sort(()=>Math.random()-0.5);
+  const div=document.getElementById('qOpts');
+  div.innerHTML='';
+  opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.innerHTML=`<span>${o.e}</span><span>${o.t}</span>`;
+    btn.onclick=()=>checkA(o,btn);
+    div.appendChild(btn);
+  });
+}
+function checkA(opt,btn){
+  if(answered)return;
+  answered=true;tot++;
+  const fb=document.getElementById('qFb');
+  if(opt.c){
+    sc++;btn.className='q-opt correct';
+    fb.textContent='🎉 ඉතා දක්ෂයි! '+cur.explain;fb.className='q-fb show good';
+    spawnConfetti();
+  }else{
+    btn.className='q-opt wrong';
+    const right=cur.opts.find(o=>o.c);
+    fb.textContent=`නැවත උත්සාහ! නිවැරදි: ${right.e} ${right.t}. ${cur.explain}`;fb.className='q-fb show bad';
+  }
+  document.getElementById('qSc').textContent=`${sc}/${tot}`;
+  document.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+  document.getElementById('nBtn').className='next-btn show';
+}
+function spawnConfetti(){
+  ['🎉','⭐','🌟','💫','🎊','🏆'].forEach((e,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='confetti-emoji';
+      el.textContent=e;el.style.left=Math.random()*100+'vw';
+      el.style.animationDuration=(Math.random()+1)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2000);
+    },i*80);
+  });
+}
+loadQ();
+</script>
+</body>
+</html>
