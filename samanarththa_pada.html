@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#1a0050"/>
+<title>සමානාර්ථ පද - ශ්‍රේණි 1-5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg1:#1a0050;--bg2:#2d0080;--bg3:#4a00a0;
+  --gold:#FFD700;--green:#00E676;--pink:#FF4081;--orange:#FF9800;--cyan:#00BCD4;--lime:#CDDC39;
+  --font:'Noto Sans Sinhala',sans-serif;
+  --card:#ffffff18;--border:#ffffff30;
+}
+html,body{min-height:100%;background:linear-gradient(160deg,var(--bg1),var(--bg2),var(--bg3));background-attachment:fixed;font-family:var(--font);color:#fff;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;user-select:none;-webkit-user-select:none;}
+::-webkit-scrollbar{display:none;}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:90px;}
+
+/* ===== COPY PROTECTION ===== */
+body{-webkit-touch-callout:none;}
+
+/* ===== WhatsApp Banner ===== */
+#wa-banner{background:linear-gradient(135deg,#25D366,#128C7E);padding:11px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.4);position:sticky;top:0;z-index:200;text-decoration:none;}
+#wa-banner .wa-icon{font-size:22px;}
+#wa-banner .wa-text{flex:1;}
+#wa-banner .wa-title{font-size:12px;font-weight:700;color:#fff;}
+#wa-banner .wa-sub{font-size:10px;color:rgba(255,255,255,0.85);}
+#wa-banner .wa-btn{background:rgba(255,255,255,0.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;}
+
+/* ===== Visit Counter ===== */
+#visit-toggle{background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);padding:7px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+#visit-toggle span{font-size:12px;color:var(--gold);font-weight:700;}
+#visit-count-val{font-size:18px;font-weight:900;color:var(--gold);}
+#visit-detail{display:none;background:rgba(255,215,0,0.08);padding:8px 16px;font-size:11px;color:rgba(255,255,255,0.7);}
+
+/* ===== Header ===== */
+#header{padding:16px 16px 8px;text-align:center;}
+#header .h-icon{font-size:40px;display:inline-block;animation:bounce 2s infinite;}
+#header h1{font-size:20px;font-weight:900;color:#fff;margin-top:4px;text-shadow:0 2px 10px rgba(0,0,0,0.4);}
+#header p{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;}
+
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes popIn{0%{transform:scale(0.4);opacity:0}70%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes starPop{0%{transform:scale(0)rotate(-30deg);opacity:0}70%{transform:scale(1.5)rotate(10deg)}100%{transform:scale(1)rotate(0);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+@keyframes confettiFall{0%{transform:translateY(-20px)rotate(0deg);opacity:1;}100%{transform:translateY(140px)rotate(720deg);opacity:0;}}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+/* ===== Tabs ===== */
+#tabs{display:flex;gap:4px;padding:10px 12px;background:rgba(0,0,0,0.2);position:sticky;top:44px;z-index:100;}
+.tab-btn{flex:1;padding:8px 4px;border:none;border-radius:14px;font-family:var(--font);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.3s;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);}
+.tab-btn.active{background:var(--gold);color:#1a0050;transform:scale(1.04);box-shadow:0 4px 16px rgba(255,215,0,0.4);}
+
+/* ===== Section container ===== */
+.section{display:none;animation:fadeIn 0.4s ease;}
+.section.active{display:block;}
+
+/* ===== STUDY SECTION ===== */
+#study-section{padding:12px;}
+.grade-selector{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.grade-btn{padding:8px 14px;border:2px solid var(--border);border-radius:20px;background:var(--card);color:#fff;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.grade-btn.active{border-color:var(--cyan);background:rgba(0,188,212,0.25);color:var(--cyan);}
+.words-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.word-card{background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06));border:1px solid var(--border);border-radius:18px;padding:14px 10px;text-align:center;animation:float 3s infinite;cursor:default;transition:transform 0.2s;}
+.word-card:nth-child(2n){animation-delay:0.8s;}
+.word-card:nth-child(3n){animation-delay:1.6s;}
+.word-card .w-original{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:6px;}
+.word-card .w-arrow{font-size:13px;color:var(--pink);margin-bottom:4px;}
+.word-card .w-synonym{font-size:16px;font-weight:700;color:var(--lime);}
+.word-card:active{transform:scale(0.96);}
+.grade-title{font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:10px;padding:8px 12px;background:rgba(0,188,212,0.12);border-radius:12px;text-align:center;}
+
+/* ===== DRAG & DROP SECTION ===== */
+#drag-section{padding:12px;}
+.drag-instructions{font-size:12px;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:12px;background:rgba(255,255,255,0.08);padding:10px;border-radius:12px;}
+.drag-pairs-area{margin-bottom:16px;}
+.drag-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.drag-word-label{background:linear-gradient(135deg,var(--pink),#c2185b);color:#fff;padding:10px 14px;border-radius:16px;font-size:15px;font-weight:700;min-width:100px;text-align:center;box-shadow:0 3px 12px rgba(255,64,129,0.4);}
+.drag-arrow-label{font-size:18px;color:var(--gold);}
+.drop-zone{flex:1;min-height:44px;border:2.5px dashed rgba(255,255,255,0.3);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:rgba(255,255,255,0.4);transition:all 0.2s;background:rgba(255,255,255,0.05);}
+.drop-zone.drag-over{border-color:var(--gold);background:rgba(255,215,0,0.15);color:var(--gold);}
+.drop-zone.correct{border-color:var(--green);background:rgba(0,230,118,0.15);color:var(--green);}
+.drop-zone.wrong{border-color:var(--pink);background:rgba(255,64,129,0.15);color:var(--pink);animation:shake 0.5s ease;}
+.drag-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.drag-chip{background:linear-gradient(135deg,rgba(0,188,212,0.3),rgba(0,188,212,0.15));border:2px solid var(--cyan);color:var(--cyan);padding:10px 16px;border-radius:20px;font-size:14px;font-weight:700;cursor:grab;transition:all 0.2s;touch-action:none;}
+.drag-chip:active{transform:scale(1.08);box-shadow:0 6px 20px rgba(0,188,212,0.5);cursor:grabbing;}
+.drag-chip.used{opacity:0.3;pointer-events:none;}
+#drag-score-bar{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
+#drag-check-btn{width:100%;padding:14px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--gold),#ff9800);color:#1a0050;font-family:var(--font);font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(255,215,0,0.4);margin-bottom:10px;}
+#drag-reset-btn{width:100%;padding:12px;border:2px solid var(--border);border-radius:20px;background:transparent;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ===== QUIZ SECTION ===== */
+#quiz-section{padding:12px;}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.quiz-progress{font-size:12px;color:rgba(255,255,255,0.7);}
+.quiz-score-badge{background:var(--gold);color:#1a0050;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:900;}
+.progress-bar-wrap{background:rgba(255,255,255,0.15);border-radius:10px;height:8px;margin-bottom:16px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:10px;transition:width 0.4s;}
+.question-card{background:linear-gradient(135deg,rgba(255,255,255,0.14),rgba(255,255,255,0.06));border:1px solid var(--border);border-radius:22px;padding:20px 16px;margin-bottom:16px;animation:fadeIn 0.4s ease;}
+.question-num{font-size:11px;color:var(--cyan);font-weight:700;margin-bottom:8px;}
+.question-text{font-size:16px;font-weight:700;color:#fff;line-height:1.6;margin-bottom:4px;}
+.question-hint{font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:14px;}
+.options-grid{display:flex;flex-direction:column;gap:10px;}
+.option-btn{padding:13px 16px;border:2px solid var(--border);border-radius:16px;background:rgba(255,255,255,0.08);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:10px;}
+.option-btn:active{transform:scale(0.98);}
+.option-btn.correct{border-color:var(--green);background:rgba(0,230,118,0.2);color:var(--green);}
+.option-btn.wrong{border-color:var(--pink);background:rgba(255,64,129,0.2);color:var(--pink);animation:shake 0.5s ease;}
+.option-btn.disabled{pointer-events:none;}
+.opt-letter{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;background:rgba(255,255,255,0.15);}
+.option-btn.correct .opt-letter{background:var(--green);color:#000;}
+.option-btn.wrong .opt-letter{background:var(--pink);color:#fff;}
+.feedback-box{padding:12px 14px;border-radius:16px;margin-top:8px;font-size:13px;font-weight:700;animation:fadeIn 0.3s ease;}
+.feedback-box.correct{background:rgba(0,230,118,0.15);border:1px solid var(--green);color:var(--green);}
+.feedback-box.wrong{background:rgba(255,64,129,0.12);border:1px solid var(--pink);color:#fff;}
+.feedback-box.wrong .fb-title{color:var(--pink);font-size:14px;margin-bottom:6px;}
+.fb-explain{color:rgba(255,255,255,0.85);font-size:12px;line-height:1.6;margin-top:4px;}
+#next-btn{width:100%;padding:14px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--cyan),#00838f);color:#fff;font-family:var(--font);font-size:15px;font-weight:900;cursor:pointer;margin-top:10px;box-shadow:0 4px 18px rgba(0,188,212,0.4);display:none;}
+
+/* ===== RESULTS SECTION ===== */
+#results-section{padding:20px;text-align:center;}
+.results-trophy{font-size:64px;animation:starPop 0.8s ease forwards;margin-bottom:12px;}
+.results-title{font-size:22px;font-weight:900;color:var(--gold);margin-bottom:6px;}
+.results-score{font-size:40px;font-weight:900;color:#fff;margin-bottom:4px;}
+.results-sub{font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:20px;}
+.stars-row{display:flex;justify-content:center;gap:8px;margin-bottom:20px;}
+.star{font-size:36px;animation:starPop 0.5s ease forwards;opacity:0;}
+.star:nth-child(2){animation-delay:0.2s;}
+.star:nth-child(3){animation-delay:0.4s;}
+.praise-msg{font-size:18px;font-weight:900;color:var(--lime);margin-bottom:20px;animation:pulse 1.5s infinite;}
+.wrong-answers-section{background:rgba(255,64,129,0.1);border:1px solid rgba(255,64,129,0.3);border-radius:20px;padding:16px;margin-bottom:16px;text-align:left;}
+.wrong-title{font-size:14px;font-weight:900;color:var(--pink);margin-bottom:12px;text-align:center;}
+.wrong-item{margin-bottom:10px;padding:10px 12px;background:rgba(255,255,255,0.06);border-radius:12px;border-left:3px solid var(--pink);}
+.wrong-q{font-size:12px;color:rgba(255,255,255,0.8);margin-bottom:4px;}
+.wrong-correct{font-size:13px;font-weight:700;color:var(--green);}
+.wrong-you{font-size:12px;color:var(--pink);}
+.wrong-explain{font-size:11px;color:rgba(255,255,255,0.65);margin-top:4px;line-height:1.5;}
+.restart-btn{width:100%;padding:14px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#1a0050;font-family:var(--font);font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(255,215,0,0.4);margin-bottom:10px;}
+.dl-btn{width:100%;padding:12px;border:2px solid var(--lime);border-radius:20px;background:rgba(205,220,57,0.1);color:var(--lime);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ===== WORKSHEET SECTION ===== */
+#worksheet-section{padding:12px;}
+.ws-intro{background:rgba(255,255,255,0.08);border-radius:16px;padding:14px;margin-bottom:14px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;}
+.dl-worksheet-btn{width:100%;padding:16px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--lime),#8bc34a);color:#1a0050;font-family:var(--font);font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(205,220,57,0.4);margin-bottom:10px;}
+
+/* ===== Confetti ===== */
+.confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;pointer-events:none;z-index:999;animation:confettiFall 1.5s ease-out forwards;}
+
+/* ===== Praise popup ===== */
+#praise-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,rgba(26,0,80,0.97),rgba(74,0,160,0.97));border:3px solid var(--gold);border-radius:28px;padding:30px 24px;text-align:center;z-index:500;display:none;animation:popIn 0.5s ease;min-width:240px;}
+#praise-popup .pp-icon{font-size:52px;margin-bottom:8px;}
+#praise-popup .pp-msg{font-size:20px;font-weight:900;color:var(--gold);margin-bottom:6px;}
+#praise-popup .pp-sub{font-size:13px;color:rgba(255,255,255,0.8);}
+
+/* ===== Score counter pill ===== */
+.score-pill{background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--gold);}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- WhatsApp Banner -->
+<a id="wa-banner" href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank">
+  <div class="wa-icon">💬</div>
+  <div class="wa-text">
+    <div class="wa-title">නවතම පාඩම් සඳහා Join වන්න</div>
+    <div class="wa-sub">WhatsApp Group එකට join වීමට Click කරන්න</div>
+  </div>
+  <div class="wa-btn">Join ▶</div>
+</a>
+
+<!-- Visit Counter -->
+<div id="visit-toggle" onclick="toggleVisit()">
+  <span>📊 භාවිත වාර ගනන</span>
+  <span id="visit-count-val">...</span>
+</div>
+<div id="visit-detail" id="visit-detail"></div>
+
+<!-- Header -->
+<div id="header">
+  <div class="h-icon">📚</div>
+  <h1>සමානාර්ථ පද</h1>
+  <p>ශ්‍රේණි 1-5 | Sinhala Synonyms Learning App</p>
+</div>
+
+<!-- Tabs -->
+<div id="tabs">
+  <button class="tab-btn active" onclick="showTab('study')">📖 පාඩම</button>
+  <button class="tab-btn" onclick="showTab('drag')">🎯 ගැලපීම</button>
+  <button class="tab-btn" onclick="showTab('quiz')">✏️ ප්‍රශ්නෝත්තර</button>
+  <button class="tab-btn" onclick="showTab('worksheet')">📄 පත්‍රිකාව</button>
+</div>
+
+<!-- STUDY SECTION -->
+<div id="study-section" class="section active">
+  <div style="padding:12px;">
+    <div style="background:rgba(255,255,255,0.08);border-radius:16px;padding:14px;margin-bottom:14px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;">
+      <strong style="color:var(--gold);">සමානාර්ථ පද යනු මොනවාද?</strong><br>
+      එකම අර්ථය (තේරුම) ගෙන දෙන නමුත් ලිවිය හැකි වෙනස් වචන "සමානාර්ථ පද" ලෙස හඳින්වේ.<br>
+      <span style="color:var(--lime);">උදා: "ගෙදර" සහ "නිවස" — දෙකෙන්ම අදහස් වන්නේ ජීවත් වන ස්ථානයයි.</span>
+    </div>
+    <div class="grade-selector" id="grade-selector"></div>
+    <div id="words-container"></div>
+  </div>
+</div>
+
+<!-- DRAG & DROP SECTION -->
+<div id="drag-section" class="section">
+  <div class="drag-instructions">📌 පහත වචනය ඇදගෙන නිවැරදි සමානාර්ථ පදය ළඟ ලඳ කරන්න</div>
+  <div id="drag-game-area"></div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="quiz-section" class="section">
+  <div id="quiz-content"></div>
+</div>
+
+<!-- WORKSHEET SECTION -->
+<div id="worksheet-section" class="section">
+  <div class="ws-intro">
+    📝 <strong style="color:var(--gold);">කාර්ය පත්‍රිකාව</strong><br>
+    සියලු ශ්‍රේණිවල සමානාර්ථ පද ඇතුළත් PDF කාර්ය පත්‍රිකාව download කර, මුද්‍රණය කර දරුවාට ලබාදෙන්න.
+  </div>
+  <button class="dl-worksheet-btn" onclick="downloadWorksheet()">⬇️ කාර්ය පත්‍රිකාව Download කරන්න</button>
+  <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:14px;font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8;">
+    <strong style="color:var(--cyan);">කාර්ය පත්‍රිකාවේ අන්තර්ගතය:</strong><br>
+    ✅ ශ්‍රේණි 1-5 සෑම ශ්‍රේණියකම සමානාර්ථ පද<br>
+    ✅ ගැලපීමේ ව්‍යායාම<br>
+    ✅ හිස්තැන් පිරවීමේ ව්‍යායාම<br>
+    ✅ බහුවරණ ප්‍රශ්න සහ පිළිතුරු<br>
+    ✅ ළමයාට ලිවීමට ඉඩ ලබාදෙන රේඛා
+  </div>
+</div>
+
+<!-- Praise Popup -->
+<div id="praise-popup">
+  <div class="pp-icon" id="pp-icon">⭐</div>
+  <div class="pp-msg" id="pp-msg">සුපිරි!</div>
+  <div class="pp-sub" id="pp-sub"></div>
+</div>
+
+</div><!-- end #app -->
+
+<script>
+// ===== COPY PROTECTION =====
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['s','c','u','a','p'].includes(e.key.toLowerCase()))e.preventDefault();});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// ===== DATA =====
+const GRADES = [
+  {
+    label:"1 ශ්‍රේණිය", icon:"🌸",
+    pairs:[
+      {w:"අහස",s:"ගුවන"},{w:"අම්මා",s:"මව"},{w:"තාත්තා",s:"පියා"},
+      {w:"ගස",s:"රුක"},{w:"ඉර",s:"හිරු"}
+    ]
+  },
+  {
+    label:"2 ශ්‍රේණිය", icon:"🌻",
+    pairs:[
+      {w:"ගෙදර",s:"නිවස"},{w:"පාසල",s:"විදුහල"},{w:"ඔළව",s:"හිස"},
+      {w:"පාර",s:"මාර්ගය"},{w:"තරු",s:"තාරකා"}
+    ]
+  },
+  {
+    label:"3 ශ්‍රේණිය", icon:"🦋",
+    pairs:[
+      {w:"පුවත්තිය",s:"පුවත"},{w:"කැළෑව",s:"වනය"},{w:"දුපත",s:"දිවයින"},
+      {w:"රාතිය",s:"රෑ"},{w:"ඇස්",s:"නෙත්"}
+    ]
+  },
+  {
+    label:"4 ශ්‍රේණිය", icon:"🌈",
+    pairs:[
+      {w:"උදෑසන",s:"හිමිදිරිය"},{w:"කුරුල්ලා",s:"පක්ෂියා"},{w:"පාදය",s:"කකුල"},
+      {w:"වතුර",s:"ජලය"},{w:"පොත",s:"ග්‍රන්ථය"}
+    ]
+  },
+  {
+    label:"5 ශ්‍රේණිය", icon:"🏆",
+    pairs:[
+      {w:"රාතිය",s:"රෑ"},{w:"අවුරුද්ද",s:"වසර"},{w:"අර්ථය",s:"තේරුම"},
+      {w:"නෙළුම් මල",s:"සියපත"},{w:"ප්‍රසිද්ධ",s:"ප්‍රකට"}
+    ]
+  }
+];
+
+// All 20 quiz questions from images
+const QUIZ_QUESTIONS = [
+  {q:'අහස', opts:['හිරු','ගුවන','තරු'], ans:1, explain:'"අහස" සහ "ගුවන" යන වචන දෙකෙන්ම අදහස් වන්නේ sky (ආකාශය) යයි.'},
+  {q:'අම්මා', opts:['මව','තාත්තා','පියා'], ans:0, explain:'"අම්මා" සහ "මව" යන වචන දෙකෙන්ම mother (මෑනියන්) අදහස් වේ.'},
+  {q:'තාත්තා', opts:['මව','පියා','සහෝදරයා'], ans:1, explain:'"තාත්තා" සහ "පියා" යන වචන දෙකෙන්ම father (පියා) අදහස් වේ.'},
+  {q:'ගස', opts:['මල්','රුක','කොළ'], ans:1, explain:'"ගස" සහ "රුක" යන වචන දෙකෙන්ම tree (ගස) අදහස් වේ.'},
+  {q:'හිරු', opts:['අහස','සඳු','ඉර'], ans:2, explain:'"හිරු" සහ "ඉර" යන වචන දෙකෙන්ම sun (සූර්යයා) අදහස් වේ.'},
+  {q:'ගෙදර', opts:['නිවස','පාසල','මග'], ans:0, explain:'"ගෙදර" සහ "නිවස" යන වචන දෙකෙන්ම home/house අදහස් වේ.'},
+  {q:'පාසල', opts:['පාර','විදුහල','නිවස'], ans:1, explain:'"පාසල" සහ "විදුහල" යන වචන දෙකෙන්ම school අදහස් වේ.'},
+  {q:'හිස', opts:['ඔළව','ඇස','කකුල'], ans:0, explain:'"හිස" සහ "ඔළව" යන වචන දෙකෙන්ම head (හිස) අදහස් වේ.'},
+  {q:'පාර', opts:['විදුහල','නිවස','මාර්ගය'], ans:2, explain:'"පාර" සහ "මාර්ගය" යන වචන දෙකෙන්ම road/path අදහස් වේ.'},
+  {q:'තරු', opts:['සඳ','තාරකා','හිරු'], ans:1, explain:'"තරු" සහ "තාරකා" යන වචන දෙකෙන්ම stars අදහස් වේ.'},
+  {q:'පුවත්තිය', opts:['පුවත','පොත','කතාව'], ans:0, explain:'"පුවත්තිය" සහ "පුවත" යන වචන දෙකෙන්ම news/story අදහස් වේ.'},
+  {q:'කැළෑව', opts:['වනය','ගස','ගම'], ans:0, explain:'"කැළෑව" සහ "වනය" යන වචන දෙකෙන්ම forest/jungle අදහස් වේ.'},
+  {q:'රෑ', opts:['උදෑසන','රාතිය','දහවල'], ans:1, explain:'"රෑ" සහ "රාතිය" යන වචන දෙකෙන්ම night අදහස් වේ.'},
+  {q:'ඇස්', opts:['නෙත්','මුහුණ','හිස'], ans:0, explain:'"ඇස්" සහ "නෙත්" යන වචන දෙකෙන්ම eyes අදහස් වේ.'},
+  {q:'උදෑසන', opts:['හිමිදිරිය','රාතිය','සවස'], ans:0, explain:'"උදෑසන" සහ "හිමිදිරිය" යන වචන දෙකෙන්ම morning/dawn අදහස් වේ.'},
+  {q:'කුරුල්ලා', opts:['සතා','පක්ෂියා','සෙතෙක්'], ans:1, explain:'"කුරුල්ලා" සහ "පක්ෂියා" යන වචන දෙකෙන්ම bird අදහස් වේ.'},
+  {q:'පාදය', opts:['කකුල','අත','ඇඟිල්ල'], ans:0, explain:'"පාදය" සහ "කකුල" යන වචන දෙකෙන්ම foot/leg අදහස් වේ.'},
+  {q:'වතුර', opts:['කිරි','ජලය','දිය'], ans:1, explain:'"වතුර" සහ "ජලය" යන වචන දෙකෙන්ම water අදහස් වේ.'},
+  {q:'පොත', opts:['පුවත්පත','ලිපිය','ග්‍රන්ථය'], ans:2, explain:'"පොත" සහ "ග්‍රන්ථය" යන වචන දෙකෙන්ම book අදහස් වේ.'},
+  {q:'අවුරුද්ද', opts:['මාසය','වසර','කාලය'], ans:1, explain:'"අවුරුද්ද" සහ "වසර" යන වචන දෙකෙන්ම year අදහස් වේ.'},
+];
+
+// ===== VISIT COUNTER =====
+let visits = parseInt(localStorage.getItem('smp_visits')||'0')+1;
+localStorage.setItem('smp_visits',visits);
+let firstVisit = localStorage.getItem('smp_first')||new Date().toLocaleDateString('si-LK');
+localStorage.setItem('smp_first',firstVisit);
+document.getElementById('visit-count-val').textContent = visits;
+function toggleVisit(){
+  let d=document.getElementById('visit-detail');
+  d.style.display=d.style.display==='none'?'block':'none';
+  d.innerHTML=`📅 පළමු භාවිතය: ${firstVisit} &nbsp;|&nbsp; 🔢 මුළු: <strong>${visits}</strong> වාර`;
+}
+
+// ===== TABS =====
+let currentTab='study';
+function showTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(tab+'-section').classList.add('active');
+  document.querySelectorAll('.tab-btn')[['study','drag','quiz','worksheet'].indexOf(tab)].classList.add('active');
+  if(tab==='study' && !studyBuilt) buildStudy();
+  if(tab==='drag' && !dragBuilt) buildDrag();
+  if(tab==='quiz' && !quizStarted) buildQuiz();
+}
+
+// ===== STUDY SECTION =====
+let studyBuilt=false;
+let currentGrade=0;
+function buildStudy(){
+  studyBuilt=true;
+  let sel=document.getElementById('grade-selector');
+  sel.innerHTML='';
+  GRADES.forEach((g,i)=>{
+    let btn=document.createElement('button');
+    btn.className='grade-btn'+(i===0?' active':'');
+    btn.textContent=g.icon+' '+g.label;
+    btn.onclick=()=>selectGrade(i);
+    sel.appendChild(btn);
+  });
+  renderWords(0);
+}
+function selectGrade(i){
+  currentGrade=i;
+  document.querySelectorAll('.grade-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));
+  renderWords(i);
+}
+function renderWords(i){
+  let g=GRADES[i];
+  let c=document.getElementById('words-container');
+  c.innerHTML=`<div class="grade-title">${g.icon} ${g.label} - සමානාර්ථ පද</div><div class="words-grid">${
+    g.pairs.map(p=>`<div class="word-card"><div class="w-original">${p.w}</div><div class="w-arrow">⬇</div><div class="w-synonym">${p.s}</div></div>`).join('')
+  }</div>`;
+}
+
+// ===== DRAG & DROP =====
+let dragBuilt=false;
+let dragAnswers={};
+let dragDropped={};
+let dragChipEls={};
+let dragTouchItem=null;
+let dragTouchClone=null;
+
+function buildDrag(){
+  dragBuilt=true;
+  // Pick 8 random pairs from all grades
+  let all=[];
+  GRADES.forEach(g=>g.pairs.forEach(p=>all.push(p)));
+  all=shuffle(all).slice(0,8);
+  let options=shuffle(all.map(p=>p.s));
+  dragAnswers={};
+  dragDropped={};
+  dragChipEls={};
+  all.forEach((p,i)=>dragAnswers[i]=p.s);
+
+  let html=`<div class="drag-pairs-area">`;
+  all.forEach((p,i)=>{
+    html+=`<div class="drag-row">
+      <div class="drag-word-label">${p.w}</div>
+      <div class="drag-arrow-label">→</div>
+      <div class="drop-zone" id="dz-${i}" data-idx="${i}">ලඳ කරන්න</div>
+    </div>`;
+  });
+  html+=`</div><div class="drag-options" id="drag-options">`;
+  options.forEach((o,i)=>{
+    html+=`<div class="drag-chip" id="chip-${i}" data-word="${o}" draggable="true">${o}</div>`;
+  });
+  html+=`</div>
+  <button id="drag-check-btn" onclick="checkDrag()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
+  <button id="drag-reset-btn" onclick="resetDrag()">🔄 නැවත කරන්න</button>`;
+  document.getElementById('drag-game-area').innerHTML=html;
+
+  // Drag events (desktop)
+  document.querySelectorAll('.drag-chip').forEach(chip=>{
+    chip.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('text',chip.dataset.word);
+      e.dataTransfer.setData('chipid',chip.id);
+    });
+  });
+  document.querySelectorAll('.drop-zone').forEach(dz=>{
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+    dz.addEventListener('drop',e=>{
+      e.preventDefault();
+      dz.classList.remove('drag-over');
+      let word=e.dataTransfer.getData('text');
+      let chipId=e.dataTransfer.getData('chipid');
+      dropWord(dz,word,chipId);
+    });
+  });
+
+  // Touch events (mobile)
+  document.querySelectorAll('.drag-chip').forEach(chip=>{
+    chip.addEventListener('touchstart',e=>touchStart(e,chip),{passive:false});
+    chip.addEventListener('touchmove',e=>touchMove(e),{passive:false});
+    chip.addEventListener('touchend',e=>touchEnd(e),{passive:false});
+  });
+}
+
+function dropWord(dz,word,chipId){
+  let idx=parseInt(dz.dataset.idx);
+  // Return old chip if zone had one
+  let prev=dragDropped[idx];
+  if(prev){
+    let prevChip=document.getElementById(prev.chipId);
+    if(prevChip){prevChip.classList.remove('used');prevChip.style.display='';}
+  }
+  dragDropped[idx]={word,chipId};
+  dz.textContent=word;
+  dz.style.color='var(--gold)';
+  dz.style.borderColor='var(--gold)';
+  let chip=document.getElementById(chipId);
+  if(chip) chip.classList.add('used');
+}
+
+// Touch drag
+function touchStart(e,chip){
+  dragTouchItem={word:chip.dataset.word,chipId:chip.id};
+  let t=e.touches[0];
+  dragTouchClone=chip.cloneNode(true);
+  dragTouchClone.style.cssText=`position:fixed;left:${t.clientX-40}px;top:${t.clientY-20}px;z-index:999;opacity:0.85;pointer-events:none;width:auto;`;
+  document.body.appendChild(dragTouchClone);
+  chip.classList.add('used');
+  e.preventDefault();
+}
+function touchMove(e){
+  if(!dragTouchClone) return;
+  let t=e.touches[0];
+  dragTouchClone.style.left=`${t.clientX-40}px`;
+  dragTouchClone.style.top=`${t.clientY-20}px`;
+  e.preventDefault();
+}
+function touchEnd(e){
+  if(!dragTouchClone||!dragTouchItem) return;
+  let t=e.changedTouches[0];
+  dragTouchClone.remove();
+  dragTouchClone=null;
+  let el=document.elementFromPoint(t.clientX,t.clientY);
+  let dz=el?el.closest('.drop-zone'):null;
+  if(dz){
+    dropWord(dz,dragTouchItem.word,dragTouchItem.chipId);
+  } else {
+    // Return chip
+    let chip=document.getElementById(dragTouchItem.chipId);
+    if(chip) chip.classList.remove('used');
+  }
+  dragTouchItem=null;
+}
+
+function checkDrag(){
+  let total=Object.keys(dragAnswers).length;
+  let correct=0;
+  for(let i=0;i<total;i++){
+    let dz=document.getElementById('dz-'+i);
+    if(!dragDropped[i]){dz.style.borderColor='var(--pink)';continue;}
+    if(dragDropped[i].word===dragAnswers[i]){
+      dz.classList.add('correct');
+      correct++;
+    } else {
+      dz.classList.add('wrong');
+    }
+  }
+  let msg=correct===total?'සියල්ල නිවැරදියි! 🎉':'ඔබ '+correct+'/'+total+' නිවැරදිව ගැලපූවාය.';
+  setTimeout(()=>{
+    if(correct===total){launchConfetti();showPraise(correct,total);}
+    else showPraise(correct,total);
+  },400);
+}
+function resetDrag(){dragBuilt=false;buildDrag();}
+
+// ===== QUIZ =====
+let quizStarted=false;
+let qIdx=0;
+let qScore=0;
+let qAnswered=false;
+let qWrong=[];
+
+function buildQuiz(){
+  quizStarted=true;
+  qIdx=0;qScore=0;qWrong=[];
+  renderQuestion();
+}
+function renderQuestion(){
+  if(qIdx>=QUIZ_QUESTIONS.length){showResults();return;}
+  let q=QUIZ_QUESTIONS[qIdx];
+  let pct=Math.round((qIdx/QUIZ_QUESTIONS.length)*100);
+  let html=`
+    <div class="quiz-header">
+      <span class="quiz-progress">ප්‍රශ්නය ${qIdx+1} / ${QUIZ_QUESTIONS.length}</span>
+      <span class="quiz-score-badge">✅ ${qScore}</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
+    <div class="question-card">
+      <div class="question-num">ප්‍රශ්නය ${qIdx+1}</div>
+      <div class="question-text">"${q.q}" යන වචනයට සමාන අර්ථය ඇති පදය කුමක්ද?</div>
+      <div class="question-hint">📌 නිවැරදි සමානාර්ථ පදය තෝරන්න</div>
+      <div class="options-grid">
+        ${q.opts.map((o,i)=>`<button class="option-btn" onclick="selectAnswer(${i})" id="opt-${i}">
+          <span class="opt-letter">${['අ','ආ','ඇ'][i]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div id="feedback-area"></div>
+    </div>
+    <button id="next-btn" onclick="nextQuestion()">ඊළඟ ප්‍රශ්නය ➡</button>
+  `;
+  document.getElementById('quiz-content').innerHTML=html;
+  qAnswered=false;
+}
+
+function selectAnswer(i){
+  if(qAnswered) return;
+  qAnswered=true;
+  let q=QUIZ_QUESTIONS[qIdx];
+  let btns=document.querySelectorAll('.option-btn');
+  btns.forEach(b=>b.classList.add('disabled'));
+  let fb=document.getElementById('feedback-area');
+  if(i===q.ans){
+    qScore++;
+    btns[i].classList.add('correct');
+    let praises=['සුපිරි!','ඉතා සුපිරි!','දක්ෂයි!','නියමයි!','ඉදිරිය!'];
+    fb.innerHTML=`<div class="feedback-box correct">⭐ ${praises[Math.floor(Math.random()*praises.length)]} නිවැරදියයි!</div>`;
+    showPraiseQuick(i);
+    launchMiniConfetti();
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    qWrong.push({q:q.q,yourAns:q.opts[i],correct:q.opts[q.ans],explain:q.explain});
+    fb.innerHTML=`<div class="feedback-box wrong"><div class="fb-title">😕 අවස්ථාව නැත!</div>
+      <span class="fb-explain">✅ නිවැරදි පිළිතුර: <strong style="color:var(--green);">${q.opts[q.ans]}</strong><br>${q.explain}</span>
+    </div>`;
+    btns[i].style.animation='shake 0.5s ease';
+  }
+  document.getElementById('next-btn').style.display='block';
+}
+function nextQuestion(){qIdx++;renderQuestion();}
+
+function showPraiseQuick(i){
+  let praises=[
+    {icon:'⭐',msg:'සුපිරි!',sub:'නිවැරදියයි!'},
+    {icon:'🌟',msg:'ඉතා සුපිරි!',sub:'දිගටම කරගෙන යන්න!'},
+    {icon:'🏆',msg:'ඉතා දක්ෂයි!',sub:'ශ්‍රේෂ්ඨ කාර්යයකි!'},
+    {icon:'🎉',msg:'නියමයි!',sub:'ඔබ දිනුවාය!'},
+  ];
+  let p=praises[Math.floor(Math.random()*praises.length)];
+  let pp=document.getElementById('praise-popup');
+  document.getElementById('pp-icon').textContent=p.icon;
+  document.getElementById('pp-msg').textContent=p.msg;
+  document.getElementById('pp-sub').textContent=p.sub;
+  pp.style.display='block';
+  setTimeout(()=>pp.style.display='none',1200);
+}
+
+function showPraise(correct,total){
+  let pct=correct/total;
+  let p;
+  if(pct===1) p={icon:'🏆',msg:'ඉතා සුපිරි!',sub:'සියල්ල නිවැරදියයි!'};
+  else if(pct>=0.7) p={icon:'🌟',msg:'ශ්‍රේෂ්ඨ!',sub:`${correct}/${total} නිවැරදියයි!`};
+  else if(pct>=0.5) p={icon:'⭐',msg:'ශ්‍රේෂ්ඨ ය!',sub:`${correct}/${total} නිවැරදියයි!`};
+  else p={icon:'💪',msg:'නැවත උත්සාහ කරන්න!',sub:`${correct}/${total} නිවැරදියයි.`};
+  let pp=document.getElementById('praise-popup');
+  document.getElementById('pp-icon').textContent=p.icon;
+  document.getElementById('pp-msg').textContent=p.msg;
+  document.getElementById('pp-sub').textContent=p.sub;
+  pp.style.display='block';
+  setTimeout(()=>pp.style.display='none',2200);
+}
+
+function showResults(){
+  let total=QUIZ_QUESTIONS.length;
+  let pct=qScore/total;
+  let stars=pct>=0.9?3:pct>=0.6?2:1;
+  let praise=pct===1?'🏆 ඉතා සුපිරි!':pct>=0.7?'🌟 ශ්‍රේෂ්ඨ ය!':pct>=0.5?'⭐ ශ්‍රේෂ්ඨ ය!':'💪 නැවත කොශල කරන්න!';
+
+  let wrongHtml='';
+  if(qWrong.length>0){
+    wrongHtml=`<div class="wrong-answers-section">
+      <div class="wrong-title">❌ වැරදි ප්‍රශ්නවල පැහැදිලි කිරීම</div>
+      ${qWrong.map(w=>`<div class="wrong-item">
+        <div class="wrong-q">❓ "${w.q}" යන වචනයට සමාන පදය?</div>
+        <div class="wrong-correct">✅ නිවැරදි: ${w.correct}</div>
+        <div class="wrong-you">❌ ඔබේ: ${w.yourAns}</div>
+        <div class="wrong-explain">📖 ${w.explain}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  document.getElementById('quiz-content').innerHTML=`
+    <div id="results-section">
+      <div class="results-trophy">${pct===1?'🏆':pct>=0.7?'🥇':'🥈'}</div>
+      <div class="results-title">ප්‍රශ්නෝත්තර නිමයි!</div>
+      <div class="results-score">${qScore} / ${total}</div>
+      <div class="results-sub">ඔබ ${qScore} ප්‍රශ්නයකට නිවැරදිව පිළිතුරු දුන්නාය</div>
+      <div class="stars-row">${Array.from({length:3},(_,i)=>`<span class="star" style="${i<stars?'':'filter:grayscale(1);'}opacity:${i<stars?'0':'0.3'};${i<stars?'animation:starPop 0.5s ease forwards '+i*0.2+'s;':''}">⭐</span>`).join('')}</div>
+      <div class="praise-msg">${praise}</div>
+      ${wrongHtml}
+      <button class="restart-btn" onclick="restartQuiz()">🔄 නැවත කරන්න</button>
+      <button class="dl-btn" onclick="downloadWorksheet()">⬇️ කාර්ය පත්‍රිකාව Download</button>
+    </div>
+  `;
+  if(pct>=0.7) launchConfetti();
+}
+
+function restartQuiz(){quizStarted=false;buildQuiz();}
+
+// ===== CONFETTI =====
+function launchConfetti(){
+  let colors=['#FFD700','#FF4081','#00E676','#00BCD4','#CDDC39','#FF9800'];
+  for(let i=0;i<30;i++){
+    setTimeout(()=>{
+      let c=document.createElement('div');
+      c.className='confetti-piece';
+      c.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${1+Math.random()}s;animation-delay:${Math.random()*0.5}s;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),2000);
+    },i*40);
+  }
+}
+function launchMiniConfetti(){
+  let colors=['#FFD700','#FF4081','#00E676'];
+  for(let i=0;i<10;i++){
+    setTimeout(()=>{
+      let c=document.createElement('div');
+      c.className='confetti-piece';
+      c.style.cssText=`left:${20+Math.random()*60}%;top:50%;background:${colors[i%3]};width:8px;height:8px;animation-duration:1s;border-radius:50%`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),1200);
+    },i*50);
+  }
+}
+
+// ===== WORKSHEET DOWNLOAD =====
+function downloadWorksheet(){
+  let html=`<!DOCTYPE html><html lang="si"><head><meta charset="UTF-8"><title>සමානාර්ථ පද - කාර්ය පත්‍රිකාව</title>
+<style>
+body{font-family:'Noto Sans Sinhala',sans-serif;padding:30px;max-width:700px;margin:0 auto;color:#222;}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700;900&display=swap');
+h1{text-align:center;color:#4a00a0;font-size:24px;margin-bottom:4px;}
+h2{color:#2d0080;font-size:16px;margin:20px 0 8px;border-bottom:2px solid #4a00a0;padding-bottom:4px;}
+.grade-section{margin-bottom:24px;}
+.pair-table{width:100%;border-collapse:collapse;margin-bottom:12px;}
+.pair-table td,.pair-table th{border:1px solid #ccc;padding:8px 12px;font-size:14px;}
+.pair-table th{background:#4a00a0;color:#fff;}
+.fill-table{width:100%;border-collapse:collapse;margin-bottom:12px;}
+.fill-table td{border:1px solid #ccc;padding:10px 14px;font-size:14px;}
+.blank{border-bottom:2px solid #333;display:inline-block;min-width:80px;}
+.mcq{margin-bottom:10px;font-size:14px;}
+.answers{margin-top:30px;background:#f0e6ff;padding:16px;border-radius:8px;}
+.answers h2{color:#4a00a0;}
+</style></head><body>
+<h1>සමානාර්ථ පද - කාර්ය පත්‍රිකාව</h1>
+<p style="text-align:center;color:#666;margin-bottom:20px;">ශ්‍රේණි 1-5 | නම: ________________________ | ශ්‍රේණිය: _______</p>
+
+<h2>කොටස I: සමානාර්ථ පද ගැලපීම</h2>
+<p>A තීරයේ ඇති වචනයට ගැලපෙන B තීරයේ සමානාර්ථ පදය සොයා ගෙලපන්න.</p>
+${GRADES.map(g=>`<div class="grade-section"><h2>${g.label}</h2>
+<table class="pair-table"><tr><th>A තීරය</th><th>B තීරය</th><th>ගැලපීම</th></tr>
+${g.pairs.map(p=>`<tr><td>${p.w}</td><td>_______________</td><td></td></tr>`).join('')}
+</table>
+<p><em>B තීරයෙහි ඇති පද: ${shuffle([...g.pairs.map(p=>p.s)]).join(', ')}</em></p>
+</div>`).join('')}
+
+<h2>කොටස II: හිස්තැන් පිරවීම</h2>
+<p>නිවැරදි සමානාර්ථ පදය ________________ හිස්තැනට ලියන්න.</p>
+${QUIZ_QUESTIONS.slice(0,10).map((q,i)=>`<div class="mcq">${i+1}. "${q.q}" යන වචනයට සමාන අර්ථය ඇති පදය: _______________</div>`).join('')}
+
+<h2>කොටස III: බහුවරණ ප්‍රශ්න</h2>
+${QUIZ_QUESTIONS.map((q,i)=>`<div class="mcq">${i+1}. "${q.q}" යන වචනයට සමාන අර්ථය ඇති පදය කුමක්ද?<br>
+&nbsp;&nbsp;අ) ${q.opts[0]} &nbsp;&nbsp; ආ) ${q.opts[1]} &nbsp;&nbsp; ඇ) ${q.opts[2]}</div>`).join('')}
+
+<div class="answers">
+<h2>📋 පිළිතුරු</h2>
+<p><strong>කොටස I:</strong></p>
+${GRADES.map(g=>`<p><em>${g.label}:</em> ${g.pairs.map(p=>`${p.w} → ${p.s}`).join(' | ')}</p>`).join('')}
+<p><strong>කොටස III (බහුවරණ):</strong> ${QUIZ_QUESTIONS.map((q,i)=>`${i+1}. ${q.opts[q.ans]}`).join(' | ')}</p>
+</div>
+</body></html>`;
+  let blob=new Blob([html],{type:'text/html'});
+  let a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='samanarththa_pada_worksheet.html';
+  a.click();
+}
+
+// ===== UTILS =====
+function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ===== INIT =====
+buildStudy();
+</script>
+</body>
+</html>
