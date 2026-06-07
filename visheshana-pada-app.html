@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#0d1b2a"/>
+<title>විශේෂණ පද - ශ්‍රේණි 3-5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg1:#0d1b2a;--bg2:#1b2e45;--bg3:#243447;
+  --gold:#FFD700;--green:#00E676;--pink:#FF4081;--orange:#FF9800;--cyan:#00BCD4;--lime:#CDDC39;--purple:#CE93D8;
+  --font:'Noto Sans Sinhala',sans-serif;
+  --card:rgba(255,255,255,0.07);--border:rgba(255,255,255,0.15);
+}
+html,body{min-height:100%;background:linear-gradient(160deg,var(--bg1),var(--bg2),var(--bg3));background-attachment:fixed;font-family:var(--font);color:#fff;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;user-select:none;-webkit-user-select:none;}
+::-webkit-scrollbar{display:none;}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:100px;}
+body{-webkit-touch-callout:none;}
+
+/* WHATSAPP BANNER */
+#wa-banner{background:linear-gradient(135deg,#25D366,#128C7E);padding:11px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.4);position:sticky;top:0;z-index:200;text-decoration:none;}
+#wa-banner .wa-icon{font-size:22px;flex-shrink:0;}
+#wa-banner .wa-text{flex:1;}
+#wa-banner .wa-title{font-size:12px;font-weight:700;color:#fff;}
+#wa-banner .wa-sub{font-size:10px;color:rgba(255,255,255,0.85);}
+#wa-banner .wa-btn{background:rgba(255,255,255,0.25);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#fff;white-space:nowrap;flex-shrink:0;}
+
+/* VISIT COUNTER */
+#visit-toggle{background:rgba(255,215,0,0.1);border-bottom:1px solid rgba(255,215,0,0.2);padding:7px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+#visit-toggle span{font-size:12px;color:var(--gold);font-weight:700;}
+#visit-count-val{font-size:18px;font-weight:900;color:var(--gold);}
+#visit-detail{display:none;background:rgba(255,215,0,0.06);padding:8px 16px;font-size:11px;color:rgba(255,255,255,0.6);border-bottom:1px solid rgba(255,215,0,0.1);}
+
+/* HEADER */
+#header{padding:16px 16px 10px;text-align:center;}
+#header .h-icons{font-size:36px;margin-bottom:6px;}
+#header h1{font-size:20px;font-weight:900;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.5);}
+#header .h-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:3px;}
+
+/* ANIMATIONS */
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes popIn{0%{transform:scale(0.4);opacity:0}70%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes starPop{0%{transform:scale(0)rotate(-30deg);opacity:0}70%{transform:scale(1.5)rotate(10deg)}100%{transform:scale(1)rotate(0);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+@keyframes confettiFall{0%{transform:translateY(-20px)rotate(0deg);opacity:1;}100%{transform:translateY(160px)rotate(720deg);opacity:0;}}
+@keyframes glow{0%,100%{box-shadow:0 0 10px rgba(255,215,0,0.3);}50%{box-shadow:0 0 25px rgba(255,215,0,0.7);}}
+
+/* TABS */
+#tabs{display:flex;gap:3px;padding:10px 10px;background:rgba(0,0,0,0.3);position:sticky;top:44px;z-index:100;overflow-x:auto;}
+#tabs::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;padding:8px 10px;border:none;border-radius:14px;font-family:var(--font);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.3s;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);}
+.tab-btn.active{background:var(--gold);color:#0d1b2a;box-shadow:0 4px 16px rgba(255,215,0,0.4);}
+
+.section{display:none;animation:fadeIn 0.4s ease;}
+.section.active{display:block;}
+
+/* ===== STUDY SECTION ===== */
+#study-section{padding:12px;}
+.study-intro{background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(0,188,212,0.05));border:1px solid rgba(0,188,212,0.3);border-radius:18px;padding:14px;margin-bottom:16px;}
+.study-intro h3{font-size:15px;font-weight:900;color:var(--cyan);margin-bottom:8px;}
+.study-intro p{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;}
+.study-intro .example-row{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.eg-chip{background:rgba(255,215,0,0.18);border:1px solid rgba(255,215,0,0.4);color:var(--gold);padding:6px 12px;border-radius:14px;font-size:13px;font-weight:700;}
+.eg-arrow{color:var(--pink);font-size:16px;}
+.eg-result{color:var(--green);font-size:13px;font-weight:700;}
+
+.study-type-tabs{display:flex;gap:8px;margin-bottom:14px;}
+.stype-btn{flex:1;padding:10px;border:2px solid rgba(255,255,255,0.15);border-radius:16px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;text-align:center;}
+.stype-btn.active{border-color:var(--orange);background:rgba(255,152,0,0.2);color:var(--orange);}
+
+.pairs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pair-card{background:linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0.04));border:1px solid var(--border);border-radius:18px;padding:14px 10px;text-align:center;animation:float 3s ease-in-out infinite;cursor:default;}
+.pair-card:nth-child(2n){animation-delay:1s;}
+.pair-card:nth-child(3n){animation-delay:0.5s;}
+.pair-card .pc-visheshana{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:4px;}
+.pair-card .pc-arrow{font-size:12px;color:var(--pink);}
+.pair-card .pc-visheshya{font-size:15px;font-weight:700;color:var(--lime);}
+.pair-card .pc-type{font-size:10px;color:var(--cyan);margin-top:4px;background:rgba(0,188,212,0.15);padding:2px 8px;border-radius:10px;display:inline-block;}
+
+/* ===== DRAG SECTION ===== */
+#drag-section{padding:12px;}
+.drag-instructions{font-size:12px;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:14px;background:rgba(255,255,255,0.07);padding:10px;border-radius:14px;line-height:1.6;}
+.drag-question{background:linear-gradient(135deg,rgba(255,152,0,0.12),rgba(255,152,0,0.05));border:1px solid rgba(255,152,0,0.3);border-radius:16px;padding:12px;margin-bottom:10px;}
+.drag-q-text{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.5;}
+.drag-q-text span{color:var(--gold);}
+.drop-zone{min-height:44px;border:2.5px dashed rgba(255,255,255,0.25);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:rgba(255,255,255,0.3);transition:all 0.2s;background:rgba(255,255,255,0.04);padding:8px;}
+.drop-zone.drag-over{border-color:var(--gold);background:rgba(255,215,0,0.12);color:var(--gold);}
+.drop-zone.correct{border-color:var(--green);background:rgba(0,230,118,0.12);color:var(--green);}
+.drop-zone.wrong{border-color:var(--pink);background:rgba(255,64,129,0.12);color:var(--pink);animation:shake 0.5s ease;}
+.drag-chips-area{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0;padding:12px;background:rgba(255,255,255,0.04);border-radius:16px;min-height:54px;}
+.drag-chip{background:linear-gradient(135deg,rgba(0,188,212,0.25),rgba(0,188,212,0.1));border:2px solid var(--cyan);color:var(--cyan);padding:10px 14px;border-radius:18px;font-size:14px;font-weight:700;cursor:grab;transition:all 0.2s;touch-action:none;user-select:none;}
+.drag-chip:active{transform:scale(1.08);box-shadow:0 6px 20px rgba(0,188,212,0.5);}
+.drag-chip.used{opacity:0.25;pointer-events:none;}
+#drag-check-btn{width:100%;padding:14px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--gold),#ff9800);color:#0d1b2a;font-family:var(--font);font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(255,215,0,0.35);margin-bottom:10px;margin-top:4px;}
+#drag-reset-btn{width:100%;padding:12px;border:2px solid var(--border);border-radius:20px;background:transparent;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;}
+.drag-score-display{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;font-size:13px;color:rgba(255,255,255,0.7);}
+.drag-score-display strong{color:var(--gold);font-size:16px;}
+
+/* ===== QUIZ SECTION ===== */
+#quiz-section{padding:12px;}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.quiz-progress{font-size:12px;color:rgba(255,255,255,0.65);}
+.quiz-score-badge{background:var(--gold);color:#0d1b2a;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:900;}
+.progress-bar-wrap{background:rgba(255,255,255,0.12);border-radius:10px;height:8px;margin-bottom:14px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:10px;transition:width 0.4s;}
+.question-card{background:linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0.04));border:1px solid var(--border);border-radius:22px;padding:20px 16px;margin-bottom:14px;animation:fadeIn 0.35s ease;}
+.question-num{font-size:11px;color:var(--cyan);font-weight:700;margin-bottom:6px;}
+.question-text{font-size:16px;font-weight:700;color:#fff;line-height:1.6;margin-bottom:4px;}
+.question-phrase{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:12px;}
+.options-grid{display:flex;flex-direction:column;gap:9px;}
+.option-btn{padding:13px 16px;border:2px solid var(--border);border-radius:16px;background:rgba(255,255,255,0.07);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:10px;}
+.option-btn:active{transform:scale(0.98);}
+.option-btn.correct{border-color:var(--green);background:rgba(0,230,118,0.18);color:var(--green);}
+.option-btn.wrong{border-color:var(--pink);background:rgba(255,64,129,0.18);color:var(--pink);animation:shake 0.5s ease;}
+.option-btn.disabled{pointer-events:none;}
+.opt-letter{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;background:rgba(255,255,255,0.13);}
+.option-btn.correct .opt-letter{background:var(--green);color:#000;}
+.option-btn.wrong .opt-letter{background:var(--pink);color:#fff;}
+.feedback-box{padding:12px 14px;border-radius:16px;margin-top:8px;font-size:13px;font-weight:700;animation:fadeIn 0.3s ease;}
+.feedback-box.correct{background:rgba(0,230,118,0.12);border:1px solid var(--green);color:var(--green);}
+.feedback-box.wrong{background:rgba(255,64,129,0.1);border:1px solid var(--pink);color:#fff;}
+.feedback-box .fb-title{font-size:14px;margin-bottom:4px;}
+.feedback-box.wrong .fb-title{color:var(--pink);}
+.fb-explain{color:rgba(255,255,255,0.8);font-size:12px;line-height:1.6;margin-top:4px;}
+.next-btn{width:100%;padding:13px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--cyan),#0097a7);color:#000;font-family:var(--font);font-size:14px;font-weight:900;cursor:pointer;margin-top:8px;box-shadow:0 4px 16px rgba(0,188,212,0.35);}
+
+/* STREAK */
+.streak-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:linear-gradient(135deg,var(--gold),#ff9800);border-radius:24px;padding:20px 30px;text-align:center;z-index:500;transition:transform 0.3s;box-shadow:0 10px 40px rgba(255,215,0,0.5);}
+.streak-popup.show{transform:translate(-50%,-50%) scale(1);}
+.streak-popup .sp-emoji{font-size:48px;}
+.streak-popup .sp-text{font-size:20px;font-weight:900;color:#0d1b2a;margin-top:6px;}
+
+/* RESULTS */
+#results-section{padding:16px;animation:fadeIn 0.5s ease;}
+.results-trophy{font-size:70px;text-align:center;margin-bottom:10px;animation:popIn 0.6s ease;}
+.results-title{text-align:center;font-size:22px;font-weight:900;color:#fff;margin-bottom:6px;}
+.results-score{text-align:center;font-size:44px;font-weight:900;color:var(--gold);margin-bottom:4px;}
+.results-sub{text-align:center;font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:14px;}
+.stars-row{display:flex;justify-content:center;gap:12px;margin-bottom:10px;}
+.star{font-size:36px;}
+.praise-msg{text-align:center;font-size:18px;font-weight:900;color:var(--lime);margin-bottom:18px;animation:pulse 2s infinite;}
+.restart-btn{width:100%;padding:14px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--gold),#ff9800);color:#0d1b2a;font-family:var(--font);font-size:15px;font-weight:900;cursor:pointer;margin-bottom:10px;box-shadow:0 4px 18px rgba(255,215,0,0.35);}
+.dl-btn{width:100%;padding:13px;border:2px solid var(--cyan);border-radius:20px;background:transparent;color:var(--cyan);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;}
+
+/* WRONG TAB */
+#wrong-section{padding:12px;}
+.wrong-section-empty{text-align:center;padding:40px 20px;color:rgba(255,255,255,0.5);font-size:14px;}
+.wrong-section-empty .ws-icon{font-size:60px;margin-bottom:12px;}
+.wrong-item{background:linear-gradient(135deg,rgba(255,64,129,0.1),rgba(255,64,129,0.04));border:1px solid rgba(255,64,129,0.3);border-radius:18px;padding:14px;margin-bottom:12px;animation:fadeIn 0.4s ease;}
+.wrong-q{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.5;}
+.wrong-q span{color:var(--gold);}
+.wrong-correct{background:rgba(0,230,118,0.12);border-radius:10px;padding:6px 10px;color:var(--green);font-size:13px;font-weight:700;margin-bottom:4px;}
+.wrong-you{background:rgba(255,64,129,0.12);border-radius:10px;padding:6px 10px;color:var(--pink);font-size:13px;font-weight:700;margin-bottom:6px;}
+.wrong-explain{color:rgba(255,255,255,0.8);font-size:12px;line-height:1.6;background:rgba(255,255,255,0.05);padding:8px 10px;border-radius:10px;}
+.wrong-count-badge{background:linear-gradient(135deg,var(--pink),#c2185b);color:#fff;padding:8px 16px;border-radius:16px;text-align:center;font-size:13px;font-weight:700;margin-bottom:14px;}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;top:-10px;z-index:999;animation:confettiFall linear forwards;pointer-events:none;}
+
+/* QUIZ DIFFICULTY SELECTOR */
+.diff-selector{display:flex;gap:6px;margin-bottom:14px;}
+.diff-btn{flex:1;padding:10px 6px;border:2px solid var(--border);border-radius:16px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;text-align:center;}
+.diff-btn.active{border-color:var(--purple);background:rgba(206,147,216,0.2);color:var(--purple);}
+
+.section-title{font-size:15px;font-weight:900;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:rgba(255,215,0,0.2);}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- WHATSAPP BANNER -->
+<a id="wa-banner" href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank" rel="noopener">
+  <span class="wa-icon">💬</span>
+  <div class="wa-text">
+    <div class="wa-title">නව පාඩම් සඳහා WhatsApp සමූහයට එකතු වන්න</div>
+    <div class="wa-sub">නිර්මාණාත්මක නව පාඩම් ලබා ගන්න</div>
+  </div>
+  <div class="wa-btn">Join 👋</div>
+</a>
+
+<!-- VISIT COUNTER -->
+<div id="visit-toggle" onclick="toggleVisit()">
+  <span>📊 යෙදුම භාවිත කල වාර ගනන</span>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span id="visit-count-val">0</span>
+    <span style="font-size:14px;color:var(--gold);">▼</span>
+  </div>
+</div>
+<div id="visit-detail">🕐 ඔබ මෙම යෙදුම <strong id="visit-count-val2">0</strong> වතාවක් භාවිත කර ඇත</div>
+
+<!-- HEADER -->
+<div id="header">
+  <div class="h-icons">📝✨🌟</div>
+  <h1>විශේෂණ පද</h1>
+  <div class="h-sub">ශ්‍රේණි 3 - 5 | Sinhala Grammar</div>
+</div>
+
+<!-- TABS -->
+<div id="tabs">
+  <button class="tab-btn active" onclick="showTab('study')">📚 ඉගෙනීම</button>
+ <!-- <button class="tab-btn" onclick="showTab('passage')">📖 ඡේදය</button> -->
+  <button class="tab-btn" onclick="showTab('drag')">🎯 ගැලපීම</button>
+  <button class="tab-btn" onclick="showTab('quiz')">❓ ප්‍රශ්නෝත්තර</button>
+  <button class="tab-btn" onclick="showTab('wrong')">❌ වැරදි</button>
+</div>
+
+<!-- STUDY SECTION -->
+<div id="study-section" class="section active">
+  <div style="padding:12px;">
+    <div class="study-intro">
+      <h3>🔍 විශේෂණ පදයක් යනු කුමක්ද?</h3>
+      <p>කිසියම් පදයක අර්ථය තවදුරටත් පැහැදිලි කිරීමට, එහි ස්වභාවය විස්තර කිරීමට හෝ එම පදයේ අර්ථය වැඩි කිරීමට හෝ අඩු කිරීමට යොදන පද <strong style="color:var(--cyan)">විශේෂණ පද</strong> ලෙස හඳුන්වනු ලැබේ.</p>
+      <div class="example-row">
+        <span class="eg-chip">නිල්</span><span class="eg-arrow">→</span><span class="eg-result">නිල් අහස</span>
+      </div>
+      <div class="example-row">
+        <span class="eg-chip">ලස්සන</span><span class="eg-arrow">→</span><span class="eg-result">ලස්සන මලක්</span>
+      </div>
+    </div>
+
+    <div class="section-title">🏷️ විශේෂණ වර්ග</div>
+    <div style="display:grid;gap:10px;margin-bottom:16px;">
+      <div style="background:linear-gradient(135deg,rgba(206,147,216,0.15),rgba(206,147,216,0.05));border:1px solid rgba(206,147,216,0.3);border-radius:16px;padding:14px;">
+        <div style="font-size:14px;font-weight:900;color:var(--purple);margin-bottom:6px;">1️⃣ නාම විශේෂණ</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.7;">නාම පදයක් විස්තර කරනු ලබන විශේෂණ. <span style="color:var(--gold)">රෝස මල්, නිල් පළස</span></div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(0,230,118,0.12),rgba(0,230,118,0.04));border:1px solid rgba(0,230,118,0.3);border-radius:16px;padding:14px;">
+        <div style="font-size:14px;font-weight:900;color:var(--green);margin-bottom:6px;">2️⃣ ක්‍රියා විශේෂණ</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.7;">ක්‍රියා පදයක් විස්තර කරනු ලබන විශේෂණ. <span style="color:var(--gold)">වේගයෙන් දුවයි, ඉකි ගසමින් අඬනවා</span></div>
+      </div>
+    </div>
+
+    <div class="section-title">📋 විශේෂණ හා විශේෂ්‍ය</div>
+    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:12px;margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--border);">
+        <div style="background:var(--cyan);color:#000;padding:10px;text-align:center;font-size:13px;font-weight:900;">විශේෂණය</div>
+        <div style="background:var(--orange);color:#000;padding:10px;text-align:center;font-size:13px;font-weight:900;">විශේෂ්‍යය</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--cyan);">උස</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--orange);">ළමයා</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--cyan);">දීග</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--orange);">මේසය</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--cyan);">පනින</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--orange);">රිළවා</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--cyan);">සුපුන්</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--orange);">සඳ</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--cyan);">ඇද</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--orange);">ඇණය</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--cyan);">රට</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);color:var(--orange);">හාවා</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;color:var(--cyan);">රජ</div>
+        <div style="padding:8px 10px;text-align:center;font-size:13px;font-weight:700;color:var(--orange);">කුමරා</div>
+      </div>
+    </div>
+
+    <div class="section-title">🎴 ප්‍රශ්නෝත්තර නිදර්ශන</div>
+    <div class="pairs-grid" id="study-cards"></div>
+  </div>
+</div>
+
+<!-- PASSAGE SECTION -->
+<div id="passage-section" class="section">
+  <div style="padding:12px;">
+    <div class="section-title">📖 මගේ ගෙවත්ත</div>
+    <div style="background:linear-gradient(135deg,rgba(0,188,212,0.12),rgba(0,188,212,0.04));border:1px solid rgba(0,188,212,0.3);border-radius:18px;padding:16px;margin-bottom:18px;font-size:14px;line-height:2;color:rgba(255,255,255,0.9);">
+      <p>මගේ නිවාස පිටුපස ලස්සන ගෙවත්තක් ඇත. එහි <strong style="color:var(--gold)">වර්ණවත්</strong> මල් වර්ග <strong style="color:var(--gold)">හොඳින්</strong> පිපී තිබේ. මම දිනපතා <strong style="color:var(--gold)">උදෑසන</strong> ගෙවත්තට ගොස් පැළවලට <strong style="color:var(--gold)">කඩිසරව</strong> වතුර දමමි. එහි ඇති <strong style="color:var(--gold)">උස</strong> ගස්වල <strong style="color:var(--gold)">ඉදුණු</strong> ගෙඩි මනාව <strong style="color:var(--gold)">එල්ලී</strong> ඇත. මම <strong style="color:var(--gold)">කුඩා</strong> වල් පැළෑටි <strong style="color:var(--gold)">සෙමින්</strong> ඉවත් කරමි. <strong style="color:var(--gold)">සශ්‍රීක</strong> කොළ පැහැති ඇළවල් <strong style="color:var(--gold)">පාත්ති</strong> නිතරම මගේ ඇසට පෙනේ. මගේ ගෙවත්ත <strong style="color:var(--gold)">ඉතාම</strong> පිරිසිදුය.</p>
+    </div>
+
+    <div class="section-title">📝 අභ්‍යාස: නාම විශේෂණ සහ ක්‍රියා විශේෂණ හඳුනා ගනිමු</div>
+    <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:16px;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.8;">
+      ඉහත ඡේදයේ අඩංගු නාම විශේෂණ පද සහ ක්‍රියා විශේෂණ පද අනුරන් පහත ප්‍රශ්නවලට පිළිතුරු සපයන්න.
+    </div>
+
+    <div id="passage-questions"></div>
+  </div>
+</div>
+
+<!-- DRAG SECTION -->
+<div id="drag-section" class="section">
+  <div style="padding:12px;">
+    <div class="drag-instructions">✋ <strong>තට්ටු කර ගැලපීම</strong><br>පළමුව වචනය තට්ටු කරන්න, ඉන්පසු ගැලපෙන හිස්තැන තට්ටු කරන්න</div>
+    <div class="drag-score-display">ලකුණු: <strong id="drag-score">0</strong> / <strong id="drag-total">0</strong></div>
+
+    <!-- Page tabs for drag -->
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button id="drag-page1-btn" onclick="showDragPage(1)" style="flex:1;padding:10px;border:2px solid var(--gold);border-radius:16px;background:rgba(255,215,0,0.2);color:var(--gold);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;">📄 පිටු 1 (1-5)</button>
+      <button id="drag-page2-btn" onclick="showDragPage(2)" style="flex:1;padding:10px;border:2px solid rgba(255,255,255,0.2);border-radius:16px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;">📄 පිටු 2 (6-10)</button>
+    </div>
+
+    <div id="drag-page1">
+      <div id="drag-questions-p1"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;text-align:center;">⬇️ මෙතැනින් තේරීම</div>
+      <div class="drag-chips-area" id="drag-chips-p1"></div>
+    </div>
+    <div id="drag-page2" style="display:none;">
+      <div id="drag-questions-p2"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;text-align:center;">⬇️ මෙතැනින් තේරීම</div>
+      <div class="drag-chips-area" id="drag-chips-p2"></div>
+    </div>
+
+    <button id="drag-check-btn" onclick="checkDrag()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
+    <button id="drag-reset-btn" onclick="resetDrag()">🔄 නැවත ආරම්භ කරන්න</button>
+  </div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="quiz-section" class="section">
+  <div id="quiz-content" style="padding:12px;"></div>
+</div>
+
+<!-- WRONG ANSWERS SECTION -->
+<div id="wrong-section" class="section">
+  <div style="padding:12px;" id="wrong-content">
+    <div class="wrong-section-empty">
+      <div class="ws-icon">🎯</div>
+      <div>ප්‍රශ්නෝත්තර සම්පූර්ණ කිරීමෙන් පසු ඔබේ වැරදි පිළිතුරු මෙහි දිස්වේ</div>
+    </div>
+  </div>
+</div>
+
+<!-- STREAK POPUP -->
+<div class="streak-popup" id="streak-popup">
+  <div class="sp-emoji" id="streak-emoji">🔥</div>
+  <div class="sp-text" id="streak-text">සුපිරි!</div>
+</div>
+
+<script>
+// ===== COPY PROTECTION =====
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','a','s','u','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+document.addEventListener('selectstart',e=>e.preventDefault());
+document.addEventListener('dragstart',e=>{if(e.target.tagName!=='DIV'||!e.target.classList.contains('drag-chip'))e.preventDefault();});
+
+// ===== VISIT COUNTER =====
+(function(){
+  let v=parseInt(localStorage.getItem('vp_visits')||'0')+1;
+  localStorage.setItem('vp_visits',v);
+  document.getElementById('visit-count-val').textContent=v;
+  document.getElementById('visit-count-val2').textContent=v;
+})();
+function toggleVisit(){
+  let d=document.getElementById('visit-detail');
+  d.style.display=d.style.display==='block'?'none':'block';
+}
+
+// ===== TAB SWITCHING =====
+function showTab(t){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(t+'-section').classList.add('active');
+  event.target.classList.add('active');
+  if(t==='quiz'&&!quizStarted)buildQuiz();
+  if(t==='wrong')buildWrongTab();
+  if(t==='passage'&&!passageBuilt){buildPassageQuestions();passageBuilt=true;}
+}
+
+// ===== QUIZ DATA - ALL 40 QUESTIONS =====
+const ALL_QUESTIONS=[
+  // Q1-4 from image 3
+  {phrase:'ලස්සන මලක්',visheshana:'ලස්සන',visheshya:'මලක්',opts:['මලක්','ලස්සන','මල'],ans:1,explain:'"ලස්සන" යන්න "මලක්" යන නාම පදය විස්තර කරයි. එනිසා "ලස්සන" විශේෂණය වේ.'},
+  {phrase:'රතු පාට පෑන',visheshana:'රතු පාට',visheshya:'පෑන',opts:['රතු පාට','පෑන','පාට'],ans:0,explain:'"රතු පාට" යන්න "පෑන" ය කිනිය? "රතු" වර්ණය සහිත "පෑන" ය. "රතු පාට" විශේෂණය.'},
+  {phrase:'උස ගසක්',visheshana:'උස',visheshya:'ගසක්',opts:['උස','ගසක්','උස ගසක්'],ans:0,explain:'"උස" යන්නෙන් "ගසක්" කොතරම් නම් ද යන්න පැහැදිලි කරයි. "උස" විශේෂණය.'},
+  {phrase:'සිසිල් ජලය',visheshana:'සිසිල්',visheshya:'ජලය',opts:['ජලය','සිසිල්','සිසිල් ජලය'],ans:1,explain:'"සිසිල්" යනු "ජලය" යන නාම පදය විස්තර කිරීමේ විශේෂණ පදය.'},
+  // Q5-12 from image 5
+  {phrase:'මහත මිනිසා',visheshana:'මහත',visheshya:'මිනිසා',opts:['මිනිසා','මහත','මහත මිනිසා'],ans:1,explain:'"මහත" යනු "මිනිසා" ගේ ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'පෑණ රස ඇඹ',visheshana:'පෑණ රස',visheshya:'ඇඹ',opts:['ඇඹ','රස','පෑණ රස'],ans:2,explain:'"පෑණ රස" යනු "ඇඹ" යන ගෙඩිය කිනිය ස්වභාවයේ ද යන්න විස්තර කරන විශේෂණය.'},
+  {phrase:'කුඩා පැටියා',visheshana:'කුඩා',visheshya:'පැටියා',opts:['කුඩා','පැටියා','කුඩා පැටියා'],ans:0,explain:'"කුඩා" යන්නෙන් "පැටියා" ගේ ප්‍රමාණය විස්තර කෙරේ. "කුඩා" විශේෂණය.'},
+  {phrase:'වේගයෙන් දුවයි',visheshana:'වේගයෙන්',visheshya:'දුවයි',opts:['වේගයෙන්','දුවයි','වේගයෙන් දුවයි'],ans:0,explain:'"වේගයෙන්" යනු "දුවයි" යන ක්‍රියාව විස්තර කරන ක්‍රියා විශේෂණය.'},
+  {phrase:'කළු වලාකුළ',visheshana:'කළු',visheshya:'වලාකුළ',opts:['වලාකුළ','කළු','වලා'],ans:1,explain:'"කළු" යනු "වලාකුළ" ගේ වර්ණය කියයි. "කළු" විශේෂණය.'},
+  {phrase:'උණුසුම් කිරි',visheshana:'උණුසුම්',visheshya:'කිරි',opts:['උණුසුම්','කිරි','උණුසුම් කිරි'],ans:0,explain:'"උණුසුම්" යනු "කිරි" ගේ උෂ්ණත්වය විස්තර කරන විශේෂණය.'},
+  {phrase:'දඟකාර ළමයා',visheshana:'දඟකාර',visheshya:'ළමයා',opts:['ළමයා','දඟකාර','දඟකාර ළමයා'],ans:1,explain:'"දඟකාර" යනු "ළමයා" ගේ හැසිරීම විස්තර කරන විශේෂණය.'},
+  {phrase:'පිරිසිදු ඇඳුම්',visheshana:'පිරිසිදු',visheshya:'ඇඳුම්',opts:['පිරිසිදු','ඇඳුම්','පිරිසිදු ඇඳුම්'],ans:0,explain:'"පිරිසිදු" යනු "ඇඳුම්" ගේ තත්ත්වය විස්තර කරන විශේෂණය.'},
+  // Q13-19 from image 7
+  {phrase:'බර පෙට්ටියක්',visheshana:'බර',visheshya:'පෙට්ටියක්',opts:['පෙට්ටියක්','බර','බර පෙට්ටියක්'],ans:1,explain:'"බර" යනු "පෙට්ටිය" කොතරම් ද යන්න විස්තර කරන විශේෂණය.'},
+  {phrase:'දීගු පාරක්',visheshana:'දීගු',visheshya:'පාරක්',opts:['දීගු','පාරක්','දීගු පාරක්'],ans:0,explain:'"දීගු" යනු "පාරක්" ගේ දිග විස්තර කරන විශේෂණය.'},
+  {phrase:'පහසු ප්‍රශ්නයක්',visheshana:'පහසු',visheshya:'ප්‍රශ්නයක්',opts:['ප්‍රශ්නයක්','පහසු','පහසු ප්‍රශ්නයක්'],ans:1,explain:'"පහසු" යනු "ප්‍රශ්නය" ගේ ස්වභාවය කියයි. "පහසු" විශේෂණය.'},
+  {phrase:'කඩිසර කූඹියා',visheshana:'කඩිසර',visheshya:'කූඹියා',opts:['කඩිසර','කූඹියා','කඩිසර කූඹියා'],ans:0,explain:'"කඩිසර" යනු "කූඹියා" ගේ ලක්ෂණය විස්තර කරන විශේෂණය.'},
+  {phrase:'තඩ අව්ව',visheshana:'තඩ',visheshya:'අව්ව',opts:['අව්ව','තඩ','තඩ අව්ව'],ans:1,explain:'"තඩ" යනු "අව්ව" ගේ ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'නපුරු සතා',visheshana:'නපුරු',visheshya:'සතා',opts:['සතා','නපුරු','නපුරු සතා'],ans:1,explain:'"නපුරු" යනු "සතා" ගේ ලක්ෂණය විස්තර කරන විශේෂණය.'},
+  {phrase:'සීතල සුළඟ',visheshana:'සීතල',visheshya:'සුළඟ',opts:['සුළඟ','සීතල','සීතල සුළඟ'],ans:1,explain:'"සීතල" යනු "සුළඟ" ගේ ස්වභාවය කියයි. "සීතල" විශේෂණය.'},
+  // Q20-26 from image 6
+  {phrase:'පොහොසත් ගොවියා',visheshana:'පොහොසත්',visheshya:'ගොවියා',opts:['ගොවියා','පොහොසත්','පොහොසත් ගොවියා'],ans:1,explain:'"පොහොසත්" යනු "ගොවියා" ගේ ආර්ථික තත්ත්වය විස්තර කරන විශේෂණය.'},
+  {phrase:'රවුම් පන්දුව',visheshana:'රවුම්',visheshya:'පන්දුව',opts:['පන්දුව','රවුම්','රවුම් පන්දුව'],ans:1,explain:'"රවුම්" යනු "පන්දුව" ගේ හැඩය විස්තර කරන විශේෂණය.'},
+  {phrase:'අලුත් පොතක්',visheshana:'අලුත්',visheshya:'පොතක්',opts:['පොතක්','අලුත්','අලුත් පොතක්'],ans:1,explain:'"අලුත්" යනු "පොත" ගේ තත්ත්වය (නව) විස්තර කරන විශේෂණය.'},
+  {phrase:'පරණ කමිසය',visheshana:'පරණ',visheshya:'කමිසය',opts:['පරණ','කමිසය','පරණ කමිසය'],ans:0,explain:'"පරණ" යනු "කමිසය" ගේ වයස/තත්ත්වය කියයි. "පරණ" විශේෂණය.'},
+  {phrase:'මධුර කටහඬ',visheshana:'මධුර',visheshya:'කටහඬ',opts:['කටහඬ','මධුර','මධුර කටහඬ'],ans:1,explain:'"මධුර" යනු "කටහඬ" ගේ රසය/ලක්ෂණය විස්තර කරන විශේෂණය.'},
+  {phrase:'තිත්ත බෙහෙත්',visheshana:'තිත්ත',visheshya:'බෙහෙත්',opts:['බෙහෙත්','තිත්ත','තිත්ත බෙහෙත්'],ans:1,explain:'"තිත්ත" යනු "බෙහෙත්" ගේ රස ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'අහිංසක සතා',visheshana:'අහිංසක',visheshya:'සතා',opts:['අහිංසක','සතා','අහිංසක සතා'],ans:0,explain:'"අහිංසක" යනු "සතා" ගේ ස්වභාවය කියයි. "අහිංසක" විශේෂණය.'},
+  // Q27-33 from image 8
+  {phrase:'දුර ගමනක්',visheshana:'දුර',visheshya:'ගමනක්',opts:['ගමනක්','දුර','දුර ගමනක්'],ans:1,explain:'"දුර" යනු "ගමන" ගේ ආකාරය විස්තර කරන විශේෂණය.'},
+  {phrase:'මුදු මොළොක් මල්',visheshana:'මුදු මොළොක්',visheshya:'මල්',opts:['මුදු මොළොක්','මල්','මුදු මොළොක් මල්'],ans:0,explain:'"මුදු මොළොක්" යනු "මල්" ගේ ස්පර්ශ ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'තරබාරු බළලා',visheshana:'තරබාරු',visheshya:'බළලා',opts:['බළලා','තරබාරු','තරබාරු බළලා'],ans:1,explain:'"තරබාරු" යනු "බළලා" ගේ ශරීර තත්ත්වය කියයි. "තරබාරු" විශේෂණය.'},
+  {phrase:'මඩු කොට්ටය',visheshana:'මඩු',visheshya:'කොට්ටය',opts:['මඩු','කොට්ටය','මඩු කොට්ටය'],ans:0,explain:'"මඩු" යනු "කොට්ටය" ගේ ස්ථිරභාවය/ස්පර්ශ ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'මහ හඬින් කැගෑසයි',visheshana:'මහ හඬින්',visheshya:'කැගෑසයි',opts:['මහ හඬින්','කැගෑසයි','මහ'],ans:0,explain:'"මහ හඬින්" යනු "කැගෑසයි" යන ක්‍රියාව විස්තර කරන ක්‍රියා විශේෂණය.'},
+  {phrase:'දිළිසෙන තරු',visheshana:'දිළිසෙන',visheshya:'තරු',opts:['තරු','දිළිසෙන','දිළිසෙන තරු'],ans:1,explain:'"දිළිසෙන" යනු "තරු" ගේ ක්‍රියාකාරිත්වය/ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'නිල් අහස',visheshana:'නිල්',visheshya:'අහස',opts:['නිල්','අහස','නිල් අහස'],ans:0,explain:'"නිල්" යනු "අහස" ගේ වර්ණය කියයි. "නිල්" යනු සුප්‍රසිද්ධ විශේෂණ පදයකි.'},
+  // Q34-40 from image 1
+  {phrase:'ගොරෝසු හමක්',visheshana:'ගොරෝසු',visheshya:'හමක්',opts:['හමක්','ගොරෝසු','ගොරෝසු හමක්'],ans:1,explain:'"ගොරෝසු" යනු "හම" ගේ ස්පර්ශ ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'අඳුරු කාමරය',visheshana:'අඳුරු',visheshya:'කාමරය',opts:['අඳුරු','කාමරය','අඳුරු කාමරය'],ans:0,explain:'"අඳුරු" යනු "කාමරය" ගේ ආලෝකය/තත්ත්වය විස්තර කරන විශේෂණය.'},
+  {phrase:'නිහඬ පරිසරය',visheshana:'නිහඬ',visheshya:'පරිසරය',opts:['පරිසරය','නිහඬ','නිහඬ පරිසරය'],ans:1,explain:'"නිහඬ" යනු "පරිසරය" ගේ ශ්‍රවණ ස්වභාවය විස්තර කරන විශේෂණය.'},
+  {phrase:'මහන්සි බල්ලා',visheshana:'මහන්සි',visheshya:'බල්ලා',opts:['මහන්සි','බල්ලා','මහන්සි බල්ලා'],ans:0,explain:'"මහන්සි" යනු "බල්ලා" ගේ ශාරීරික/ශ්‍රාන්ත තත්ත්වය කියයි. "මහන්සි" විශේෂණය.'},
+  {phrase:'ප්‍රියමනාප දරුවා',visheshana:'ප්‍රියමනාප',visheshya:'දරුවා',opts:['දරුවා','ප්‍රියමනාප','ප්‍රියමනාප දරුවා'],ans:1,explain:'"ප්‍රියමනාප" යනු "දරුවා" ගේ ලක්ෂණය/ගතිය විස්තර කරන විශේෂණය.'},
+  {phrase:'හතරැස් මේසය',visheshana:'හතරැස්',visheshya:'මේසය',opts:['හතරැස්','මේසය','හතරැස් මේසය'],ans:0,explain:'"හතරැස්" යනු "මේසය" ගේ හැඩය කියයි. "හතරැස්" විශේෂණය.'},
+  {phrase:'ගැඹුරු වතුර',visheshana:'ගැඹුරු',visheshya:'වතුර',opts:['වතුර','ගැඹුරු','ගැඹුරු වතුර'],ans:1,explain:'"ගැඹුරු" යනු "වතුර" ගේ ගැඹුර/ස්වභාවය විස්තර කරන විශේෂණය.'},
+];
+
+// ===== STUDY CARDS =====
+function buildStudy(){
+  const grid=document.getElementById('study-cards');
+  const sample=ALL_QUESTIONS.slice(0,16);
+  grid.innerHTML=sample.map(q=>`
+    <div class="pair-card">
+      <div class="pc-visheshana">${q.visheshana}</div>
+      <div class="pc-arrow">↓</div>
+      <div class="pc-visheshya">${q.visheshya}</div>
+      <div class="pc-type">${q.visheshana.includes('යෙන්')||q.visheshana.includes('ින්')||q.visheshana.includes('ව')?'ක්‍රියා':'නාම'} විශේෂණ</div>
+    </div>
+  `).join('');
+}
+
+// ===== PASSAGE QUESTIONS =====
+const PASSAGE_QUESTIONS=[
+  {num:1,text:'"ලස්සන" යන වචනය කුමන වර්ගයට අයත් වේද?',opts:['නාම විශේෂණ','ක්‍රියා විශේෂණ'],ans:0,explain:'"ලස්සන" යන්න "ගෙවත්ත" යන නාම පදය විස්තර කරයි. එනිසා නාම විශේෂණ.'},
+  {num:2,text:'"හොඳින්" යන වචනය කුමන වර්ගයට අයත් වේද?',opts:['නාම විශේෂණ','ක්‍රියා විශේෂණ'],ans:1,explain:'"හොඳින්" යන්න "පිපී" යන ක්‍රියාව විස්තර කරයි. ක්‍රියා විශේෂණය.'},
+  {num:3,text:'"උදෑසන" යනු ක්‍රියා විශේෂණයක් ද නාම විශේෂණයක් ද?',opts:['නාම විශේෂණ','ක්‍රියා විශේෂණ'],ans:1,explain:'"උදෑසන" යන්නෙන් "ගොස්" යන ක්‍රියාවේ කාලය පිළිබඳ විස්තර කෙරේ. ක්‍රියා විශේෂණය.'},
+  {num:4,text:'"කඩිසරව" යන වචනය කුමන වර්ගයේ ද?',opts:['නාම විශේෂණ','ක්‍රියා විශේෂණ'],ans:1,explain:'"කඩිසරව" යන්නෙන් "වතුර දමමි" යන ක්‍රියාව කෙසේ ද යන්න කියයි. ක්‍රියා විශේෂණය.'},
+  {num:5,text:'"උස" යන්න "ගස්වල" විශේෂණය ද?',opts:['ඔව් - නාම විශේෂණ','නැත - ක්‍රියා විශේෂණ'],ans:0,explain:'"උස" යන්නෙන් "ගස්" ගේ ස්වභාවය විස්තර කෙරේ. නාම විශේෂණය.'},
+  {num:6,text:'"ඉදුණු" යනු කුමන පදය විශේෂණය කිරීමට යෙදේ?',opts:['ගෙඩි (නාම)','දමමි (ක්‍රියා)'],ans:0,explain:'"ඉදුණු" යන්නෙන් "ගෙඩි" කොතරම් ද (ඉදුණු) යන්න කියයි. නාම විශේෂණය.'},
+  {num:7,text:'"කුඩා" යනු "වල් පැළෑටි" ගේ නාම විශේෂණය ද?',opts:['ඔව් - නාම විශේෂණ','නැත - ක්‍රියා විශේෂණ'],ans:0,explain:'"කුඩා" යන්නෙන් "වල් පැළෑටි" ගේ ප්‍රමාණය විස්තර කෙරේ. නාම විශේෂණය.'},
+  {num:8,text:'"සෙමින්" යන වචනය කුමන වර්ගයේ ද?',opts:['නාම විශේෂණ','ක්‍රියා විශේෂණ'],ans:1,explain:'"සෙමින්" යන්නෙන් "ඉවත් කරමි" ක්‍රියාව කෙසේ ද යන්න කියයි. ක්‍රියා විශේෂණය.'},
+  {num:9,text:'"සශ්‍රීක" යනු "ගෙවත්ත" ගේ ද "කොළ" ගේ ද විශේෂණය?',opts:['නාම විශේෂණ (කොළ)','ක්‍රියා විශේෂණ'],ans:0,explain:'"සශ්‍රීක" යන්නෙන් "කොළ" ගේ ස්වභාවය විස්තර කෙරේ. නාම විශේෂණය.'},
+  {num:10,text:'"ඉතාම" යන වචනය කුමන වර්ගයේ ද?',opts:['නාම විශේෂණ','ක්‍රියා විශේෂණ'],ans:1,explain:'"ඉතාම" යන්නෙන් "පිරිසිදුය" ගේ ප්‍රමාණය/ස්වභාවය තව තවත් විස්තර කෙරේ. ක්‍රියා විශේෂණය.'},
+];
+
+let passageAnswers={};
+function buildPassageQuestions(){
+  const c=document.getElementById('passage-questions');
+  c.innerHTML=PASSAGE_QUESTIONS.map((q,i)=>`
+    <div style="background:linear-gradient(135deg,rgba(255,152,0,0.1),rgba(255,152,0,0.04));border:1px solid rgba(255,152,0,0.3);border-radius:18px;padding:14px;margin-bottom:12px;" id="pq-${i}">
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.6;">${q.num}. ${q.text}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${q.opts.map((opt,oi)=>`
+          <button onclick="selectPassageOpt(${i},${oi})" id="pq-${i}-opt-${oi}"
+            style="padding:11px 14px;border:2px solid rgba(255,255,255,0.2);border-radius:14px;background:rgba(255,255,255,0.07);color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;text-align:left;transition:all 0.2s;">
+            ${['(අ)','(ආ)'][oi]} ${opt}
+          </button>`).join('')}
+      </div>
+      <div id="pq-fb-${i}" style="margin-top:8px;"></div>
+    </div>
+  `).join('');
+}
+
+function selectPassageOpt(qi,oi){
+  if(passageAnswers[qi]!==undefined)return;
+  passageAnswers[qi]=oi;
+  const q=PASSAGE_QUESTIONS[qi];
+  const fb=document.getElementById('pq-fb-'+qi);
+  for(let o=0;o<q.opts.length;o++){
+    const btn=document.getElementById('pq-'+qi+'-opt-'+o);
+    btn.style.pointerEvents='none';
+    if(o===q.ans)btn.style.cssText+=';border-color:var(--green);background:rgba(0,230,118,0.18);color:var(--green);';
+    else if(o===oi&&oi!==q.ans)btn.style.cssText+=';border-color:var(--pink);background:rgba(255,64,129,0.18);color:var(--pink);animation:shake 0.5s ease;';
+  }
+  if(oi===q.ans){
+    playSound('correct');launchMiniConfetti();
+    fb.innerHTML=`<div style="background:rgba(0,230,118,0.12);border:1px solid var(--green);border-radius:10px;padding:8px 10px;color:var(--green);font-size:13px;font-weight:700;">✅ ${getPraise()} නිවැරදියි!</div>`;
+  }else{
+    playSound('wrong');
+    fb.innerHTML=`<div style="background:rgba(255,64,129,0.1);border:1px solid var(--pink);border-radius:10px;padding:8px 10px;font-size:12px;line-height:1.6;"><span style="color:var(--pink);font-weight:700;">❌ වැරදියි</span><br><span style="color:rgba(255,255,255,0.85);">📖 ${q.explain}</span></div>`;
+  }
+}
+
+// ===== DRAG & DROP - TAP TO SELECT, 2 PAGES =====
+let dragData={items:[],answers:{},selectedChip:null,currentPage:1};
+
+function showDragPage(page){
+  dragData.currentPage=page;
+  document.getElementById('drag-page1').style.display=page===1?'block':'none';
+  document.getElementById('drag-page2').style.display=page===2?'block':'none';
+  const b1=document.getElementById('drag-page1-btn');
+  const b2=document.getElementById('drag-page2-btn');
+  b1.style.cssText=`flex:1;padding:10px;border:2px solid ${page===1?'var(--gold)':'rgba(255,255,255,0.2)'};border-radius:16px;background:${page===1?'rgba(255,215,0,0.2)':'rgba(255,255,255,0.07)'};color:${page===1?'var(--gold)':'rgba(255,255,255,0.6)'};font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;`;
+  b2.style.cssText=`flex:1;padding:10px;border:2px solid ${page===2?'var(--gold)':'rgba(255,255,255,0.2)'};border-radius:16px;background:${page===2?'rgba(255,215,0,0.2)':'rgba(255,255,255,0.07)'};color:${page===2?'var(--gold)':'rgba(255,255,255,0.6)'};font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;`;
+}
+
+function buildDrag(){
+  const questions=shuffle([...ALL_QUESTIONS]).slice(0,10);
+  dragData.items=questions;
+  dragData.answers={};
+  dragData.selectedChip=null;
+  dragData.currentPage=1;
+  document.getElementById('drag-score').textContent='0';
+  document.getElementById('drag-total').textContent=questions.length;
+
+  // Page 1: questions 0-4
+  renderDragPage('p1', questions.slice(0,5), 0);
+  // Page 2: questions 5-9
+  renderDragPage('p2', questions.slice(5,10), 5);
+
+  showDragPage(1);
+}
+
+function renderDragPage(pageId, qs, offset){
+  document.getElementById('drag-questions-'+pageId).innerHTML=qs.map((q,i)=>`
+    <div class="drag-question">
+      <div class="drag-q-text">ප්‍රකාශය: <span>"${q.phrase}"</span> - විශේෂණය?</div>
+      <div class="drop-zone" id="dz-${offset+i}" data-idx="${offset+i}" onclick="onZoneTap(${offset+i})">
+        <span id="dz-text-${offset+i}">මෙහි තට්ටු කරන්න</span>
+      </div>
+    </div>
+  `).join('');
+
+  const allOpts=shuffle(qs.map(q=>q.visheshana));
+  document.getElementById('drag-chips-'+pageId).innerHTML=allOpts.map((opt,i)=>`
+    <div class="drag-chip" id="chip-${pageId}-${i}" data-val="${opt}" onclick="onChipTap('${pageId}','${opt}',${i})">${opt}</div>
+  `).join('');
+}
+
+function onChipTap(pageId, val, idx){
+  // Deselect previous
+  document.querySelectorAll('.drag-chip').forEach(c=>{
+    c.style.boxShadow='';c.style.transform='';c.style.borderColor='var(--cyan)';
+  });
+  dragData.selectedChip=val;
+  const chip=document.getElementById('chip-'+pageId+'-'+idx);
+  if(chip&&!chip.classList.contains('used')){
+    chip.style.boxShadow='0 0 0 3px var(--gold)';
+    chip.style.transform='scale(1.1)';
+    chip.style.borderColor='var(--gold)';
+  }
+}
+
+function onZoneTap(idx){
+  if(!dragData.selectedChip)return;
+  placeInZone(idx,dragData.selectedChip);
+  // Mark chip as used
+  document.querySelectorAll('.drag-chip').forEach(c=>{
+    if(c.dataset.val===dragData.selectedChip&&!c.classList.contains('used')){
+      c.classList.add('used');c.style.boxShadow='';c.style.transform='';
+    }
+  });
+  dragData.selectedChip=null;
+  document.querySelectorAll('.drag-chip').forEach(c=>{c.style.borderColor='var(--cyan)';});
+}
+
+function placeInZone(idx,val){
+  const dz=document.getElementById('dz-'+idx);
+  dz.classList.remove('drag-over','correct','wrong');
+  document.getElementById('dz-text-'+idx).textContent=val;
+  dragData.answers[idx]=val;
+  dz.dataset.placed=val;
+  dz.style.borderColor='var(--gold)';
+  dz.style.color='var(--gold)';
+}
+
+function checkDrag(){
+  let correct=0;
+  dragData.items.forEach((q,i)=>{
+    const dz=document.getElementById('dz-'+i);
+    const placed=dragData.answers[i];
+    if(!placed)return;
+    if(placed===q.visheshana){
+      dz.classList.add('correct');correct++;
+    }else{
+      dz.classList.add('wrong');
+      document.getElementById('dz-text-'+i).textContent=placed+' ❌ → '+q.visheshana;
+    }
+  });
+  document.getElementById('drag-score').textContent=correct;
+  if(correct===dragData.items.length)launchConfetti();
+  playSound(correct===dragData.items.length?'win':'partial');
+}
+function resetDrag(){dragData={items:[],answers:{},selectedChip:null,currentPage:1};buildDrag();}
+
+// ===== QUIZ =====
+let quizStarted=false,qIdx=0,qScore=0,qWrong=[],qQuestions=[],streak=0,passageBuilt=false;
+function buildQuiz(){
+  quizStarted=true;qIdx=0;qScore=0;qWrong=[];streak=0;
+  qQuestions=shuffle([...ALL_QUESTIONS]);
+  renderQuestion();
+}
+
+function renderQuestion(){
+  if(qIdx>=qQuestions.length){showResults();return;}
+  const q=qQuestions[qIdx];
+  const shuffledOpts=shuffle([...q.opts]);
+  const correctOpt=q.opts[q.ans];
+  document.getElementById('quiz-content').innerHTML=`
+    <div class="quiz-header">
+      <div class="quiz-progress">ප්‍රශ්නය ${qIdx+1} / ${qQuestions.length}</div>
+      <div class="quiz-score-badge">⭐ ${qScore}</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${(qIdx/qQuestions.length)*100}%"></div></div>
+    <div class="question-card">
+      <div class="question-num">ප්‍රශ්නය ${qIdx+1}</div>
+      <div class="question-text">මෙම ප්‍රකාශයේ විශේෂණ පදය කුමක්ද?</div>
+      <div class="question-phrase">"${q.phrase}"</div>
+      <div class="options-grid">
+        ${shuffledOpts.map((opt,i)=>`
+          <button class="option-btn" onclick="selectOpt(this,'${opt}','${correctOpt}',${qIdx})">
+            <span class="opt-letter">${['අ','ආ','ඇ'][i]}</span>${opt}
+          </button>`).join('')}
+      </div>
+      <div id="feedback-area"></div>
+    </div>
+  `;
+}
+
+function selectOpt(btn,selected,correct,qi){
+  document.querySelectorAll('.option-btn').forEach(b=>b.classList.add('disabled'));
+  const q=qQuestions[qi];
+  if(selected===correct){
+    btn.classList.add('correct');
+    qScore++;streak++;
+    playSound('correct');
+    if(streak>=3)showStreak(streak);
+    document.getElementById('feedback-area').innerHTML=`
+      <div class="feedback-box correct">✅ ${getPraise()} නිවැරදියි!</div>
+    `;
+    launchMiniConfetti();
+  }else{
+    btn.classList.add('wrong');
+    streak=0;
+    playSound('wrong');
+    document.querySelectorAll('.option-btn').forEach(b=>{
+      if(b.textContent.trim().slice(1)===correct||b.textContent.trim().includes(correct))b.classList.add('correct');
+    });
+    qWrong.push({phrase:q.phrase,correct:correct,yourAns:selected,explain:q.explain});
+    document.getElementById('feedback-area').innerHTML=`
+      <div class="feedback-box wrong">
+        <div class="fb-title">❌ වැරදියි</div>
+        <div class="fb-explain">✅ නිවැරදි: <strong>${correct}</strong><br>📖 ${q.explain}</div>
+      </div>
+    `;
+  }
+  document.getElementById('quiz-content').insertAdjacentHTML('beforeend',
+    `<button class="next-btn" onclick="nextQ()">➡️ ඊළඟ ප්‍රශ්නය</button>`);
+}
+
+function nextQ(){qIdx++;renderQuestion();}
+
+function getPraise(){
+  return ['සුපිරි!','ඉතා සුපිරි!','ඉතා දක්ෂයි!','වාහ් 🎉','නියමයි!','බොහොම හොඳයි!','ශ්‍රේෂ්ඨයි!'][Math.floor(Math.random()*7)];
+}
+
+function showStreak(s){
+  const popup=document.getElementById('streak-popup');
+  document.getElementById('streak-emoji').textContent=s>=5?'🔥🔥':'🔥';
+  document.getElementById('streak-text').textContent=s+'ක් නිවැරදි! '+getPraise();
+  popup.classList.add('show');
+  setTimeout(()=>popup.classList.remove('show'),1800);
+}
+
+function showResults(){
+  const total=qQuestions.length;
+  const pct=qScore/total;
+  const stars=pct>=0.9?3:pct>=0.6?2:1;
+  const praise=pct===1?'🏆 ඉතා සුපිරි! සම්පූර්ණ!':pct>=0.8?'🌟 ශ්‍රේෂ්ඨ!':pct>=0.6?'⭐ ඉතා හොඳයි!':'💪 වඩාත් පුහුණු වෙන්න!';
+  if(pct>=0.7)launchConfetti();
+  playSound(pct>=0.7?'win':'partial');
+  updateWrongTab();
+
+  document.getElementById('quiz-content').innerHTML=`
+    <div id="results-section">
+      <div class="results-trophy">${pct===1?'🏆':pct>=0.7?'🥇':'🥈'}</div>
+      <div class="results-title">ප්‍රශ්නෝත්තර නිමයි!</div>
+      <div class="results-score">${qScore} / ${total}</div>
+      <div class="results-sub">ඔබ ${qScore} ප්‍රශ්නයකට නිවැරදිව පිළිතුරු දුන්නාය</div>
+      <div class="stars-row">${[0,1,2].map(i=>`<span class="star" style="${i<stars?'animation:starPop 0.5s ease forwards '+(i*0.2)+'s;':'filter:grayscale(1);opacity:0.3;'}"}>⭐</span>`).join('')}</div>
+      <div class="praise-msg">${praise}</div>
+      ${qWrong.length>0?`<div style="background:rgba(255,64,129,0.1);border:1px solid rgba(255,64,129,0.3);border-radius:16px;padding:12px;margin-bottom:14px;text-align:center;font-size:13px;color:var(--pink);font-weight:700;">❌ ${qWrong.length} ප්‍රශ්නයකට වැරදි - "❌ වැරදි" ටැබ් එකෙන් බලන්න</div>`:''}
+      <button class="restart-btn" onclick="buildQuiz()">🔄 නැවත කරන්න</button>
+      <button class="dl-btn" onclick="downloadWorksheet()">⬇️ කාර්ය පත්‍රිකාව Download</button>
+    </div>
+  `;
+}
+
+// ===== WRONG TAB =====
+function buildWrongTab(){
+  const c=document.getElementById('wrong-content');
+  if(qWrong.length===0){
+    c.innerHTML=`<div class="wrong-section-empty"><div class="ws-icon">🎯</div><div>ප්‍රශ්නෝත්තර සම්පූර්ණ කිරීමෙන් පසු ඔබේ වැරදි පිළිතුරු මෙහි දිස්වේ</div></div>`;
+    return;
+  }
+  c.innerHTML=`
+    <div class="wrong-count-badge">❌ ${qWrong.length} ප්‍රශ්නයකට වැරදි - පහත පිළිතුරු කියවන්න</div>
+    ${qWrong.map((w,i)=>`
+      <div class="wrong-item">
+        <div class="wrong-q">${i+1}. ප්‍රකාශය: <span>"${w.phrase}"</span></div>
+        <div class="wrong-correct">✅ නිවැරදි: ${w.correct}</div>
+        <div class="wrong-you">❌ ඔබේ: ${w.yourAns}</div>
+        <div class="wrong-explain">📖 ${w.explain}</div>
+      </div>
+    `).join('')}
+  `;
+}
+function updateWrongTab(){buildWrongTab();}
+
+// ===== CONFETTI =====
+function launchConfetti(){
+  const colors=['#FFD700','#FF4081','#00E676','#00BCD4','#CDDC39','#FF9800','#CE93D8'];
+  for(let i=0;i<40;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');
+      c.className='confetti-piece';
+      c.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${1.2+Math.random()*0.8}s;animation-delay:${Math.random()*0.4}s;border-radius:${Math.random()>0.5?'50%':'3px'}`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),2200);
+    },i*40);
+  }
+}
+function launchMiniConfetti(){
+  const colors=['#FFD700','#FF4081','#00E676'];
+  for(let i=0;i<12;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');
+      c.className='confetti-piece';
+      c.style.cssText=`left:${15+Math.random()*70}%;top:40%;background:${colors[i%3]};width:8px;height:8px;animation-duration:0.9s;border-radius:50%`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),1100);
+    },i*40);
+  }
+}
+
+// ===== SOUND =====
+const AC=window.AudioContext||window.webkitAudioContext;
+let ac=null;
+function getAC(){if(!ac&&AC)ac=new AC();return ac;}
+function playSound(type){
+  try{
+    const a=getAC();if(!a)return;
+    const o=a.createOscillator(),g=a.createGain();
+    o.connect(g);g.connect(a.destination);
+    if(type==='correct'){o.frequency.setValueAtTime(523,a.currentTime);o.frequency.setValueAtTime(659,a.currentTime+0.1);o.frequency.setValueAtTime(784,a.currentTime+0.2);g.gain.setValueAtTime(0.3,a.currentTime);g.gain.exponentialRampToValueAtTime(0.01,a.currentTime+0.5);}
+    else if(type==='wrong'){o.type='sawtooth';o.frequency.setValueAtTime(200,a.currentTime);o.frequency.setValueAtTime(150,a.currentTime+0.1);g.gain.setValueAtTime(0.2,a.currentTime);g.gain.exponentialRampToValueAtTime(0.01,a.currentTime+0.3);}
+    else if(type==='win'){[523,659,784,1047].forEach((f,i)=>{setTimeout(()=>{const o2=a.createOscillator(),g2=a.createGain();o2.connect(g2);g2.connect(a.destination);o2.frequency.value=f;g2.gain.setValueAtTime(0.3,a.currentTime);g2.gain.exponentialRampToValueAtTime(0.01,a.currentTime+0.4);o2.start();o2.stop(a.currentTime+0.4);},i*120);});return;}
+    else{o.frequency.setValueAtTime(440,a.currentTime);g.gain.setValueAtTime(0.15,a.currentTime);g.gain.exponentialRampToValueAtTime(0.01,a.currentTime+0.3);}
+    o.start();o.stop(a.currentTime+0.5);
+  }catch(e){}
+}
+
+// ===== WORKSHEET DOWNLOAD =====
+function downloadWorksheet(){
+  const passageQHtml=PASSAGE_QUESTIONS.map((q,i)=>`<div class="mcq">${q.num}. ${q.text}<br>&nbsp;&nbsp;(අ) ${q.opts[0]} &nbsp;&nbsp; (ආ) ${q.opts[1]}</div>`).join('');
+  const passageAHtml=PASSAGE_QUESTIONS.map((q,i)=>`<div class="ans-row">${q.num}. ${q.opts[q.ans]}</div>`).join('');
+
+  const html=`<!DOCTYPE html><html lang="si"><head><meta charset="UTF-8"><title>විශේෂණ පද - කාර්ය පත්‍රිකාව</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+body{font-family:'Noto Sans Sinhala',sans-serif;padding:30px;max-width:720px;margin:0 auto;color:#111;}
+h1{text-align:center;color:#0d1b2a;font-size:22px;margin-bottom:4px;}
+h2{color:#1b2e45;font-size:15px;margin:22px 0 8px;border-bottom:2px solid #243447;padding-bottom:4px;}
+.info{text-align:center;color:#555;font-size:13px;margin-bottom:24px;}
+.intro-box{background:#e8f4fd;border-left:4px solid #1b2e45;padding:12px;border-radius:6px;margin-bottom:18px;font-size:13px;line-height:1.7;}
+.passage-box{background:#f5f5f5;border:1px solid #ccc;border-radius:6px;padding:16px;margin-bottom:16px;font-size:14px;line-height:2;}
+.mcq{margin-bottom:12px;font-size:14px;line-height:1.7;}
+.fill{margin-bottom:10px;font-size:14px;}
+.blank{border-bottom:2px solid #333;display:inline-block;min-width:90px;}
+table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:13px;}
+th{background:#1b2e45;color:#fff;padding:8px 10px;}
+td{border:1px solid #ccc;padding:8px 10px;}
+.answers{margin-top:36px;background:#f0f7ff;padding:16px;border-radius:8px;page-break-before:always;}
+.answers h2{color:#1b2e45;}
+.ans-row{font-size:13px;margin-bottom:6px;}
+</style></head><body>
+<h1>📝 විශේෂණ පද - කාර්ය පත්‍රිකාව</h1>
+<p class="info">ශ්‍රේණි 3 - 5 | නම: ________________________ | ශ්‍රේණිය: _______ | දිනය: _________</p>
+<div class="intro-box">
+<strong>📖 සිහිපත් කරන්න:</strong> කිසියම් පදයක අර්ථය තවදුරටත් පැහැදිලි කිරීමට, එහි ස්වභාවය විස්තර කිරීමට හෝ එම පදයේ අර්ථය වැඩි කිරීමට හෝ අඩු කිරීමට යොදන පද <strong>විශේෂණ පද</strong> නම් වේ. විශේෂණ පදය විස්තර කරන මූල පදය <strong>විශේෂ්‍යය</strong> නම් වේ.
+</div>
+
+<h2>කොටස I: විශේෂණය හඳුනාගන්න</h2>
+<p style="font-size:12px;color:#555;margin-bottom:10px;">🖊 ප්‍රකාශයේ විශේෂණ පදය හිස්තැනට ලියන්න.</p>
+${ALL_QUESTIONS.slice(0,15).map((q,i)=>`<div class="fill">${i+1}. "${q.phrase}" - විශේෂණය: <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>`).join('')}
+
+<h2>කොටස II: විශේෂණ හා විශේෂ්‍ය ගැලපීම</h2>
+<p style="font-size:12px;color:#555;margin-bottom:10px;">🔗 A තීරයේ විශේෂණය B තීරයේ ගැලපෙන විශේෂ්‍යයට රේඛාවකින් සම්බන්ධ කරන්න.</p>
+<table>
+<tr><th>A - විශේෂණය</th><th>B - විශේෂ්‍යය</th></tr>
+${ALL_QUESTIONS.slice(0,10).map((q,i)=>`<tr><td>${q.visheshana}</td><td>${shuffle(ALL_QUESTIONS.slice(0,10).map(x=>x.visheshya))[i]}</td></tr>`).join('')}
+</table>
+
+<h2>කොටස III: ඡේදය කියවා ප්‍රශ්නවලට පිළිතුරු දෙන්න</h2>
+<p style="font-size:12px;color:#555;margin-bottom:10px;">📖 පහත ඡේදය කියවා නාම විශේෂණ සහ ක්‍රියා විශේෂණ හඳුනා ගන්න.</p>
+<div class="passage-box">
+<strong>මගේ ගෙවත්ත</strong><br><br>
+මගේ නිවාස පිටුපස ලස්සන ගෙවත්තක් ඇත. එහි වර්ණවත් මල් වර්ග හොඳින් පිපී තිබේ. මම දිනපතා උදෑසන ගෙවත්තට ගොස් පැළවලට කඩිසරව වතුර දමමි. එහි ඇති උස ගස්වල ඉදුණු ගෙඩි මනාව එල්ලී ඇත. මම කුඩා වල් පැළෑටි සෙමින් ඉවත් කරමි. සශ්‍රීක කොළ පැහැති ඇළවල් පාත්ති නිතරම මගේ ඇසට පෙනේ. මගේ ගෙවත්ත ඉතාම පිරිසිදුය.
+</div>
+${passageQHtml}
+
+<h2>කොටස IV: බහුවරණ ප්‍රශ්න</h2>
+<p style="font-size:12px;color:#555;margin-bottom:10px;">✅ නිවැරදිම පිළිතුරට ✓ ලකුණ දමන්න.</p>
+${ALL_QUESTIONS.map((q,i)=>`<div class="mcq">${i+1}. "${q.phrase}" - විශේෂණය?<br>&nbsp;&nbsp;(අ) ${q.opts[0]} &nbsp;&nbsp; (ආ) ${q.opts[1]} &nbsp;&nbsp; (ඇ) ${q.opts[2]}</div>`).join('')}
+
+<div class="answers">
+<h2>📋 පිළිතුරු (ගුරු/දෙමාපිය)</h2>
+<p style="font-size:12px;color:#555;margin-bottom:10px;">I කොටස:</p>
+${ALL_QUESTIONS.slice(0,15).map((q,i)=>`<div class="ans-row">${i+1}. ${q.visheshana}</div>`).join('')}
+<p style="font-size:12px;color:#555;margin:12px 0 8px;">III කොටස (ඡේදය):</p>
+${passageAHtml}
+<p style="font-size:12px;color:#555;margin:12px 0 8px;">IV කොටස (බහුවරණ):</p>
+${ALL_QUESTIONS.map((q,i)=>`<div class="ans-row">${i+1}. ${q.opts[q.ans]}</div>`).join('')}
+</div>
+</body></html>`;
+
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='visheshana_pada_worksheet.html';
+  a.click();
+}
+
+// ===== UTILS =====
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ===== INIT =====
+buildDrag();
+buildStudy();
+</script>
+</body>
+</html>
