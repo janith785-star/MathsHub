@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#0d1b3e"/>
+<title>භාග පාඩම 🍕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg1:#0d1b3e;--bg2:#1a2f6e;--bg3:#0e4d92;
+  --gold:#FFD700;--green:#00E676;--pink:#FF4081;--orange:#FF9800;--cyan:#00BCD4;--purple:#9C27B0;
+  --font:'Noto Sans Sinhala',sans-serif;
+}
+html,body{
+  height:100%;
+  background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);
+  background-attachment:fixed;
+  font-family:var(--font);color:#fff;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+}
+::-webkit-scrollbar{display:none}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:85px}
+
+/* Copy protection */
+body{user-select:none;-webkit-user-select:none}
+
+/* WhatsApp Banner */
+#wa-banner{
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  padding:10px 14px;display:flex;align-items:center;gap:10px;
+  cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.4);
+  position:sticky;top:0;z-index:100;text-decoration:none;
+}
+#wa-banner .wa-icon{font-size:22px}
+#wa-banner .wa-text{flex:1}
+#wa-banner .wa-title{font-size:12px;font-weight:700;color:#fff}
+#wa-banner .wa-sub{font-size:10px;color:rgba(255,255,255,0.85)}
+#wa-banner .wa-btn{background:rgba(255,255,255,0.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+
+/* Visit Counter */
+#visit-toggle{
+  background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);
+  padding:7px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+}
+#visit-toggle span{font-size:12px;color:var(--gold);font-weight:700}
+#visit-count-val{font-size:18px;font-weight:900;color:var(--gold)}
+
+/* Header */
+#header{padding:14px 16px 6px;text-align:center;animation:slideIn 0.5s ease}
+#header .h-icon{font-size:40px;animation:bounce 2s ease-in-out infinite;display:inline-block}
+#header h1{font-size:22px;font-weight:900;color:var(--gold);margin-top:4px;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+#header p{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px}
+
+/* Bottom Nav */
+#bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(5,10,30,0.96);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.13);
+  display:flex;justify-content:space-around;
+  padding:6px 0 10px;z-index:99;
+}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;flex:1}
+.nav-btn .nav-icon{font-size:19px;transition:all 0.3s}
+.nav-btn .nav-label{font-size:9px;color:rgba(255,255,255,0.45);font-weight:400;font-family:var(--font);transition:all 0.3s}
+.nav-btn.active .nav-icon{filter:drop-shadow(0 0 6px #FFD700);transform:scale(1.18)}
+.nav-btn.active .nav-label{color:var(--gold);font-weight:800}
+
+/* Sections */
+#content{padding:0 14px 12px}
+.section{display:none;animation:slideIn 0.35s ease}
+.section.active{display:block}
+.section-title{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:12px;text-align:center}
+
+/* Animations */
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes starPop{0%{transform:scale(0) rotate(-30deg);opacity:0}60%{transform:scale(1.4)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(150px) rotate(720deg);opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(255,215,0,0.4)}50%{box-shadow:0 0 20px rgba(255,215,0,0.8)}}
+
+/* ======== TAB 1: INTRO ======== */
+.intro-card{
+  background:rgba(255,255,255,0.07);border-radius:18px;
+  padding:14px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.13);
+}
+.intro-card h3{font-size:15px;font-weight:900;color:var(--cyan);margin-bottom:8px}
+.intro-card p{font-size:13px;color:rgba(255,255,255,0.9);line-height:1.7}
+
+/* Fraction Pizza Interactive */
+#pizza-container{
+  background:rgba(255,255,255,0.07);border-radius:20px;
+  padding:16px;margin-bottom:14px;text-align:center;
+}
+#pizza-container h3{font-size:14px;font-weight:900;color:var(--orange);margin-bottom:10px}
+#fraction-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.frac-btn{
+  background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);
+  color:#fff;font-size:22px;font-weight:900;width:44px;height:44px;
+  border-radius:12px;cursor:pointer;font-family:var(--font);
+  transition:all 0.2s;
+}
+.frac-btn:active{transform:scale(0.9)}
+#current-fraction{
+  background:rgba(255,215,0,0.15);border:2px solid var(--gold);
+  border-radius:14px;padding:8px 20px;text-align:center;
+}
+#frac-display-num{font-size:24px;font-weight:900;color:var(--gold);display:block;border-bottom:2px solid var(--gold);padding-bottom:2px}
+#frac-display-den{font-size:24px;font-weight:900;color:var(--gold);display:block;padding-top:2px}
+#pizza-svg-wrap{position:relative;width:180px;height:180px;margin:0 auto 10px}
+#pizza-label{font-size:13px;color:rgba(255,255,255,0.8)}
+
+/* Fraction classification table */
+.class-table{width:100%;border-collapse:collapse;margin-bottom:12px}
+.class-table th{background:rgba(0,188,212,0.2);color:var(--cyan);font-size:12px;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,0.15);font-weight:900}
+.class-table td{font-size:12px;color:rgba(255,255,255,0.88);padding:8px 6px;border-bottom:1px solid rgba(255,255,255,0.08);line-height:1.5}
+.class-table tr:nth-child(even) td{background:rgba(255,255,255,0.04)}
+
+/* Fraction inline display */
+.frac{display:inline-flex;flex-direction:column;align-items:center;font-size:13px;font-weight:700;color:var(--gold);line-height:1.1;vertical-align:middle;margin:0 2px}
+.frac .fn{border-bottom:1.5px solid var(--gold);padding-bottom:1px}
+
+/* ======== TAB 2: EQUAL FRACTIONS ======== */
+.equal-demo{
+  background:rgba(255,255,255,0.07);border-radius:18px;
+  padding:14px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.13);
+}
+.equal-demo h3{font-size:14px;font-weight:900;color:var(--pink);margin-bottom:10px}
+#equal-bars{display:flex;flex-direction:column;gap:8px}
+.eq-row{display:flex;align-items:center;gap:8px}
+.eq-label{font-size:13px;font-weight:700;color:var(--gold);width:55px;text-align:right;flex-shrink:0}
+.eq-bar-wrap{flex:1;height:32px;background:rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.2);display:flex}
+.eq-segment{height:100%;transition:all 0.5s ease;border-right:1px solid rgba(255,255,255,0.3)}
+.eq-segment:last-child{border-right:none}
+
+/* Drag blocks for equal fractions */
+.drag-zone{
+  background:rgba(255,255,255,0.07);border-radius:16px;
+  padding:12px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.13);
+}
+.drag-zone h3{font-size:14px;font-weight:900;color:var(--green);margin-bottom:10px;text-align:center}
+.drag-fracs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px}
+.drag-frac{
+  background:rgba(255,215,0,0.15);border:2px solid var(--gold);
+  border-radius:12px;padding:6px 12px;cursor:grab;
+  font-size:14px;font-weight:900;color:var(--gold);
+  display:inline-flex;flex-direction:column;align-items:center;
+  transition:all 0.2s;min-width:46px;
+}
+.drag-frac:active{transform:scale(0.95);cursor:grabbing}
+.drag-frac.dragging{opacity:0.5;transform:scale(0.9)}
+.drag-frac.matched{background:rgba(0,230,118,0.2);border-color:var(--green);cursor:default}
+.drag-frac .df-n{border-bottom:2px solid currentColor;padding-bottom:2px;font-size:16px}
+.drag-frac .df-d{font-size:16px;padding-top:2px}
+.drop-targets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.drop-target{
+  min-width:60px;min-height:60px;border:2px dashed rgba(255,255,255,0.3);
+  border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;transition:all 0.2s;padding:6px;
+}
+.drop-target.over{border-color:var(--green);background:rgba(0,230,118,0.1)}
+.drop-target.filled{border-style:solid;border-color:var(--green);background:rgba(0,230,118,0.15)}
+.drop-target .dt-label{font-size:10px;color:rgba(255,255,255,0.5)}
+
+/* ======== QUIZ SECTION ======== */
+.quiz-header{
+  background:rgba(255,255,255,0.07);border-radius:16px;
+  padding:12px 16px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.quiz-header .q-num{font-size:13px;color:rgba(255,255,255,0.7);font-weight:700}
+.quiz-header .q-score{font-size:15px;color:var(--gold);font-weight:900}
+.progress-bar{height:6px;background:rgba(255,255,255,0.15);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:3px;transition:width 0.4s ease}
+
+.question-card{
+  background:rgba(255,255,255,0.08);border-radius:18px;
+  padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.13);
+  animation:fadeIn 0.3s ease;
+}
+.question-card .q-text{font-size:15px;line-height:1.7;color:#fff;margin-bottom:12px;font-weight:700}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt-btn{
+  background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);
+  border-radius:14px;padding:12px 16px;
+  font-size:14px;font-weight:700;color:#fff;
+  cursor:pointer;font-family:var(--font);
+  text-align:left;transition:all 0.2s;
+  display:flex;align-items:center;gap:8px;
+}
+.opt-btn:active{transform:scale(0.97)}
+.opt-btn.correct{background:rgba(0,230,118,0.2);border-color:var(--green);color:var(--green)}
+.opt-btn.wrong{background:rgba(255,64,129,0.2);border-color:var(--pink);color:var(--pink)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;font-weight:900;
+}
+
+/* Inline fraction in question */
+.qfrac{display:inline-flex;flex-direction:column;align-items:center;font-weight:900;color:var(--cyan);line-height:1;vertical-align:middle;margin:0 3px;font-size:15px}
+.qfrac .qfn{border-bottom:2px solid var(--cyan);padding-bottom:1px}
+
+/* Feedback */
+#feedback-overlay{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(5,10,30,0.97);border-radius:24px;
+  padding:20px 24px;text-align:center;
+  z-index:200;display:none;
+  border:2px solid var(--gold);
+  min-width:260px;max-width:360px;
+  animation:popIn 0.3s ease;
+}
+#feedback-overlay.visible{display:block}
+#fb-emoji{font-size:50px;margin-bottom:6px}
+#fb-title{font-size:20px;font-weight:900;margin-bottom:4px}
+#fb-text{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px}
+#fb-next{
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;border-radius:14px;padding:10px 24px;
+  font-size:14px;font-weight:900;color:#000;cursor:pointer;font-family:var(--font);
+}
+.stars-row{display:flex;justify-content:center;gap:4px;margin-bottom:8px;font-size:26px}
+
+/* Score Summary */
+#score-summary{display:none;text-align:center;animation:slideIn 0.4s ease}
+.score-big{font-size:60px;font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.5)}
+.score-msg{font-size:16px;font-weight:700;margin:8px 0}
+.retry-btn{
+  background:linear-gradient(135deg,var(--cyan),var(--bg3));
+  border:none;border-radius:16px;padding:12px 28px;
+  font-size:15px;font-weight:900;color:#fff;cursor:pointer;
+  font-family:var(--font);margin-top:12px;
+}
+
+/* Explanation Tab */
+.exp-card{
+  background:rgba(255,255,255,0.07);border-radius:16px;
+  padding:14px;margin-bottom:10px;
+  border-left:4px solid var(--orange);
+}
+.exp-card .exp-q{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:6px}
+.exp-card .exp-a{font-size:14px;font-weight:900;color:var(--green);margin-bottom:6px}
+.exp-card .exp-why{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7}
+.exp-correct{color:var(--green);font-size:20px}
+.exp-wrong{color:var(--pink);font-size:20px}
+
+/* Confetti */
+.confetti-piece{
+  position:fixed;width:8px;height:8px;
+  border-radius:2px;pointer-events:none;z-index:999;
+  animation:confettiFall 1s ease-out forwards;
+}
+
+/* Worksheet modal */
+#ws-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.85);
+  z-index:300;display:none;align-items:center;justify-content:center;
+}
+#ws-modal.open{display:flex}
+#ws-inner{
+  background:#1a2f6e;border-radius:20px;padding:20px;
+  max-width:390px;width:90%;max-height:85vh;overflow-y:auto;
+  border:2px solid var(--gold);
+}
+#ws-inner h3{font-size:16px;font-weight:900;color:var(--gold);margin-bottom:14px;text-align:center}
+.ws-btn{
+  background:linear-gradient(135deg,var(--green),#00897B);
+  border:none;border-radius:14px;padding:11px;width:100%;
+  font-size:14px;font-weight:900;color:#000;cursor:pointer;
+  font-family:var(--font);margin-top:10px;
+}
+.ws-close{
+  background:rgba(255,64,129,0.2);border:1px solid var(--pink);
+  border-radius:14px;padding:10px;width:100%;
+  font-size:13px;font-weight:700;color:var(--pink);cursor:pointer;
+  font-family:var(--font);margin-top:8px;
+}
+
+/* Download button */
+#download-btn{
+  background:linear-gradient(135deg,var(--purple),#7B1FA2);
+  border:none;border-radius:16px;padding:12px 20px;
+  width:100%;font-size:14px;font-weight:900;color:#fff;
+  cursor:pointer;font-family:var(--font);margin:12px 0;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+
+/* Score section */
+.quiz-section-divider{
+  background:rgba(255,255,255,0.05);border-radius:14px;
+  padding:10px 14px;margin:12px 0;
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.qsd-title{font-size:13px;font-weight:900;color:var(--cyan)}
+.qsd-count{font-size:12px;color:rgba(255,255,255,0.6)}
+
+/* Equal fracs animation */
+.efrac-pair{
+  display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;
+}
+.efrac-block{
+  background:rgba(255,255,255,0.08);border-radius:14px;padding:10px 16px;text-align:center;border:1px solid rgba(255,255,255,0.15);
+}
+.efrac-block .eb-label{font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:4px}
+.efrac-val{font-size:20px;font-weight:900;color:var(--gold);display:flex;flex-direction:column;align-items:center}
+.efrac-val .en{border-bottom:2px solid var(--gold);padding-bottom:2px;min-width:24px;text-align:center}
+.efrac-val .ed{padding-top:2px;min-width:24px;text-align:center}
+.eq-sign{font-size:24px;font-weight:900;color:var(--green)}
+
+/* Multiply hint */
+.mult-hint{font-size:12px;color:rgba(255,255,255,0.55);text-align:center;margin-bottom:10px}
+
+/* Start quiz btn */
+.start-quiz-btn{
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;border-radius:16px;padding:12px 28px;
+  font-size:15px;font-weight:900;color:#000;cursor:pointer;
+  font-family:var(--font);width:100%;margin:10px 0;
+}
+
+.quiz-section-header{
+  background:rgba(0,188,212,0.15);border-radius:12px;
+  padding:8px 14px;margin:12px 0 8px;
+  border-left:4px solid var(--cyan);
+}
+.quiz-section-header h4{font-size:14px;font-weight:900;color:var(--cyan)}
+.quiz-section-header p{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- WhatsApp Banner -->
+  <a id="wa-banner" href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank">
+    <span class="wa-icon">💬</span>
+    <div class="wa-text">
+      <div class="wa-title">නවතම පාඩම් සඳහා</div>
+      <div class="wa-sub">WhatsApp සමූහයට සම්බන්ධ වන්න</div>
+    </div>
+    <span class="wa-btn">Join කරන්න</span>
+  </a>
+
+  <!-- Visit Counter -->
+  <div id="visit-toggle" onclick="toggleVisit()">
+    <span>📊 මෙම යෙදුම භාවිත කළ වාර ගණන</span>
+    <span id="visit-count-val">0</span>
+  </div>
+
+  <!-- Header -->
+  <div id="header">
+    <div class="h-icon">🍕</div>
+    <h1>භාග පාඩම</h1>
+    <p>ශ්‍රේණිය 3 - 6 | ගණිතය</p>
+  </div>
+
+  <div id="content">
+    <!-- TAB 1: INTRO -->
+    <div class="section active" id="sec-intro">
+      <p class="section-title">📚 භාග හඳුනා ගනිමු</p>
+
+      <!-- Interactive Pizza -->
+      <div id="pizza-container">
+        <h3>🍕 Pizza කැබෑ ගණන් කරමු!</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:10px">ලවය හා හරය වෙන වෙනම වෙනස් කරන්න</p>
+
+        <!-- Two-row controls: numerator row + fraction display + denominator row -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px">
+          <!-- Numerator controls -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+            <span style="font-size:10px;color:rgba(255,255,255,0.5)">ලවය</span>
+            <button class="frac-btn" onclick="changeNum(1)">+</button>
+            <button class="frac-btn" onclick="changeNum(-1)">−</button>
+          </div>
+
+          <!-- Fraction display -->
+          <div id="current-fraction" style="min-width:80px">
+            <span id="frac-display-num">1</span>
+            <span id="frac-display-den">4</span>
+          </div>
+
+          <!-- Denominator controls -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+            <span style="font-size:10px;color:rgba(255,255,255,0.5)">හරය</span>
+            <button class="frac-btn" onclick="changeDen(1)">+</button>
+            <button class="frac-btn" onclick="changeDen(-1)">−</button>
+          </div>
+        </div>
+
+        <!-- Fraction type badge -->
+        <div id="frac-type-badge" style="text-align:center;margin-bottom:10px">
+          <span id="frac-type-label" style="display:inline-block;padding:5px 18px;border-radius:20px;font-size:13px;font-weight:900;background:rgba(0,188,212,0.2);border:1px solid var(--cyan);color:var(--cyan)">ඒකක භාගය</span>
+        </div>
+
+        <div id="pizza-svg-wrap">
+          <svg id="pizza-svg" viewBox="0 0 200 200" width="180" height="180"></svg>
+        </div>
+        <p id="pizza-label">Pizza 1 කෑලි 4 ට කැඩූ විට, 1 කෑලිය = <span style="color:var(--gold);font-weight:900">¼</span></p>
+      </div>
+
+      <!-- Classification Table -->
+      <div class="intro-card">
+        <h3>📋 භාග වර්ගීකරණය සහ අර්ථ දැක්වීම</h3>
+        <table class="class-table">
+          <tr><th>වර්ගය</th><th>අර්ථය</th><th>උදාහරණ</th></tr>
+          <tr><td style="color:var(--cyan);font-weight:900">ඒකක භාගය</td><td>ලවයේ ඉලක්කම 1 වන, හරය 1ට වඩා විශාල</td><td><span class="frac"><span class="fn">1</span>2</span>, <span class="frac"><span class="fn">1</span>3</span>, <span class="frac"><span class="fn">1</span>8</span></td></tr>
+          <tr><td style="color:var(--green);font-weight:900">නියම භාගය</td><td>ලවය &lt; හරය</td><td><span class="frac"><span class="fn">2</span>3</span>, <span class="frac"><span class="fn">3</span>4</span>, <span class="frac"><span class="fn">5</span>7</span></td></tr>
+          <tr><td style="color:var(--orange);font-weight:900">විෂම භාගය</td><td>ලවය ≥ හරය</td><td><span class="frac"><span class="fn">3</span>2</span>, <span class="frac"><span class="fn">5</span>4</span>, <span class="frac"><span class="fn">7</span>3</span></td></tr>
+          <tr><td style="color:var(--pink);font-weight:900">මිශ්‍ර සංඛ්‍යාව</td><td>පූර්ණ + නියම භාගය</td><td>1<span class="frac"><span class="fn">1</span>2</span>, 2<span class="frac"><span class="fn">3</span>4</span></td></tr>
+          <tr><td style="color:var(--gold);font-weight:900">තුල්‍ය භාග</td><td>ලව-හර ×÷ නමුත් සමාන</td><td><span class="frac"><span class="fn">1</span>2</span>=<span class="frac"><span class="fn">2</span>4</span>=<span class="frac"><span class="fn">4</span>8</span></td></tr>
+        </table>
+      </div>
+
+      <!-- Parts of a fraction -->
+      <div class="intro-card">
+        <h3>🔢 භාගයේ කොටස්</h3>
+        <div style="text-align:center;margin:10px 0">
+          <div style="font-size:32px;font-weight:900;color:var(--gold);display:inline-block">
+            <div style="color:var(--cyan);border-bottom:3px solid var(--gold);padding-bottom:4px">3 <span style="font-size:13px;color:rgba(255,255,255,0.6)">← ලවය (numerator)</span></div>
+            <div style="color:var(--orange);padding-top:4px">5 <span style="font-size:13px;color:rgba(255,255,255,0.6)">← හරය (denominator)</span></div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7">
+          ✦ <strong style="color:var(--cyan)">ලවය</strong> = ගත් කොටස් ගණන<br>
+          ✦ <strong style="color:var(--orange)">හරය</strong> = සම්පූර්ණ කොටස් ගණන
+        </p>
+      </div>
+
+      <button class="start-quiz-btn" onclick="goToTab('quiz')">📝 ප්‍රශ්නවලට යන්න →</button>
+    </div>
+
+    <!-- TAB 2: EQUAL FRACTIONS -->
+    <div class="section" id="sec-equal">
+      <p class="section-title">⚖️ තුල්‍ය භාග</p>
+
+      <!-- Equal fraction bars -->
+      <div class="equal-demo">
+        <h3>📊 තුල්‍ය භාග දෘශ්‍යකරණය</h3>
+        <div id="equal-bars">
+          <div class="eq-row">
+            <span class="eq-label"><span class="frac"><span class="fn">1</span>2</span></span>
+            <div class="eq-bar-wrap" id="bar-half"></div>
+          </div>
+          <div class="eq-row">
+            <span class="eq-label"><span class="frac"><span class="fn">2</span>4</span></span>
+            <div class="eq-bar-wrap" id="bar-2over4"></div>
+          </div>
+          <div class="eq-row">
+            <span class="eq-label"><span class="frac"><span class="fn">3</span>6</span></span>
+            <div class="eq-bar-wrap" id="bar-3over6"></div>
+          </div>
+          <div class="eq-row">
+            <span class="eq-label"><span class="frac"><span class="fn">4</span>8</span></span>
+            <div class="eq-bar-wrap" id="bar-4over8"></div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);text-align:center;margin-top:8px">🟦 = ගත් කොටස &nbsp; ⬜ = ඉතිරි කොටස</p>
+      </div>
+
+      <!-- How to find equal fractions -->
+      <div class="equal-demo">
+        <h3>✖️ ÷ ×  එකම සංඛ්‍යාවකින් ගුණ/ෙභාජ්‍ය කරන්න!</h3>
+        <p class="mult-hint">ලවය සහ හරය <strong>එකම</strong> සංඛ්‍යාවකින් ගුණ කරන්න</p>
+
+        <div id="eq-anim-container">
+          <div class="efrac-pair">
+            <div class="efrac-block">
+              <div class="eb-label">මූල භාගය</div>
+              <div class="efrac-val"><span class="en" id="eq-n1">1</span><span class="ed" id="eq-d1">2</span></div>
+            </div>
+            <span class="eq-sign">=</span>
+            <div class="efrac-block">
+              <div class="eb-label">× <span id="eq-mult">2</span> කළ විට</div>
+              <div class="efrac-val"><span class="en" id="eq-n2">2</span><span class="ed" id="eq-d2">4</span></div>
+            </div>
+            <span class="eq-sign">=</span>
+            <div class="efrac-block">
+              <div class="eb-label">× <span id="eq-mult3">3</span> කළ විට</div>
+              <div class="efrac-val"><span class="en" id="eq-n3">3</span><span class="ed" id="eq-d3">6</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px">
+          <button class="frac-btn" style="font-size:13px;width:auto;padding:8px 14px" onclick="showEqualFrac(1,2)"><span class="frac" style="font-size:11px"><span class="fn">1</span>2</span></button>
+          <button class="frac-btn" style="font-size:13px;width:auto;padding:8px 14px" onclick="showEqualFrac(1,3)"><span class="frac" style="font-size:11px"><span class="fn">1</span>3</span></button>
+          <button class="frac-btn" style="font-size:13px;width:auto;padding:8px 14px" onclick="showEqualFrac(2,3)"><span class="frac" style="font-size:11px"><span class="fn">2</span>3</span></button>
+          <button class="frac-btn" style="font-size:13px;width:auto;padding:8px 14px" onclick="showEqualFrac(3,4)"><span class="frac" style="font-size:11px"><span class="fn">3</span>4</span></button>
+          <button class="frac-btn" style="font-size:13px;width:auto;padding:8px 14px" onclick="showEqualFrac(2,5)"><span class="frac" style="font-size:11px"><span class="fn">2</span>5</span></button>
+        </div>
+      </div>
+
+      <!-- Drag matching equal fracs -->
+      <div class="drag-zone">
+        <h3>🎯 ඇදගෙන ගැලපීමේ ක්‍රීඩාව</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:10px">ගෙනෙන්නාගෙන් ඇදලා නිවැරදි ස්ථානයට හරියන්</p>
+        <div class="drag-fracs" id="drag-source"></div>
+        <div class="drop-targets" id="drop-zone"></div>
+        <div id="drag-result" style="text-align:center;margin-top:10px;font-size:13px;min-height:20px"></div>
+      </div>
+
+      <button class="start-quiz-btn" onclick="goToTab('quiz')">📝 ප්‍රශ්නවලට යන්න →</button>
+    </div>
+
+    <!-- TAB 3: QUIZ -->
+    <div class="section" id="sec-quiz">
+      <p class="section-title">📝 ප්‍රශ්නාවලිය</p>
+      <div id="quiz-area"></div>
+    </div>
+
+    <!-- TAB 4: EXPLANATIONS -->
+    <div class="section" id="sec-exp">
+      <p class="section-title">💡 පිළිතුරු පැහැදිලි කිරීම</p>
+      <div id="exp-area">
+        <div class="intro-card">
+          <p style="font-size:13px;color:rgba(255,255,255,0.7);text-align:center">ප්‍රශ්නාවලිය සම්පූර්ණ කළ පසු, වැරදි පිළිතුරු සඳහා<br>පැහැදිලි කිරීම් මෙහි දිස්වේ.</p>
+        </div>
+      </div>
+      <button id="download-btn" onclick="openWS()">📥 කාර්‍යය පත්‍රිකාව බාගන්න</button>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" onclick="goToTab('intro')">
+      <span class="nav-icon">📚</span>
+      <span class="nav-label">හඳුනාගැනීම</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('equal')">
+      <span class="nav-icon">⚖️</span>
+      <span class="nav-label">තුල්‍ය</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('quiz')">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">ප්‍රශ්න</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('exp')">
+      <span class="nav-icon">💡</span>
+      <span class="nav-label">පැහැදිලි කිරීම</span>
+    </button>
+  </nav>
+</div>
+
+<!-- Feedback Overlay -->
+<div id="feedback-overlay">
+  <div id="fb-emoji">⭐</div>
+  <div class="stars-row" id="fb-stars"></div>
+  <div id="fb-title"></div>
+  <div id="fb-text"></div>
+  <button id="fb-next" onclick="nextQuestion()">ඊළඟ ප්‍රශ්නය →</button>
+</div>
+
+<!-- Worksheet Modal -->
+<div id="ws-modal">
+  <div id="ws-inner">
+    <h3>📄 කාර්‍යය පත්‍රිකාව</h3>
+    <p style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:14px;text-align:center">
+      භාග පාඩම - ශ්‍රේණිය 3-6<br>
+      <span style="font-size:11px;color:rgba(255,255,255,0.5)">ප්‍රශ්න 40 + පිළිතුරු</span>
+    </p>
+    <button class="ws-btn" onclick="downloadWorksheet()">⬇️ HTML ගොනුව ලෙස බාගන්න</button>
+    <button class="ws-close" onclick="closeWS()">✕ වසා දමන්න</button>
+  </div>
+</div>
+
+<script>
+// ========== COPY PROTECTION ==========
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&['s','u','c','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+  if(e.key==='F12'||e.keyCode===123)e.preventDefault();
+});
+
+// ========== VISIT COUNTER ==========
+let visits=parseInt(localStorage.getItem('haga_visits')||'0')+1;
+localStorage.setItem('haga_visits',visits);
+document.getElementById('visit-count-val').textContent=visits;
+let visitVisible=true;
+function toggleVisit(){
+  visitVisible=!visitVisible;
+  document.getElementById('visit-count-val').style.display=visitVisible?'':'none';
+}
+
+// ========== NAVIGATION ==========
+const tabMap={intro:'sec-intro',equal:'sec-equal',quiz:'sec-quiz',exp:'sec-exp'};
+const navBtns=document.querySelectorAll('.nav-btn');
+function goToTab(tab){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(tabMap[tab]).classList.add('active');
+  navBtns.forEach((b,i)=>{
+    const tabs=['intro','equal','quiz','exp'];
+    b.classList.toggle('active',tabs[i]===tab);
+  });
+  if(tab==='quiz'&&!quizStarted)initQuiz();
+  if(tab==='equal')buildEqualBars();
+}
+
+// ========== PIZZA ANIMATION ==========
+let pizzaParts=4,pizzaShaded=1;
+
+function getFracType(n,d){
+  if(n===d) return {name:'විෂම භාගය',color:'var(--orange)',desc:'ලවය = හරය'};
+  if(n===1 && d>1) return {name:'ඒකක භාගය',color:'var(--cyan)',desc:'ලවය = 1'};
+  if(n<d) return {name:'නියම භාගය',color:'var(--green)',desc:'ලවය < හරය'};
+  if(n>d) return {name:'විෂම භාගය',color:'var(--orange)',desc:'ලවය > හරය'};
+  return {name:'',color:'var(--gold)',desc:''};
+}
+
+function updateFracBadge(){
+  const t=getFracType(pizzaShaded,pizzaParts);
+  const badge=document.getElementById('frac-type-label');
+  if(badge){
+    badge.textContent=t.name+' ('+t.desc+')';
+    badge.style.color=t.color;
+    badge.style.borderColor=t.color;
+    badge.style.background=t.color.replace('var(','').replace(')','').trim();
+    badge.style.background=t.color==='var(--cyan)'?'rgba(0,188,212,0.15)':
+      t.color==='var(--green)'?'rgba(0,230,118,0.15)':
+      t.color==='var(--orange)'?'rgba(255,152,0,0.15)':'rgba(255,215,0,0.15)';
+  }
+}
+
+function drawPizza(){
+  const svg=document.getElementById('pizza-svg');
+  svg.innerHTML='';
+  const cx=100,cy=100,r=85;
+  const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  circle.setAttribute('cx',cx);circle.setAttribute('cy',cy);circle.setAttribute('r',r);
+  circle.setAttribute('fill','#8B4513');svg.appendChild(circle);
+  const inner=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  inner.setAttribute('cx',cx);inner.setAttribute('cy',cy);inner.setAttribute('r',r-6);
+  inner.setAttribute('fill','#FFA500');svg.appendChild(inner);
+
+  for(let i=0;i<pizzaParts;i++){
+    const startAngle=(i/pizzaParts)*2*Math.PI-Math.PI/2;
+    const endAngle=((i+1)/pizzaParts)*2*Math.PI-Math.PI/2;
+    const x1=cx+r*Math.cos(startAngle),y1=cy+r*Math.sin(startAngle);
+    const x2=cx+r*Math.cos(endAngle),y2=cy+r*Math.sin(endAngle);
+    const large=pizzaParts===1?1:(endAngle-startAngle>Math.PI?1:0);
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    const d=`M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} Z`;
+    path.setAttribute('d',d);
+    path.setAttribute('fill',i<pizzaShaded?'#E53935':'#FFA500');
+    path.setAttribute('stroke','#5D4037');path.setAttribute('stroke-width','2');
+    path.style.transition='fill 0.4s';
+    const midAngle=(startAngle+endAngle)/2;
+    const tx=cx+r*0.55*Math.cos(midAngle),ty=cy+r*0.55*Math.sin(midAngle);
+    const text=document.createElementNS('http://www.w3.org/2000/svg','text');
+    text.setAttribute('x',tx);text.setAttribute('y',ty+4);
+    text.setAttribute('text-anchor','middle');text.setAttribute('font-size','14');
+    text.textContent=i<pizzaShaded?'🍕':'';
+    svg.appendChild(path);svg.appendChild(text);
+  }
+  const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx',cx);dot.setAttribute('cy',cy);dot.setAttribute('r',5);
+  dot.setAttribute('fill','#5D4037');svg.appendChild(dot);
+
+  document.getElementById('frac-display-num').textContent=pizzaShaded;
+  document.getElementById('frac-display-den').textContent=pizzaParts;
+  document.getElementById('pizza-label').innerHTML=
+    `Pizza 1 කෑලි ${pizzaParts} ට කැඩූ විට, ${pizzaShaded} කෑල්ල${pizzaShaded>1?'ී':''} = <span style="color:var(--gold);font-weight:900">${pizzaShaded}/${pizzaParts}</span>`;
+  updateFracBadge();
+}
+
+function changeNum(d){
+  const newN=pizzaShaded+d;
+  if(newN<1||newN>pizzaParts*2)return;
+  // if numerator > denominator that's ok (improper), allow up to 2× den
+  pizzaShaded=Math.max(1,Math.min(newN,pizzaParts*2));
+  // update den display if shaded exceeds parts
+  if(pizzaShaded>pizzaParts)pizzaParts=pizzaShaded;
+  drawPizza();
+  playTone(400+pizzaShaded*40,0.1);
+}
+
+function changeDen(d){
+  const newD=pizzaParts+d;
+  if(newD<1||newD>12)return;
+  pizzaParts=Math.max(1,newD);
+  // keep numerator within range
+  pizzaShaded=Math.min(pizzaShaded,pizzaParts);
+  drawPizza();
+  playTone(350+pizzaParts*30,0.1);
+}
+drawPizza();
+
+// ========== EQUAL FRACTION BARS ==========
+function buildEqualBars(){
+  const barData=[
+    {id:'bar-half',n:1,d:2,color:'#03A9F4'},
+    {id:'bar-2over4',n:2,d:4,color:'#8BC34A'},
+    {id:'bar-3over6',n:3,d:6,color:'#FF9800'},
+    {id:'bar-4over8',n:4,d:8,color:'#E91E63'},
+  ];
+  barData.forEach(({id,n,d,color},idx)=>{
+    const bar=document.getElementById(id);
+    bar.innerHTML='';
+    for(let i=0;i<d;i++){
+      const seg=document.createElement('div');
+      seg.className='eq-segment';
+      seg.style.flex=`1`;
+      seg.style.background=i<n?color:'rgba(255,255,255,0.05)';
+      seg.style.transitionDelay=`${idx*0.1+i*0.05}s`;
+      bar.appendChild(seg);
+    }
+  });
+}
+buildEqualBars();
+
+// Equal fractions animation
+function showEqualFrac(n,d){
+  document.getElementById('eq-n1').textContent=n;
+  document.getElementById('eq-d1').textContent=d;
+  document.getElementById('eq-mult').textContent=2;
+  document.getElementById('eq-n2').textContent=n*2;
+  document.getElementById('eq-d2').textContent=d*2;
+  document.getElementById('eq-mult3').textContent=3;
+  document.getElementById('eq-n3').textContent=n*3;
+  document.getElementById('eq-d3').textContent=d*3;
+  playTone(520,0.1);
+}
+
+// ========== TAP-TO-SELECT EQUAL FRACS MATCHING ==========
+const matchPairs=[
+  {base:{n:1,d:2},equal:{n:2,d:4}},
+  {base:{n:1,d:3},equal:{n:2,d:6}},
+  {base:{n:2,d:3},equal:{n:4,d:6}},
+  {base:{n:3,d:4},equal:{n:6,d:8}},
+];
+let selectedFrac=null;
+
+function buildDragGame(){
+  const src=document.getElementById('drag-source');
+  const dst=document.getElementById('drop-zone');
+  src.innerHTML='';dst.innerHTML='';
+  document.getElementById('drag-result').innerHTML='';
+  selectedFrac=null;
+
+  const shuffled=[...matchPairs].sort(()=>Math.random()-0.5);
+  const draggables=shuffled.map(p=>p.equal).sort(()=>Math.random()-0.5);
+
+  // Instruction
+  src.insertAdjacentHTML('beforebegin','<p style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:6px">① ඉහළ භාගයක් ස්පර්ශ කරන්න → ② පහළ ගැලපෙන ස්ථානය ස්පර්ශ කරන්න</p>');
+
+  draggables.forEach(f=>{
+    const el=document.createElement('div');
+    el.className='drag-frac';
+    el.dataset.n=f.n;el.dataset.d=f.d;
+    el.innerHTML=`<span class="df-n">${f.n}</span><span class="df-d">${f.d}</span>`;
+    el.addEventListener('click',()=>selectFrac(el));
+    src.appendChild(el);
+  });
+
+  shuffled.forEach(p=>{
+    const dt=document.createElement('div');
+    dt.className='drop-target';
+    dt.dataset.n=p.equal.n;dt.dataset.d=p.equal.d;
+    dt.innerHTML=`<span style="border-bottom:2px solid var(--gold);font-size:18px;font-weight:900;color:var(--gold);display:block;text-align:center">${p.base.n}</span><span style="font-size:18px;font-weight:900;color:var(--gold);display:block;text-align:center">${p.base.d}</span><span class="dt-label">?</span>`;
+    dt.addEventListener('click',()=>dropOnTarget(dt));
+    dst.appendChild(dt);
+  });
+}
+
+function selectFrac(el){
+  if(el.classList.contains('matched'))return;
+  // deselect previous
+  document.querySelectorAll('.drag-frac.selected').forEach(e=>{
+    e.classList.remove('selected');
+    e.style.border='2px solid var(--gold)';
+    e.style.background='rgba(255,215,0,0.15)';
+  });
+  el.classList.add('selected');
+  el.style.border='3px solid var(--green)';
+  el.style.background='rgba(0,230,118,0.2)';
+  el.style.transform='scale(1.1)';
+  selectedFrac=el;
+  playTone(500,0.08);
+}
+
+function dropOnTarget(dt){
+  if(!selectedFrac)return;
+  if(dt.classList.contains('filled'))return;
+  const n=parseInt(selectedFrac.dataset.n),d=parseInt(selectedFrac.dataset.d);
+  const tn=parseInt(dt.dataset.n),td=parseInt(dt.dataset.d);
+  if(n===tn&&d===td){
+    // correct match
+    dt.classList.add('filled');
+    dt.innerHTML=`<span style="font-size:18px;font-weight:900;color:var(--gold);border-bottom:2px solid var(--gold);display:block;text-align:center">${n}</span><span style="font-size:18px;font-weight:900;color:var(--gold);display:block;text-align:center">${d}</span><span style="font-size:20px">✅</span>`;
+    selectedFrac.classList.add('matched');
+    selectedFrac.classList.remove('selected');
+    selectedFrac.style.background='rgba(0,230,118,0.2)';
+    selectedFrac.style.border='2px solid var(--green)';
+    selectedFrac.style.transform='';
+    selectedFrac=null;
+    playTone(660,0.12);
+    confetti();
+    checkDragComplete();
+  } else {
+    // wrong
+    dt.style.animation='shake 0.4s';
+    setTimeout(()=>{dt.style.animation='';},400);
+    // deselect
+    selectedFrac.classList.remove('selected');
+    selectedFrac.style.border='2px solid var(--gold)';
+    selectedFrac.style.background='rgba(255,215,0,0.15)';
+    selectedFrac.style.transform='';
+    selectedFrac=null;
+    playTone(200,0.08);
+    document.getElementById('drag-result').innerHTML='<span style="color:var(--pink);font-size:13px">❌ නොගැලපේ! නැවත උත්සාහ කරන්න.</span>';
+    setTimeout(()=>{document.getElementById('drag-result').innerHTML='';},1500);
+  }
+}
+function checkDragComplete(){
+  const all=document.querySelectorAll('.drop-target');
+  const filled=document.querySelectorAll('.drop-target.filled');
+  if(all.length===filled.length){
+    document.getElementById('drag-result').innerHTML='<span style="color:var(--green);font-weight:900;font-size:16px">🎉 ඉතා සුපිරි! සියලු තුල්‍ය භාග ගළපීය!</span>';
+    bigConfetti();
+  }
+}
+setTimeout(buildDragGame,500);
+
+// ========== QUIZ DATA ==========
+const allQuestions=[
+  // ========== SECTION 1: ඒකක භාග (Q1-10) ==========
+  {s:'ඒකක භාග',q:'<span class="qfrac"><span class="qfn">1</span>7</span> යනු කුමන භාගයක්ද?',opts:['නියම භාගය','ඒකක භාගය','විෂම භාගය'],ans:1,exp:'ඒකක භාගයක ලවය සෑමවිටම 1 වේ. 1/7 හි ලවය 1 බැවින් එය ඒකක භාගයකි.'},
+  {s:'ඒකක භාග',q:'ඒකක භාගයක ලවය සෑමවිටම කුමක්ද?',opts:['0','1','2'],ans:1,exp:'ඒකක භාගයේ ලවය සෑමවිටම 1 වේ. 1/2, 1/3, 1/5 යනු ඒකක භාග නිදසුනකි.'},
+  {s:'ඒකක භාග',q:'පහත දැක්වෙන ඒවායින් ඒකක භාගය කුමක්ද?',opts:['<span class="qfrac"><span class="qfn">1</span>9</span>','<span class="qfrac"><span class="qfn">2</span>9</span>','<span class="qfrac"><span class="qfn">9</span>1</span>'],ans:0,exp:'ලවය 1 වන හරය 1 ට වඩා විශාල භාගය ඒකක භාගයකි. 1/9 හි ලවය 1  බැවින් එය ඒකක භාගයකි.'},
+  {s:'ඒකක භාග',q:'හරය 5 වූ ඒකක භාගය කුමක්ද?',opts:['<span class="qfrac"><span class="qfn">5</span>1</span>','<span class="qfrac"><span class="qfn">1</span>5</span>','<span class="qfrac"><span class="qfn">0</span>5</span>'],ans:1,exp:'ඒකක භාගයේ ලවය 1 වේ. හරය 5 නම් ඒකක භාගය 1/5 වේ.'},
+  {s:'ඒකක භාග',q:'<span class="qfrac"><span class="qfn">1</span>10</span> යනු ඒකක භාගයක්ද?',opts:['ඔව්','නැත'],ans:0,exp:'1/10 හි ලවය 1 ක් වේ. ලවය 1 සේ ම, හරය 1 ට වඩා විශාල (10) බැවින් 1/10 ඒකක භාගයකි.'},
+  {s:'ඒකක භාග',q:'හරය විශාල වන විට ඒකක භාගය... ',opts:['වැඩිය','අඩු වේ',''],ans:1,exp:'හරය විශාල වූ විට, ඒකක භාගය කුඩා වේ. 1/10 < 1/5 < 1/2 (හරය 10 > 5 > 2).'},
+  {s:'ඒකක භාග',q:'පහත ඒවායින් ඒකක භාගයක් නොවන එක තෝරන්න:',opts:['<span class="qfrac"><span class="qfn">1</span>4</span>','<span class="qfrac"><span class="qfn">1</span>2</span>','<span class="qfrac"><span class="qfn">2</span>3</span>'],ans:2,exp:'2/3 හි ලවය 2 ක් ඇත. ඒකක භාගයේ ලවය 1 ම විය යුතුය. 1/4 සහ 1/2 ඒකක භාග ය.'},
+  {s:'ඒකක භාග',q:'ලවය 1 වන ඉතාම කුඩා හාගය කුමන වර්ගයේද?',opts:['ඒකක භාගය','විෂම භාගය','මිශ්‍ර සංඛ්‍යාව'],ans:0,exp:'ලවය 1 වන හාගය ඒකක භාගයකි. 1/2, 1/3, 1/100 ඒකක භාග වේ.'},
+  {s:'ඒකක භාග',q:'<span class="qfrac"><span class="qfn">1</span>12</span> හි හරය කීයද?',opts:['1','12','13'],ans:1,exp:'භාගයකදී, ඉහළ ඉලක්කම ලවය, පහළ ඉලක්කම හරය. 1/12 හි හරය 12 ය.'},
+  {s:'ඒකක භාග',q:'<span class="qfrac"><span class="qfn">1</span>3</span> සහ <span class="qfrac"><span class="qfn">1</span>5</span> යන දෙකම කුමන වර්ගයට අයත්ද?',opts:['විෂම භාගය','ඒකක භාගය','මිශ්‍ර සංඛ්‍යාව'],ans:1,exp:'1/3 සහ 1/5 දෙකෙහිම ලවය 1 ය. ලවය 1 ද, හරය 1 ට වඩා විශාල ද? ඔව්! එබැවින් දෙකම ඒකක භාග.'},
+
+  // ========== SECTION 2: නියම භාග (Q11-20) ==========
+  {s:'නියම භාග',q:'නියම භාගයක ලවය හරයට වඩා...',opts:['වැඩිය','සමාන','කුඩාව'],ans:2,exp:'නියම භාගයකදී ලවය < හරය. 2/3 → 2 < 3, 3/5 → 3 < 5.'},
+  {s:'නියම භාග',q:'පහත ඒවායින් නියම භාගය කුමක්ද?',opts:['<span class="qfrac"><span class="qfn">3</span>2</span>','<span class="qfrac"><span class="qfn">2</span>3</span>','<span class="qfrac"><span class="qfn">3</span>3</span>'],ans:1,exp:'නියම භාගයකදී ලවය < හරය. 2/3 → 2 < 3 ✓; 3/2 → 3 > 2 (විෂම); 3/3 → 3 = 3 (ඒකක).'},
+  {s:'නියම භාග',q:'<span class="qfrac"><span class="qfn">5</span>9</span> යනු කුමන භාගයක්ද?',opts:['නියම භාගය','විෂම භාගය','මිශ්‍ර සංඛ්‍යාව'],ans:0,exp:'5/9 → ලවය 5, හරය 9. 5 < 9 බැවින් ලවය < හරය. එබැවින් නියම භාගයකි.'},
+  {s:'නියම භාග',q:'නියම භාගයක අගය 1 ට වඩා...',opts:['වැඩිය','සමාන','කුඩාව'],ans:2,exp:'නියම භාගයේ ලවය < හරය. එනිසා 1 ට වඩා කුඩාය. 2/3 = 0.67 < 1.'},
+  {s:'නියම භාග',q:'<span class="qfrac"><span class="qfn">7</span>8</span> හි ලවය කුමක්ද?',opts:['7','8','15'],ans:0,exp:'භාගයකදී ඉහළ ඉලක්කම ලවය. 7/8 හි ලවය 7 ය.'},
+  {s:'නියම භාග',q:'පහත ඒවායින් නියම භාගයක් නොවන එක:',opts:['<span class="qfrac"><span class="qfn">1</span>5</span>','<span class="qfrac"><span class="qfn">4</span>3</span>','<span class="qfrac"><span class="qfn">2</span>4</span>'],ans:1,exp:'4/3 → 4 > 3, ලවය > හරය. එනිසා නියම භාගයක් නොව විෂම භාගයකි.'},
+  {s:'නියම භාග',q:'<span class="qfrac"><span class="qfn">10</span>11</span> යනු නියම භාගයක්ද?',opts:['ඔව්','නැත'],ans:0,exp:'10/11 → 10 < 11 (ලවය < හරය). ඔව්! 10/11 නියම භාගයකි.'},
+  {s:'නියම භාග',q:'පහත ඒවායින් නියම භාගය කුමක්ද?',opts:['<span class="qfrac"><span class="qfn">5</span>4</span>','<span class="qfrac"><span class="qfn">5</span>6</span>','<span class="qfrac"><span class="qfn">5</span>5</span>'],ans:1,exp:'5/6 → 5 < 6 (ලවය < හරය) ✓ නියම. 5/4 → 5>4 (විෂම). 5/5 = 1 (ඒකක/සම).'},
+  {s:'නියම භාග',q:'නියම භාගයක ලවය සෑමවිටම හරයට වඩා කුඩාද?',opts:['ඔව්','නැත'],ans:0,exp:'ඔව්! නිර්වචනය අනව නියම භාගයක ලවය < හරය.'},
+  {s:'නියම භාග',q:'<span class="qfrac"><span class="qfn">1</span>2</span> යනු නියම භාගයක්ද?',opts:['ඔව්','නැත'],ans:0,exp:'1/2 → ලවය 1, හරය 2. 1 < 2 (ලවය < හරය). ඔව්! ඒකක භාගද, නියම භාගද. ඒකක භාග නියම භාගවල උප කාණ්ඩයකි.'},
+
+  // ========== SECTION 3: විෂම භාග (Q21-30) ==========
+  {s:'විෂම භාග',q:'විෂම භාගයක ලවය හරයට...',opts:['වැඩිය හෝ සමාන','කුඩාව'],ans:0,exp:'විෂම භාගයකදී ලවය ≥ හරය. 5/3 → 5>3; 4/4 → 4=4.'},
+  {s:'විෂම භාග',q:'පහත ඒවායින් විෂම භාගය කුමක්ද?',opts:['<span class="qfrac"><span class="qfn">2</span>5</span>','<span class="qfrac"><span class="qfn">5</span>2</span>','<span class="qfrac"><span class="qfn">1</span>2</span>'],ans:1,exp:'5/2 → 5 > 2 (ලවය > හරය). විෂම භාගයකි. 2/5 සහ 1/2 → ලවය < හරය, නියම/ඒකක.'},
+  {s:'විෂම භාග',q:'<span class="qfrac"><span class="qfn">4</span>4</span> යනු කුමන භාගයක්ද?',opts:['නියම භාගය','විෂම භාගය','ඒකක භාගය'],ans:1,exp:'4/4 → ලවය = හරය. ලවය ≥ හරය (4 ≥ 4). එනිසා විෂම භාගයකි. 4/4 = 1.'},
+  {s:'විෂම භාග',q:'විෂම භාගයක අගය 1 ට වඩා...',opts:['වැඩිය හෝ සමාන','කුඩාව'],ans:0,exp:'විෂම භාගයේ ලවය ≥ හරය. 3/2 = 1.5 > 1; 4/4 = 1. ∴ අගය ≥ 1.'},
+  {s:'විෂම භාග',q:'<span class="qfrac"><span class="qfn">9</span>5</span> හි හරය කීයද?',opts:['9','5','4'],ans:1,exp:'9/5 හි ලවය 9, හරය 5. පහළ ඉලක්කම හරය.'},
+  {s:'විෂම භාග',q:'පහත ඒවායින් විෂම භාගයක් නොවන එක:',opts:['<span class="qfrac"><span class="qfn">7</span>3</span>','<span class="qfrac"><span class="qfn">3</span>7</span>','<span class="qfrac"><span class="qfn">8</span>2</span>'],ans:1,exp:'3/7 → 3 < 7 (ලවය < හරය). නියම භාගයකි. 7/3 → 7>3 (විෂම). 8/2 → 8>2 (විෂම).'},
+  {s:'විෂම භාග',q:'<span class="qfrac"><span class="qfn">12</span>7</span> යනු විෂම භාගයක්ද?',opts:['ඔව්','නැත'],ans:0,exp:'12/7 → 12 > 7 (ලවය > හරය). ඔව්! විෂම භාගයකි. 12/7 = 1 සහ 5/7.'},
+  {s:'විෂම භාග',q:'ලවය හරයට වඩා විශාල නම් ඒය...',opts:['නියම භාගය','විෂම භාගය','ඒකක භාගය'],ans:1,exp:'ලවය > හරය නම්, ඒය විෂම භාගයකි. 5/3, 8/5, 11/4 - සියල්ල විෂම.'},
+  {s:'විෂම භාග',q:'විෂම භාගයක් මිශ්‍ර සංඛ්‍යාවක් ලෙස ලිවිය හැකිද?',opts:['ඔව්','නැත'],ans:0,exp:'ඔව්! 5/3 = 1 + 2/3 = 1²⁄₃. 7/4 = 1 + 3/4 = 1¾. විෂම = පූර්ණ + නියම.'},
+  {s:'විෂම භාග',q:'<span class="qfrac"><span class="qfn">8</span>9</span> ... <span class="qfrac"><span class="qfn">8</span>1</span> ශ්‍රේණිය විෂමය?',opts:['8/9 ද','8/1 ද'],ans:1,exp:'8/1 → ලවය 8, හරය 1. 8 > 1 ∴ විෂම. 8/9 → 8 < 9 ∴ නියම.'},
+
+  // ========== SECTION 4: තුල්‍ය භාග (Q31-40) ==========
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">1</span>2</span> ට තුල්‍ය භාගයක් තෝරන්න:',opts:['<span class="qfrac"><span class="qfn">2</span>4</span>','<span class="qfrac"><span class="qfn">1</span>4</span>','<span class="qfrac"><span class="qfn">2</span>2</span>'],ans:0,exp:'1/2 → ×2/×2 → 2/4. ලවය සහ හරය දෙකම 2 කින් ගුණ කළ නිසා 2/4 = 1/2 (තුල්‍ය).'},
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">1</span>3</span> ට තුල්‍ය වන්නේ කුමක්ද?',opts:['<span class="qfrac"><span class="qfn">3</span>6</span>','<span class="qfrac"><span class="qfn">2</span>6</span>','<span class="qfrac"><span class="qfn">1</span>6</span>'],ans:1,exp:'1/3 → ×2/×2 → 2/6. 1×2=2, 3×2=6. ∴ 2/6 = 1/3 (තුල්‍ය).'},
+  {s:'තුල්‍ය භාග',q:'තුල්‍ය භාගවල වටිනාකම...',opts:['සමාන','අසමාන'],ans:0,exp:'1/2 = 2/4 = 3/6. ලිවිම වෙනස් වුනත් ප්‍රමාණය/අගය සමානයි. ∴ සමාන.'},
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">2</span>3</span> හි තුල්‍ය භාගයක් වන්නේ?',opts:['<span class="qfrac"><span class="qfn">4</span>6</span>','<span class="qfrac"><span class="qfn">3</span>6</span>','<span class="qfrac"><span class="qfn">2</span>6</span>'],ans:0,exp:'2/3 → ×2/×2 → 4/6. 2×2=4, 3×2=6. ∴ 4/6 = 2/3 (තුල්‍ය).'},
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">1</span>4</span> සහ <span class="qfrac"><span class="qfn">2</span>8</span> යනු... ',opts:['තුල්‍ය භාග','නියම භාග'],ans:0,exp:'1/4 → ×2/×2 → 2/8. ∴ 1/4 = 2/8. ඒවා තුල්‍ය භාග.'},
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">3</span>4</span> ට තුල්‍ය භාගයක් ලියන්න:',opts:['<span class="qfrac"><span class="qfn">6</span>8</span>','<span class="qfrac"><span class="qfn">4</span>6</span>','<span class="qfrac"><span class="qfn">3</span>8</span>'],ans:0,exp:'3/4 → ×2/×2 → 6/8. 3×2=6, 4×2=8. ∴ 6/8 = 3/4 (තුල්‍ය).'},
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">2</span>5</span> ට තුල්‍ය නොවන භාගය?',opts:['<span class="qfrac"><span class="qfn">4</span>10</span>','<span class="qfrac"><span class="qfn">6</span>15</span>','<span class="qfrac"><span class="qfn">2</span>10</span>'],ans:2,exp:'2/5 → ×2/×2 → 4/10 ✓; ×3/×3 → 6/15 ✓. 2/10: 2×2=4 ≠ 2; ∴ 2/10 ≠ 2/5.'},
+  {s:'තුල්‍ය භාග',q:'තුල්‍ය භාග සැදීමට ලව සහ හර කළ යුතු දේ?',opts:['එකම සංඛ්‍යාවකින් ගුණ','එකතු'],ans:0,exp:'ලවය සහ හරය දෙකම එකම සංඛ්‍යාවකින් ගුණ/ෙභාජ්‍ය කිරීමෙන් තුල්‍ය භාග ලැබේ.'},
+  {s:'තුල්‍ය භාග',q:'<span class="qfrac"><span class="qfn">5</span>10</span> යනු කුමන භාගයට තුල්‍යද?',opts:['<span class="qfrac"><span class="qfn">1</span>5</span>','<span class="qfrac"><span class="qfn">1</span>2</span>','<span class="qfrac"><span class="qfn">2</span>5</span>'],ans:1,exp:'5/10 → ÷5/÷5 → 1/2. ලවය සහ හරය 5 කින් ෙභාජ්‍ය කළ විට 1/2.'},
+  {s:'තුල්‍ය භාග',q:'තුල්‍ය භාගවල ලව සහ හර වෙනස්ද?',opts:['ඔව්','නැත'],ans:0,exp:'ඔව්! 1/2 සහ 2/4 - ලව (1≠2) හරය (2≠4) වෙනස්. නමුත් අගය සමාන! ∴ ලිවිම වෙනස් නමුත් ප්‍රමාණය සමාන.'},
+];
+
+// ========== QUIZ STATE ==========
+let quizStarted=false,currentQ=0,score=0,userAnswers=[],quizActive=false;
+
+function initQuiz(){
+  quizStarted=true;quizActive=true;
+  currentQ=0;score=0;userAnswers=[];
+  renderQuiz();
+}
+
+function renderQuiz(){
+  const area=document.getElementById('quiz-area');
+  if(currentQ>=allQuestions.length){
+    showSummary();return;
+  }
+  const q=allQuestions[currentQ];
+  const pct=Math.round((currentQ/allQuestions.length)*100);
+  let sectionHeader='';
+  const prevSection=currentQ>0?allQuestions[currentQ-1].s:'';
+  if(q.s!==prevSection){
+    const secColors={ඒකක:'#00BCD4',නියම:'#8BC34A',විෂම:'#FF9800',තුල්‍ය:'#E91E63'};
+    const col=Object.entries(secColors).find(([k])=>q.s.includes(k))?.[1]||'#fff';
+    sectionHeader=`<div class="quiz-section-header" style="border-color:${col}"><h4 style="color:${col}">🔷 ${q.s} (ප්‍රශ්න ${currentQ+1} - ${Math.min(currentQ+10,allQuestions.length)})</h4><p>${q.s} ගැන ප්‍රශ්න</p></div>`;
+  }
+  const letters=['අ','ආ','ඇ'];
+  const optsHTML=q.opts.map((o,i)=>`<button class="opt-btn" onclick="selectAnswer(${i})"><span class="opt-letter">${letters[i]}</span> ${o}</button>`).join('');
+  area.innerHTML=`
+    ${sectionHeader}
+    <div class="quiz-header">
+      <span class="q-num">ප්‍රශ්නය ${currentQ+1} / ${allQuestions.length}</span>
+      <span class="q-score">⭐ ${score}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="question-card">
+      <div class="q-text">${q.text||q.q}</div>
+      <div class="options">${optsHTML}</div>
+    </div>
+  `;
+}
+
+function selectAnswer(idx){
+  if(!quizActive)return;
+  const q=allQuestions[currentQ];
+  userAnswers.push({q:currentQ,chosen:idx,correct:q.ans});
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans)b.classList.add('correct');
+    else if(i===idx&&idx!==q.ans)b.classList.add('wrong');
+  });
+  if(idx===q.ans){score++;showFeedback(true,q);}
+  else showFeedback(false,q);
+}
+
+const correctPhrases=['සුපිරි! 🎉','ඉතා සුපිරි! ✨','ඉතා දක්ෂයි! 🌟','නියමයි! 👏','බොහොම හොඳයි! 💫'];
+function showFeedback(correct,q){
+  const ov=document.getElementById('feedback-overlay');
+  ov.classList.add('visible');
+  document.getElementById('fb-emoji').textContent=correct?'🌟':'💭';
+  document.getElementById('fb-title').textContent=correct?correctPhrases[Math.floor(Math.random()*correctPhrases.length)]:'නිවැරදි නොවේ';
+  document.getElementById('fb-title').style.color=correct?'var(--green)':'var(--pink)';
+  const stars=correct?(score%10===0?5:(score%5===0?4:3)):0;
+  document.getElementById('fb-stars').innerHTML=correct?'⭐'.repeat(stars):'';
+  document.getElementById('fb-text').textContent=correct?'නිවැරදි! '+q.exp:q.exp;
+  if(correct){confetti();playTone(660,0.15);}else playTone(220,0.1);
+}
+
+function nextQuestion(){
+  document.getElementById('feedback-overlay').classList.remove('visible');
+  currentQ++;
+  renderQuiz();
+}
+
+function showSummary(){
+  const pct=Math.round((score/allQuestions.length)*100);
+  let msg='',emoji='';
+  if(pct>=90){msg='ඉතා දක්ෂ ශිෂ්‍යයෙකු! 🏆';emoji='🥇';}
+  else if(pct>=70){msg='ඉතා හොඳ ප්‍රතිඵලයකි! 🌟';emoji='🥈';}
+  else if(pct>=50){msg='හොඳ ප්‍රයත්නයකි! 💪';emoji='🥉';}
+  else{msg='තවත් ප්‍රයත්නයක් කරන්න! 📚';emoji='📚';}
+  const area=document.getElementById('quiz-area');
+  area.innerHTML=`
+    <div id="score-summary" style="display:block;text-align:center;animation:slideIn 0.4s ease">
+      <div style="font-size:60px">${emoji}</div>
+      <div class="score-big">${score}/${allQuestions.length}</div>
+      <div class="score-msg" style="color:var(--gold)">${msg}</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.7);margin:6px 0">ලකුණු: ${pct}%</div>
+      <button class="retry-btn" onclick="initQuiz()">🔄 නැවත උත්සාහ කරන්න</button>
+      <button class="retry-btn" style="background:linear-gradient(135deg,var(--purple),#7B1FA2);margin-top:8px" onclick="showExplanations()">💡 පිළිතුරු බලන්න</button>
+    </div>`;
+  bigConfetti();buildExplanations();
+}
+
+function showExplanations(){goToTab('exp');}
+
+function buildExplanations(){
+  const wrong=userAnswers.filter(a=>a.chosen!==a.correct);
+  const area=document.getElementById('exp-area');
+  if(wrong.length===0){
+    area.innerHTML='<div class="intro-card"><p style="font-size:16px;color:var(--green);font-weight:900;text-align:center">🎉 සියලු ප්‍රශ්නවලට නිවැරදි පිළිතුරු!</p></div>';
+    return;
+  }
+  const letters=['අ','ආ','ඇ'];
+  area.innerHTML=`<p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:12px">වැරදූ ප්‍රශ්න ${wrong.length}ක් සඳහා පිළිතුරු:</p>`+
+    wrong.map(a=>{
+      const q=allQuestions[a.q];
+      return `<div class="exp-card">
+        <div class="exp-q">ප්‍රශ්නය ${a.q+1}: ${q.q}</div>
+        <div class="exp-a">✅ නිවැරදි: ${letters[q.ans]}) ${q.opts[q.ans]}</div>
+        <div class="exp-a" style="color:var(--pink)">❌ ඔබ: ${letters[a.chosen]}) ${q.opts[a.chosen]}</div>
+        <div class="exp-why">💡 ${q.exp}</div>
+      </div>`;
+    }).join('');
+}
+
+// ========== SOUND ==========
+let audioCtx;
+function playTone(freq,vol){
+  try{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='sine';o.frequency.value=freq;
+    g.gain.value=vol;g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.3);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start();o.stop(audioCtx.currentTime+0.3);
+  }catch(e){}
+}
+
+// ========== CONFETTI ==========
+function confetti(){
+  const colors=['#FFD700','#00E676','#FF4081','#00BCD4','#FF9800'];
+  for(let i=0;i<15;i++){
+    const c=document.createElement('div');
+    c.className='confetti-piece';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.left=Math.random()*100+'vw';
+    c.style.top='20vh';
+    c.style.animationDelay=Math.random()*0.3+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+}
+function bigConfetti(){for(let i=0;i<5;i++)setTimeout(confetti,i*200);}
+
+// ========== WORKSHEET ==========
+function openWS(){document.getElementById('ws-modal').classList.add('open')}
+function closeWS(){document.getElementById('ws-modal').classList.remove('open')}
+function downloadWorksheet(){
+  const letters=['අ','ආ','ඇ'];
+  const qHTML=allQuestions.map((q,i)=>`
+    <div style="margin-bottom:18px;padding:10px;border:1px solid #ddd;border-radius:8px">
+      <p style="font-weight:bold;margin-bottom:8px">${i+1}. ${q.q.replace(/<[^>]+>/g,'')}</p>
+      ${q.opts.map((o,j)=>`<p style="margin-left:16px">${letters[j]}) ${o.replace(/<[^>]+>/g,'')}</p>`).join('')}
+      <p style="color:green;margin-top:6px"><strong>පිළිතුර:</strong> ${letters[q.ans]}) ${q.opts[q.ans].replace(/<[^>]+>/g,'')}</p>
+    </div>`).join('');
+  const html=`<!DOCTYPE html><html lang="si"><head><meta charset="UTF-8"/><title>භාග - කාර්‍යය පත්‍රිකාව</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>body{font-family:'Noto Sans Sinhala',sans-serif;max-width:720px;margin:0 auto;padding:24px;background:#fff;color:#111}
+  h1{text-align:center;color:#0d1b3e;font-size:22px;margin-bottom:6px}
+  h2{font-size:16px;color:#1565c0;border-bottom:2px solid #1565c0;padding-bottom:4px;margin-top:20px}
+  </style></head><body>
+  <h1>📚 භාග පාඩම - කාර්‍යය පත්‍රිකාව</h1>
+  <p style="text-align:center;color:#666">ශ්‍රේණිය 3-6 | ප්‍රශ්න 40</p>
+  <h2>I. ඒකක භාග (1-10)</h2>${qHTML.split('</div>').slice(0,10).join('</div>')}</div>
+  <h2>II. නියම භාග (11-20)</h2>${qHTML.split('</div>').slice(10,20).join('</div>')}</div>
+  <h2>III. විෂම භාග (21-30)</h2>${qHTML.split('</div>').slice(20,30).join('</div>')}</div>
+  <h2>IV. තුල්‍ය භාග (31-40)</h2>${qHTML.split('</div>').slice(30,40).join('</div>')}</div>
+  </body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='bhaga_karya_patrika.html';
+  a.click();closeWS();
+}
+</script>
+</body>
+</html>
