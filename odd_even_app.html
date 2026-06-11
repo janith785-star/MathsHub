@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#0d1b3e"/>
+<title>ඔත්තේ සහ ඉරට්ටේ සංඛ්‍යා 🔢</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg1:#0d1b3e;--bg2:#1a2f6e;--bg3:#0e4d92;
+  --gold:#FFD700;--green:#00E676;--pink:#FF4081;--orange:#FF9800;--cyan:#00BCD4;--purple:#9C27B0;--red:#f44336;
+  --font:'Noto Sans Sinhala',sans-serif;
+}
+html,body{
+  height:100%;
+  background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);
+  background-attachment:fixed;
+  font-family:var(--font);color:#fff;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+}
+::-webkit-scrollbar{display:none}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:90px}
+body{user-select:none;-webkit-user-select:none}
+
+/* WhatsApp Banner */
+#wa-banner{
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  padding:10px 14px;display:flex;align-items:center;gap:10px;
+  cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.4);
+  position:sticky;top:0;z-index:100;text-decoration:none;
+}
+#wa-banner .wa-icon{font-size:22px}
+#wa-banner .wa-text{flex:1}
+#wa-banner .wa-title{font-size:12px;font-weight:700;color:#fff}
+#wa-banner .wa-sub{font-size:10px;color:rgba(255,255,255,0.85)}
+#wa-banner .wa-btn{background:rgba(255,255,255,0.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+
+/* Visit Counter */
+#visit-toggle{
+  background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);
+  padding:7px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+}
+#visit-toggle span{font-size:12px;color:var(--gold);font-weight:700}
+#visit-count-val{font-size:18px;font-weight:900;color:var(--gold)}
+
+/* Header */
+#header{padding:14px 16px 6px;text-align:center;animation:slideIn 0.5s ease}
+#header .h-icon{font-size:40px;animation:bounce 2s ease-in-out infinite;display:inline-block}
+#header h1{font-size:21px;font-weight:900;color:var(--gold);margin-top:4px;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+#header p{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px}
+
+/* Bottom Nav */
+#bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(5,10,30,0.96);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.13);
+  display:flex;justify-content:space-around;
+  padding:6px 0 10px;z-index:99;
+}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;flex:1}
+.nav-btn .nav-icon{font-size:19px;transition:all 0.3s}
+.nav-btn .nav-label{font-size:9px;color:rgba(255,255,255,0.45);font-weight:400;font-family:var(--font);transition:all 0.3s}
+.nav-btn.active .nav-icon{filter:drop-shadow(0 0 6px #FFD700);transform:scale(1.18)}
+.nav-btn.active .nav-label{color:var(--gold);font-weight:800}
+
+#content{padding:0 14px 12px}
+.section{display:none;animation:slideIn 0.35s ease}
+.section.active{display:block}
+.section-title{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:12px;text-align:center}
+
+/* Animations */
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes starPop{0%{transform:scale(0) rotate(-30deg);opacity:0}60%{transform:scale(1.4)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(150px) rotate(720deg);opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(255,215,0,0.4)}50%{box-shadow:0 0 20px rgba(255,215,0,0.8)}}
+@keyframes pairBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+/* ========== TAB 1: INTRO ANIMATION ========== */
+.intro-card{
+  background:rgba(255,255,255,0.07);border-radius:18px;
+  padding:14px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.13);
+}
+.intro-card h3{font-size:15px;font-weight:900;margin-bottom:8px}
+.intro-card p{font-size:13px;color:rgba(255,255,255,0.9);line-height:1.7}
+
+/* Number Explorer */
+#num-explorer{
+  background:rgba(255,255,255,0.07);border-radius:20px;
+  padding:16px;margin-bottom:14px;text-align:center;
+  border:1px solid rgba(255,255,255,0.13);
+}
+#num-explorer h3{font-size:14px;font-weight:900;color:var(--orange);margin-bottom:12px}
+#num-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:14px}
+.num-btn{
+  background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);
+  color:#fff;font-size:24px;font-weight:900;width:48px;height:48px;
+  border-radius:14px;cursor:pointer;font-family:var(--font);transition:all 0.2s;
+}
+.num-btn:active{transform:scale(0.88)}
+#current-num{
+  font-size:52px;font-weight:900;color:var(--gold);
+  text-shadow:0 0 20px rgba(255,215,0,0.5);
+  min-width:70px;display:inline-block;
+}
+#ones-place-box{
+  background:rgba(0,188,212,0.15);border:2px solid var(--cyan);
+  border-radius:14px;padding:10px;margin-bottom:12px;
+}
+#ones-label{font-size:12px;color:var(--cyan);margin-bottom:4px;font-weight:700}
+#ones-digit{font-size:36px;font-weight:900;color:var(--cyan)}
+#ones-explain{font-size:12px;color:rgba(255,255,255,0.75);margin-top:4px}
+
+/* Pairs visual */
+#pairs-wrap{margin-bottom:12px}
+#pairs-label{font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:8px;font-weight:700}
+#pairs-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:30px}
+.pair-dot{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;animation:pairBounce 1.5s ease-in-out infinite;
+  border:2px solid rgba(255,255,255,0.3);
+}
+.pair-dot.even-dot{background:rgba(0,230,118,0.25);border-color:var(--green);color:var(--green)}
+.pair-dot.odd-dot{background:rgba(255,64,129,0.25);border-color:var(--pink);color:var(--pink)}
+.pair-dot.leftover{background:rgba(255,152,0,0.3);border-color:var(--orange);color:var(--orange);animation:bounce 1s ease-in-out infinite}
+
+#result-badge{
+  border-radius:14px;padding:10px 18px;font-size:16px;font-weight:900;
+  margin-top:4px;display:inline-block;transition:all 0.4s;
+}
+.badge-odd{background:rgba(255,64,129,0.25);border:2px solid var(--pink);color:var(--pink)}
+.badge-even{background:rgba(0,230,118,0.25);border:2px solid var(--green);color:var(--green)}
+
+/* Theory cards */
+.theory-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.theory-card{
+  border-radius:16px;padding:12px;text-align:center;
+  border:2px solid;
+}
+.theory-card.odd-card{background:rgba(255,64,129,0.12);border-color:var(--pink)}
+.theory-card.even-card{background:rgba(0,230,118,0.12);border-color:var(--green)}
+.theory-card .tc-title{font-size:14px;font-weight:900;margin-bottom:4px}
+.theory-card .tc-nums{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.6}
+.theory-card .tc-rule{font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;line-height:1.5}
+
+/* Ones digit table */
+.ones-table{width:100%;border-collapse:collapse;margin-bottom:12px}
+.ones-table th{font-size:12px;padding:8px 6px;font-weight:900;border-bottom:1px solid rgba(255,255,255,0.15)}
+.ones-table td{font-size:13px;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,0.08);text-align:center}
+.ones-table tr:nth-child(even) td{background:rgba(255,255,255,0.04)}
+
+/* ========== TAB 2: DRAG & DROP SORT ========== */
+#sort-zone{text-align:center}
+.sort-instructions{
+  background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);
+  border-radius:14px;padding:10px 14px;margin-bottom:12px;
+  font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;
+}
+#numbers-pool{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  margin-bottom:14px;min-height:50px;
+  background:rgba(255,255,255,0.04);border-radius:14px;padding:10px;
+  border:1px dashed rgba(255,255,255,0.2);
+}
+.num-chip{
+  background:rgba(255,215,0,0.15);border:2px solid var(--gold);
+  border-radius:12px;padding:8px 14px;cursor:pointer;
+  font-size:18px;font-weight:900;color:var(--gold);
+  transition:all 0.2s;
+}
+.num-chip:active{transform:scale(0.9)}
+.num-chip.selected{background:rgba(255,215,0,0.35);transform:scale(1.1);box-shadow:0 0 14px rgba(255,215,0,0.5)}
+.num-chip.sorted-odd{background:rgba(255,64,129,0.2);border-color:var(--pink);color:var(--pink);cursor:default}
+.num-chip.sorted-even{background:rgba(0,230,118,0.2);border-color:var(--green);color:var(--green);cursor:default}
+
+.sort-bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sort-bin{
+  border-radius:16px;padding:12px;min-height:80px;
+  border:2px dashed;transition:all 0.2s;
+  display:flex;flex-direction:column;
+}
+.sort-bin.odd-bin{background:rgba(255,64,129,0.08);border-color:rgba(255,64,129,0.4)}
+.sort-bin.even-bin{background:rgba(0,230,118,0.08);border-color:rgba(0,230,118,0.4)}
+.sort-bin.highlight{border-style:solid;transform:scale(1.02);box-shadow:0 0 16px rgba(255,215,0,0.3)}
+.bin-title{font-size:13px;font-weight:900;margin-bottom:8px;text-align:center}
+.odd-bin .bin-title{color:var(--pink)}
+.even-bin .bin-title{color:var(--green)}
+.bin-numbers{display:flex;flex-wrap:wrap;gap:5px;min-height:40px;align-content:flex-start}
+.bin-chip{
+  border-radius:10px;padding:5px 10px;font-size:15px;font-weight:900;cursor:pointer;
+  transition:all 0.2s;
+}
+.odd-bin .bin-chip{background:rgba(255,64,129,0.2);border:1px solid var(--pink);color:var(--pink)}
+.even-bin .bin-chip{background:rgba(0,230,118,0.2);border:1px solid var(--green);color:var(--green)}
+.bin-chip:active{transform:scale(0.9)}
+
+#sort-actions{display:flex;gap:8px;margin-bottom:10px}
+.sort-action-btn{
+  flex:1;border:none;border-radius:14px;padding:11px;
+  font-size:13px;font-weight:900;cursor:pointer;font-family:var(--font);transition:all 0.2s;
+}
+.sort-action-btn:active{transform:scale(0.96)}
+#check-sort{background:linear-gradient(135deg,var(--green),#00897B);color:#000}
+#reset-sort{background:rgba(255,64,129,0.2);border:1px solid var(--pink);color:var(--pink)}
+#new-sort-set{background:rgba(0,188,212,0.2);border:1px solid var(--cyan);color:var(--cyan)}
+
+#sort-result{
+  border-radius:14px;padding:10px;font-size:14px;font-weight:900;
+  text-align:center;display:none;margin-bottom:8px;
+}
+#sort-result.good{background:rgba(0,230,118,0.2);border:2px solid var(--green);color:var(--green)}
+#sort-result.bad{background:rgba(255,64,129,0.2);border:2px solid var(--pink);color:var(--pink)}
+
+/* ========== QUIZ SECTION ========== */
+.quiz-header{
+  background:rgba(255,255,255,0.07);border-radius:16px;
+  padding:12px 16px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.quiz-header .q-num{font-size:13px;color:rgba(255,255,255,0.7);font-weight:700}
+.quiz-header .q-score{font-size:15px;color:var(--gold);font-weight:900}
+.progress-bar{height:6px;background:rgba(255,255,255,0.15);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:3px;transition:width 0.4s ease}
+
+.question-card{
+  background:rgba(255,255,255,0.08);border-radius:18px;
+  padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.13);
+  animation:fadeIn 0.3s ease;
+}
+.question-card .q-text{font-size:14px;line-height:1.75;color:#fff;margin-bottom:12px;font-weight:700}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt-btn{
+  background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);
+  border-radius:14px;padding:12px 16px;
+  font-size:14px;font-weight:700;color:#fff;
+  cursor:pointer;font-family:var(--font);
+  text-align:left;transition:all 0.2s;
+  display:flex;align-items:center;gap:8px;
+}
+.opt-btn:active{transform:scale(0.97)}
+.opt-btn.correct{background:rgba(0,230,118,0.2);border-color:var(--green);color:var(--green)}
+.opt-btn.wrong{background:rgba(255,64,129,0.2);border-color:var(--pink);color:var(--pink)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;font-weight:900;
+}
+
+/* Feedback overlay */
+#feedback-overlay{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(5,10,30,0.97);border-radius:24px;
+  padding:20px 24px;text-align:center;
+  z-index:200;display:none;
+  border:2px solid var(--gold);
+  min-width:260px;max-width:360px;
+  animation:popIn 0.3s ease;
+}
+#feedback-overlay.visible{display:block}
+#fb-emoji{font-size:50px;margin-bottom:6px}
+#fb-title{font-size:20px;font-weight:900;margin-bottom:4px}
+#fb-text{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px}
+#fb-next{
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;border-radius:14px;padding:10px 24px;
+  font-size:14px;font-weight:900;color:#000;cursor:pointer;font-family:var(--font);
+}
+.stars-row{display:flex;justify-content:center;gap:4px;margin-bottom:8px;font-size:26px}
+
+#score-summary{display:none;text-align:center;animation:slideIn 0.4s ease}
+.score-big{font-size:60px;font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.5)}
+.score-msg{font-size:16px;font-weight:700;margin:8px 0}
+.retry-btn{
+  background:linear-gradient(135deg,var(--cyan),var(--bg3));
+  border:none;border-radius:16px;padding:12px 28px;
+  font-size:15px;font-weight:900;color:#fff;cursor:pointer;
+  font-family:var(--font);margin-top:12px;
+}
+
+/* Explanation Tab */
+.exp-card{
+  background:rgba(255,255,255,0.07);border-radius:16px;
+  padding:14px;margin-bottom:10px;
+  border-left:4px solid var(--orange);
+}
+.exp-card .exp-q{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:6px}
+.exp-card .exp-ans{font-size:14px;font-weight:900;color:var(--green);margin-bottom:4px}
+.exp-card .exp-your{font-size:13px;color:var(--pink);margin-bottom:6px}
+.exp-card .exp-why{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7}
+#exp-empty{text-align:center;padding:30px 0;color:rgba(255,255,255,0.5);font-size:14px}
+
+/* Confetti */
+.confetti-piece{
+  position:fixed;width:8px;height:8px;
+  border-radius:2px;pointer-events:none;z-index:999;
+  animation:confettiFall 1s ease-out forwards;
+}
+
+/* Download button */
+#download-btn{
+  background:linear-gradient(135deg,var(--purple),#7B1FA2);
+  border:none;border-radius:16px;padding:12px 20px;
+  width:100%;font-size:14px;font-weight:900;color:#fff;
+  cursor:pointer;font-family:var(--font);margin:12px 0;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- WhatsApp Banner -->
+<a id="wa-banner" href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank">
+  <span class="wa-icon">💬</span>
+  <div class="wa-text">
+    <div class="wa-title">නවතම පාඩම් සඳහා</div>
+    <div class="wa-sub">WhatsApp කණ්ඩායමට එකතු වන්න</div>
+  </div>
+  <div class="wa-btn">Join කරන්න</div>
+</a>
+
+<!-- Visit Counter -->
+<div id="visit-toggle" onclick="toggleVisit()">
+  <span>📊 මෙම පාඩම් කළ වාර ගණන</span>
+  <span id="visit-count-val">0</span>
+</div>
+
+<!-- Header -->
+<div id="header">
+  <div class="h-icon">🔢</div>
+  <h1>ඔත්තේ සහ ඉරට්ටේ සංඛ්‍යා</h1>
+  <p>3 - 6 ශ්‍රේණි | ගණිතය</p>
+</div>
+
+<div id="content">
+
+<!-- ===== TAB 1: INTRO ===== -->
+<div class="section active" id="sec-intro">
+  <p class="section-title">🎓 සංඛ්‍යා හඳුනා ගනිමු</p>
+
+  <div class="theory-row">
+    <div class="theory-card odd-card">
+      <div class="tc-title" style="color:var(--pink)">ඔත්තේ සංඛ්‍යා</div>
+      <div class="tc-nums">1, 3, 5, 7, 9, 11, 13...</div>
+      <div class="tc-rule">2න් බෙදූ විට <br/>ඉතිරිය = <strong>1</strong></div>
+    </div>
+    <div class="theory-card even-card">
+      <div class="tc-title" style="color:var(--green)">ඉරට්ටේ සංඛ්‍යා</div>
+      <div class="tc-nums">0, 2, 4, 6, 8, 10, 12...</div>
+      <div class="tc-rule">2න් බෙදූ විට <br/>ඉතිරිය = <strong>0</strong></div>
+    </div>
+  </div>
+
+  <div id="num-explorer">
+    <h3>🔍 සංඛ්‍යාව වෙනස් කර බලන්න</h3>
+    <div id="num-controls">
+      <button class="num-btn" onclick="changeNum(-1)">−</button>
+      <span id="current-num">5</span>
+      <button class="num-btn" onclick="changeNum(1)">+</button>
+    </div>
+
+    <div id="ones-place-box">
+      <div id="ones-label">එකස්ථානයේ ඉලක්කම</div>
+      <div id="ones-digit">5</div>
+      <div id="ones-explain">5 → ඔත්තේ ඉලක්කමක් → ඔත්තේ සංඛ්‍යාවකි</div>
+    </div>
+
+    <div id="pairs-wrap">
+      <div id="pairs-label">🫙 යෝඩ (යුගල) කිරීම:</div>
+      <div id="pairs-grid"></div>
+    </div>
+
+    <div id="result-badge" class="badge-odd">ඔත්තේ සංඛ්‍යාවකි 🔴</div>
+  </div>
+
+  <div class="intro-card">
+    <h3 style="color:var(--cyan)">📌 ඉක්මන් ක්‍රමය (එකස්ථානය)</h3>
+    <p>සංඛ්‍යාවක් ඔත්තේ ද ඉරට්ටේ ද යන්න දැනගැනීමට එහි <strong style="color:var(--gold)">එකස්ථානයේ ඉලක්කම</strong> (අවසාන ඉලක්කම) බලන්න.</p>
+  </div>
+
+  <div class="intro-card" style="overflow:hidden">
+    <h3 style="color:var(--gold)">📊 එකස්ථාන ඉලක්කම් වර්ග කිරීම</h3>
+    <table class="ones-table">
+      <tr>
+        <th style="color:var(--pink)">ඔත්තේ</th>
+        <th style="color:var(--green)">ඉරට්ටේ</th>
+      </tr>
+      <tr><td style="color:var(--pink)">1, 3, 5, 7, 9</td><td style="color:var(--green)">0, 2, 4, 6, 8</td></tr>
+    </table>
+    <p style="font-size:12px;color:rgba(255,255,255,0.7)">📌 උදාහරණ: 247 → 7 (ඔත්තේ) | 4562 → 2 (ඉරට්ටේ)</p>
+  </div>
+
+  <div class="intro-card">
+    <h3 style="color:var(--orange)">💡 දරුවන්ට පහසු ක්‍රමය</h3>
+    <p>බෝල හෝ කටු කිහිපයක් ගෙන දෙකේ යෝඩ (යුගල) කරන්න.<br/>
+    • ඉතිරියක් <strong style="color:var(--pink)">නැති නම්</strong> → ඉරට්ටේ<br/>
+    • ඉතිරිය <strong style="color:var(--pink)">1ක් ඇති නම්</strong> → ඔත්තේ</p>
+  </div>
+
+  <button id="download-btn" onclick="downloadWorksheet()">📄 කාර්‍යය පත්‍රිකාව Download කරන්න</button>
+</div>
+
+<!-- ===== TAB 2: SORT ===== -->
+<div class="section" id="sec-sort">
+  <p class="section-title">🎮 සංඛ්‍යා වෙන් කරන්න</p>
+  <div class="sort-instructions">
+    📌 <strong>සංඛ්‍යාවක් තෝරා</strong> (tap කරන්න), ඉන්පසු <strong>ඔත්තේ</strong> හෝ <strong>ඉරට්ටේ</strong> කූඩය tap කරන්න.
+  </div>
+
+  <div id="numbers-pool"></div>
+
+  <div class="sort-bins">
+    <div class="sort-bin odd-bin" id="odd-bin" onclick="dropToOdd()">
+      <div class="bin-title">🔴 ඔත්තේ</div>
+      <div class="bin-numbers" id="odd-bin-nums"></div>
+    </div>
+    <div class="sort-bin even-bin" id="even-bin" onclick="dropToEven()">
+      <div class="bin-title">🟢 ඉරට්ටේ</div>
+      <div class="bin-numbers" id="even-bin-nums"></div>
+    </div>
+  </div>
+
+  <div id="sort-result"></div>
+
+  <div id="sort-actions">
+    <button class="sort-action-btn" id="check-sort" onclick="checkSort()">✅ පරීක්ෂා කරන්න</button>
+    <button class="sort-action-btn" id="reset-sort" onclick="resetSort()">🔄 යළිත්</button>
+    <button class="sort-action-btn" id="new-sort-set" onclick="newSortSet()">🆕 නව</button>
+  </div>
+</div>
+
+<!-- ===== TAB 3: QUIZ ===== -->
+<div class="section" id="sec-quiz">
+  <p class="section-title">📝 ප්‍රශ්නාවලිය</p>
+
+  <div id="quiz-main">
+    <div class="quiz-header">
+      <span class="q-num" id="q-counter">ප්‍ර. 1 / 40</span>
+      <span class="q-score" id="q-score-display">⭐ 0 / 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:0%"></div></div>
+
+    <div class="question-card" id="question-card">
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+  </div>
+
+  <div id="score-summary">
+    <div class="score-big" id="final-score-text"></div>
+    <div class="score-msg" id="final-msg"></div>
+    <div class="stars-row" id="final-stars"></div>
+    <button class="retry-btn" onclick="restartQuiz()">🔄 නැවත පටන් ගනිමු</button>
+    <br/>
+    <button class="retry-btn" onclick="showTab('sec-exp')" style="margin-top:10px;background:linear-gradient(135deg,var(--orange),#e65100)">
+      📖 වැරදි පිළිතුරු බලන්න
+    </button>
+  </div>
+</div>
+
+<!-- ===== TAB 4: EXPLANATIONS ===== -->
+<div class="section" id="sec-exp">
+  <p class="section-title">📖 වැරදි පිළිතුරු පැහැදිලි කිරීම</p>
+  <div id="exp-container">
+    <div id="exp-empty">🎉 ඔබ සියලු ප්‍රශ්නවලට නිවැරදිව පිළිතුරු දී ඇත!<br/>ප්‍රශ්නාවලිය කරන්න 😊</div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- Bottom Nav -->
+<div id="bottom-nav">
+  <button class="nav-btn active" onclick="showTab('sec-intro')">
+    <span class="nav-icon">📚</span>
+    <span class="nav-label">හැඳින්වීම</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('sec-sort')">
+    <span class="nav-icon">🎮</span>
+    <span class="nav-label">ක්‍රීඩාව</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('sec-quiz')">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">ප්‍රශ්න</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('sec-exp')">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">පැහැදිලි කිරීම</span>
+  </button>
+</div>
+
+<!-- Feedback Overlay -->
+<div id="feedback-overlay">
+  <div id="fb-emoji"></div>
+  <div class="stars-row" id="fb-stars"></div>
+  <div id="fb-title"></div>
+  <div id="fb-text"></div>
+  <button id="fb-next" onclick="nextQuestion()">ඊළඟ ප්‍රශ්නය ➡️</button>
+</div>
+
+<script>
+// ====== COPY PROTECTION ======
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();
+  if(e.key==='F12')e.preventDefault();
+});
+
+// ====== VISIT COUNTER ======
+let showCount=false;
+function initVisit(){
+  let c=parseInt(localStorage.getItem('oe_visits')||'0')+1;
+  localStorage.setItem('oe_visits',c);
+  document.getElementById('visit-count-val').textContent=showCount?c:'****';
+}
+function toggleVisit(){
+  showCount=!showCount;
+  let c=localStorage.getItem('oe_visits')||'0';
+  document.getElementById('visit-count-val').textContent=showCount?c:'****';
+}
+initVisit();
+
+// ====== TAB NAV ======
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx={
+    'sec-intro':0,'sec-sort':1,'sec-quiz':2,'sec-exp':3
+  }[id];
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='sec-exp') renderExplanations();
+}
+
+// ====== TAB 1: NUMBER EXPLORER ======
+let explorerNum=5;
+function changeNum(d){
+  explorerNum=Math.max(0,Math.min(999,explorerNum+d));
+  updateExplorer();
+}
+function updateExplorer(){
+  const n=explorerNum;
+  document.getElementById('current-num').textContent=n;
+  const ones=n%10;
+  document.getElementById('ones-digit').textContent=ones;
+  const isOdd=n%2!==0;
+  const onesOddDigits=[1,3,5,7,9];
+  const onesLabel=onesOddDigits.includes(ones)?'ඔත්තේ ඉලක්කමක්':'ඉරට්ටේ ඉලක්කමක්';
+  document.getElementById('ones-explain').textContent=`${ones} → ${onesLabel} → ${isOdd?'ඔත්තේ සංඛ්‍යාවකි':'ඉරට්ටේ සංඛ්‍යාවකි'}`;
+
+  // pairs
+  const grid=document.getElementById('pairs-grid');
+  grid.innerHTML='';
+  const pairCount=Math.min(n,20);
+  const fullPairs=Math.floor(pairCount/2);
+  for(let i=0;i<fullPairs;i++){
+    ['🟢','🟢'].forEach(e=>{
+      const d=document.createElement('div');
+      d.className='pair-dot even-dot';
+      d.textContent=e;
+      grid.appendChild(d);
+    });
+  }
+  if(pairCount%2===1){
+    const d=document.createElement('div');
+    d.className='pair-dot leftover';
+    d.textContent='🔴';
+    grid.appendChild(d);
+  }
+  if(n>20){
+    const note=document.createElement('div');
+    note.style.cssText='font-size:11px;color:rgba(255,255,255,0.5);width:100%;text-align:center;margin-top:4px';
+    note.textContent=`(${n} ක් පෙන්වීමට 20 දක්වා ගෙනහැර දක්වා ඇත)`;
+    grid.appendChild(note);
+  }
+
+  const badge=document.getElementById('result-badge');
+  badge.className='result-badge '+(isOdd?'badge-odd':'badge-even');
+  badge.textContent=isOdd?'ඔත්තේ සංඛ්‍යාවකි 🔴':'ඉරට්ටේ සංඛ්‍යාවකි 🟢';
+  playTone(isOdd?440:520);
+}
+updateExplorer();
+
+// ====== TAB 2: SORT GAME ======
+const sortSets=[
+  [3,6,11,14,25,30,47,52,19,8],
+  [1,2,7,10,13,16,21,24,35,40],
+  [5,4,9,8,17,20,33,36,51,60],
+  [100,101,200,201,300,301,400,401,500,501],
+  [124,247,468,573,600,859,1000,1235,2456,3789],
+  [42,45,48,50,53,57,30,32,34,36],
+  [7777,8882,5550,4562,999,1000,381,138,183,542]
+];
+let sortSetIdx=0;
+let sortNumbers=[];
+let sortSelected=null;
+let oddBin=[];
+let evenBin=[];
+
+function newSortSet(){
+  sortSetIdx=(sortSetIdx+1)%sortSets.length;
+  initSort();
+}
+function initSort(){
+  sortNumbers=[...sortSets[sortSetIdx]];
+  oddBin=[];evenBin=[];sortSelected=null;
+  renderSortPool();
+  renderBins();
+  const r=document.getElementById('sort-result');
+  r.style.display='none';
+  document.getElementById('odd-bin').classList.remove('highlight');
+  document.getElementById('even-bin').classList.remove('highlight');
+}
+function renderSortPool(){
+  const pool=document.getElementById('numbers-pool');
+  pool.innerHTML='';
+  sortNumbers.forEach(n=>{
+    const chip=document.createElement('div');
+    chip.className='num-chip';
+    chip.textContent=n;
+    chip.id='chip-'+n;
+    chip.onclick=()=>selectChip(n,chip);
+    pool.appendChild(chip);
+  });
+}
+function selectChip(n,el){
+  document.querySelectorAll('.num-chip').forEach(c=>c.classList.remove('selected'));
+  sortSelected=n;
+  el.classList.add('selected');
+  playTone(400);
+  document.getElementById('odd-bin').classList.add('highlight');
+  document.getElementById('even-bin').classList.add('highlight');
+}
+function dropToOdd(){
+  if(sortSelected===null)return;
+  const n=sortSelected;
+  oddBin.push(n);
+  sortNumbers=sortNumbers.filter(x=>x!==n);
+  sortSelected=null;
+  renderSortPool();
+  renderBins();
+  document.getElementById('odd-bin').classList.remove('highlight');
+  document.getElementById('even-bin').classList.remove('highlight');
+}
+function dropToEven(){
+  if(sortSelected===null)return;
+  const n=sortSelected;
+  evenBin.push(n);
+  sortNumbers=sortNumbers.filter(x=>x!==n);
+  sortSelected=null;
+  renderSortPool();
+  renderBins();
+  document.getElementById('odd-bin').classList.remove('highlight');
+  document.getElementById('even-bin').classList.remove('highlight');
+}
+function renderBins(){
+  const ob=document.getElementById('odd-bin-nums');
+  const eb=document.getElementById('even-bin-nums');
+  ob.innerHTML='';eb.innerHTML='';
+  oddBin.forEach(n=>{
+    const c=document.createElement('div');
+    c.className='bin-chip';c.textContent=n;
+    c.onclick=()=>returnFromBin(n,'odd');
+    ob.appendChild(c);
+  });
+  evenBin.forEach(n=>{
+    const c=document.createElement('div');
+    c.className='bin-chip';c.textContent=n;
+    c.onclick=()=>returnFromBin(n,'even');
+    eb.appendChild(c);
+  });
+}
+function returnFromBin(n,bin){
+  if(bin==='odd') oddBin=oddBin.filter(x=>x!==n);
+  else evenBin=evenBin.filter(x=>x!==n);
+  sortNumbers.push(n);
+  renderSortPool();
+  renderBins();
+}
+function checkSort(){
+  if(sortNumbers.length>0){
+    const r=document.getElementById('sort-result');
+    r.style.display='block';
+    r.className='sort-result bad';
+    r.textContent='⚠️ සියලු සංඛ්‍යා වෙන් කරන්න!';
+    return;
+  }
+  let correct=true;
+  oddBin.forEach(n=>{if(n%2===0)correct=false});
+  evenBin.forEach(n=>{if(n%2!==0)correct=false});
+  const r=document.getElementById('sort-result');
+  r.style.display='block';
+  if(correct){
+    r.className='sort-result good';
+    r.textContent='🎉 ඉතා සුපිරි! නිවැරදිව වෙන් කළා!';
+    confetti();
+    playTone(600,0.5);
+  } else {
+    r.className='sort-result bad';
+    r.textContent='❌ වැරදි ඇත. නැවත උත්සාහ කරන්න!';
+    playTone(200,0.3);
+  }
+}
+function resetSort(){initSort()}
+initSort();
+
+// ====== QUESTIONS DATA ======
+const questions=[
+  // කොටස 01 (ප්‍ර 1-10) - Basic concepts
+  {q:"යම් සංඛ්‍යාවක් 2න් ඉතිරි නැතිව බෙදේ නම් එය කුමන සංඛ්‍යාවක්ද?",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) ප්‍රථමක සංඛ්‍යාවකි"],ans:1,exp:"2න් ඉතිරි නැතිව (ශේෂය 0) බෙදෙන සංඛ්‍යා ඉරට්ටේ සංඛ්‍යා ලෙස හඳුන්වේ."},
+  {q:"යම් සංඛ්‍යාවක් 2න් බෙදූ විට 1ක් ඉතිරි වේ නම් එය හඳුන්වන්නේ කුමන නමකින්ද?",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) ශේෂ සංඛ්‍යාවකි"],ans:0,exp:"2න් බෙදූ විට ශේෂය 1 ලැබෙන සංඛ්‍යා ඔත්තේ සංඛ්‍යා ලෙස හඳුන්වේ."},
+  {q:"ඉරට්ටේ සංඛ්‍යාවක එකස්ථානයේ (අවසානයට) තිබිය නොහැකි ඉලක්කම කුමක්ද?",opts:["(අ) 0","(ආ) 4","(අෑ) 5"],ans:2,exp:"ඉරට්ටේ සංඛ්‍යාවල එකස්ථානයේ 0,2,4,6,8 ඉලක්කම් පමණක් තිබේ. 5 ඔත්තේ ඉලක්කමකි."},
+  {q:"ඔත්තේ සංඛ්‍යාවක එකස්ථානයේ (අවසානයට) තිබිය හැකි ඉලක්කම් සමූහය කුමක්ද?",opts:["(අ) 1, 3, 5, 7, 9","(ආ) 2, 4, 6, 8, 0","(අෑ) 1, 2, 3, 4, 5"],ans:0,exp:"ඔත්තේ සංඛ්‍යාවල එකස්ථානයේ 1, 3, 5, 7, 9 ඉලක්කම් පමණක් හමුවේ."},
+  {q:"0, 2, 4, 6, 8 යන ඉලක්කම් වලින් අවසන් වන සියලුම සංඛ්‍යා අයත් වන්නේ කුමන කාණ්ඩයටද?",opts:["(අ) ඔත්තේ සංඛ්‍යා","(ආ) ඉරට්ටේ සංඛ්‍යා","(අෑ) ශූන්‍ය සංඛ්‍යා"],ans:1,exp:"0, 2, 4, 6, 8 ඉලක්කම් වලින් අවසන් වන සංඛ්‍යා ඉරට්ටේ සංඛ්‍යා ලෙස හඳුනාගත හැක."},
+  {q:"7 යන්න 2න් බෙදූ විට ඉතිරිය කොපමණද?",opts:["(අ) 0","(ආ) 1","(අෑ) 2"],ans:1,exp:"7 ÷ 2 = 3 ශේෂය 1. ශේෂය 1 නිසා 7 ඔත්තේ සංඛ්‍යාවකි."},
+  {q:"10 යන්න 2න් බෙදූ විට ඉතිරිය 0 කි. එම නිසා 10 යනු,",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) නිවැරදි පිළිතුරක් නැත"],ans:1,exp:"10 ÷ 2 = 5, ශේෂය 0. ශේෂය 0 නිසා 10 ඉරට්ටේ සංඛ්‍යාවකි."},
+  {q:"පහත ප්‍රකාශ වලින් නිවැරදි ප්‍රකාශය තෝරන්න.",opts:["(අ) සියලුම ඔත්තේ සංඛ්‍යා 2න් බෙදූ විට ඉතිරිය බිංදුව වේ.","(ආ) සියලුම ඉරට්ටේ සංඛ්‍යා 2න් බෙදූ විට ඉතිරිය බිංදුව වේ.","(අෑ) සංඛ්‍යාවක අගට 3 තිබේ නම් එය ඉරට්ටේ සංඛ්‍යාවකි."],ans:1,exp:"ඉරට්ටේ සංඛ්‍යා 2න් ඉතිරි නැතිව (ශේෂය 0) බෙදේ. ඔත්තේ සංඛ්‍යා 2න් බෙදූ විට ශේෂය 1 ලැබේ."},
+  {q:"ඉතා විශාල සංඛ්‍යාවක් වුවද, ඔත්තේ හෝ ඉරට්ටේ බව හඳුනා ගැනීමට අප බැලිය යුත්තේ කුමන ස්ථානයේ ඉලක්කමද?",opts:["(අ) සියයස්ථානයේ ඉලක්කම","(ආ) දසසස්ථානයේ ඉලක්කම","(අෑ) එකස්ථානයේ ඉලක්කම"],ans:2,exp:"ඕනෑම සංඛ්‍යාවක් ඔත්තේ/ඉරට්ටේ තීරණය කිරීමට එකස්ථානයේ (අවසාන) ඉලක්කම මතය බලන්නේ."},
+  {q:"පහත සදහන් ඉලක්කම් අතරින් ඔත්තේ සංඛ්‍යාවක් නිර්මාණය කිරීමට අවසානයට යොදාගත හැකි ඉලක්කම කුමක්ද?",opts:["(අ) 8","(ආ) 9","(අෑ) 2"],ans:1,exp:"9 ඔත්තේ ඉලක්කමකි. 8 සහ 2 ඉරට්ටේ ඉලක්කම්. ඔත්තේ සංඛ්‍යාවක් නිර්මාණය කිරීමට 9 අවශ්‍යයි."},
+  // කොටස 02 - Sorting (ප්‍ර 11-20)
+  {q:"පහත සංඛ්‍යා අතරින් ඉරට්ටේ සංඛ්‍යාව කුමක්ද?\n(3, 6, 9)",opts:["(අ) 3","(ආ) 6","(අෑ) 9"],ans:1,exp:"6 ÷ 2 = 3, ශේෂය 0. 6 ඉරට්ටේ සංඛ්‍යාවකි. 3 සහ 9 ඔත්තේ."},
+  {q:"පහත සංඛ්‍යා අතරින් ඔත්තේ සංඛ්‍යාව කොරන්න.\n(4, 7, 8)",opts:["(අ) 4","(ආ) 7","(අෑ) 8"],ans:1,exp:"7 ÷ 2 = 3 ශේෂය 1. 7 ඔත්තේ සංඛ්‍යාවකි. 4 සහ 8 ඉරට්ටේ."},
+  {q:"12 යන සංඛ්‍යාව අයත් වන්නේ කුමන කාණ්ඩයටද?",opts:["(අ) ඉරට්ටේ සංඛ්‍යා","(ආ) ඔත්තේ සංඛ්‍යා","(අෑ) මේ දෙකම නොවේ"],ans:0,exp:"12 ÷ 2 = 6, ශේෂය 0. 12 ඉරට්ටේ සංඛ්‍යාවකි."},
+  {q:"පහත දී ඇති සංඛ්‍යා අතරින් ඔත්තේ සංඛ්‍යාව කුමක්ද?\n(15, 20, 24)",opts:["(අ) 15","(ආ) 20","(අෑ) 24"],ans:0,exp:"15 ÷ 2 = 7 ශේෂය 1. 15 ඔත්තේ. 20 සහ 24 ඉරට්ටේ."},
+  {q:"පහත දී ඇති සංඛ්‍යා අතරින් ඉරට්ටේ සංඛ්‍යාව කුමක්ද?\n(11, 13, 18)",opts:["(අ) 11","(ආ) 13","(අෑ) 18"],ans:2,exp:"18 ÷ 2 = 9, ශේෂය 0. 18 ඉරට්ටේ. 11 සහ 13 ඔත්තේ."},
+  {q:"21, 23, 25, 27 යන සංඛ්‍යා රටාව කුමන වර්ගයේ සංඛ්‍යා රටාවක්ද?",opts:["(අ) ඉරට්ටේ සංඛ්‍යා රටාවකි","(ආ) ඔත්තේ සංඛ්‍යා රටාවකි","(අෑ) සාධක සංඛ්‍යා රටාවකි"],ans:1,exp:"21, 23, 25, 27 - සියල්ල ඔත්තේ. 1, 3, 5, 7 වලින් අවසන් වේ. 2ක් 2ක් ගෙන යන ඔත්තේ සංඛ්‍යා රටාවකි."},
+  {q:"30, 32, 34, 36 යන සංඛ්‍යා රටාව කුමන වර්ගයේ සංඛ්‍යා රටාවක්ද?",opts:["(අ) ඉරට්ටේ සංඛ්‍යා රටාවකි","(ආ) ඔත්තේ සංඛ්‍යා රටාවකි","(අෑ) ප්‍රථමක සංඛ්‍යා රටාවකි"],ans:0,exp:"30, 32, 34, 36 - සියල්ල ඉරට්ටේ. 0, 2, 4, 6 වලින් අවසන් වේ. 2ක් 2ක් ගෙන යන ඉරට්ටේ සංඛ්‍යා රටාවකි."},
+  {q:"පහත සදහන් සංඛ්‍යා අතරින් ඔත්තේ සංඛ්‍යාව කුමක්ද?\n(42, 45, 48)",opts:["(අ) 42","(ආ) 45","(අෑ) 48"],ans:1,exp:"45 - අවසන් ඉලක්කම 5, ඔත්තේ. 42 - 2 ඉරට්ටේ, 48 - 8 ඉරට්ටේ."},
+  {q:"පහත සදහන් සංඛ්‍යා අතරින් ඉරට්ටේ සංඛ්‍යාව කුමක්ද?\n(50, 53, 57)",opts:["(අ) 50","(ආ) 53","(අෑ) 57"],ans:0,exp:"50 - අවසන් ඉලක්කම 0, ඉරට්ටේ. 53 - 3 ඔත්තේ, 57 - 7 ඔත්තේ."},
+  {q:"1 සිට 10 දක්වා ඇති සංඛ්‍යා අතරින් ඉරට්ටේ සංඛ්‍යාවක් නොවන්නේ කුමක්ද?",opts:["(අ) 2","(ආ) 5","(අෑ) 8"],ans:1,exp:"5 ÷ 2 = 2 ශේෂය 1. 5 ඔත්තේ සංඛ්‍යාවකි, ඉරට්ටේ නොවේ."},
+  // කොටස 03 - Large numbers (ප්‍ර 21-30)
+  {q:"124 යන සංඛ්‍යාව ඔත්තේ සංඛ්‍යාවක්ද, ඉරට්ටේ සංඛ්‍යාවක්ද?",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) කිව නොහැක"],ans:1,exp:"124 - එකස්ථානයේ ඉලක්කම 4 (ඉරට්ටේ). 124 ÷ 2 = 62, ශේෂය 0. ඉරට්ටේ."},
+  {q:"247 යන සංඛ්‍යාවේ එකස්ථානයේ ඇත්තේ 7 නිසා එය,",opts:["(අ) ඉරට්ටේ සංඛ්‍යාවකි","(ආ) ඔත්තේ සංඛ්‍යාවකි","(අෑ) ශූන්‍ය සංඛ්‍යාවකි"],ans:1,exp:"247 - එකස්ථානයේ 7 (ඔත්තේ ඉලක්කම). 247 ÷ 2 = 123 ශේෂය 1. ඔත්තේ."},
+  {q:"පහත දැක්වෙන තුන් අංක සංඛ්‍යා අතරින් ඉරට්ටේ සංඛ්‍යාව තෝරන්න.",opts:["(අ) 351","(ආ) 468","(අෑ) 573"],ans:1,exp:"468 - එකස්ථානය 8 (ඉරට්ටේ). 351 - 1 (ඔත්තේ), 573 - 3 (ඔත්තේ)."},
+  {q:"පහත දැක්වෙන තුන් අංක සංඛ්‍යා අතරින් ඔත්තේ සංඛ්‍යාව තෝරන්න.",opts:["(අ) 600","(ආ) 712","(අෑ) 859"],ans:2,exp:"859 - එකස්ථානය 9 (ඔත්තේ). 600 - 0 (ඉරට්ටේ), 712 - 2 (ඉරට්ටේ)."},
+  {q:"1000 යන සංඛ්‍යාව කුමන වර්ගයේ සංඛ්‍යාවක්ද?",opts:["(අ) ඉරට්ටේ සංඛ්‍යාවකි","(ආ) ඔත්තේ සංඛ්‍යාවකි","(අෑ) ප්‍රථමක සංඛ්‍යාවකි"],ans:0,exp:"1000 - එකස්ථානය 0 (ඉරට්ටේ). 1000 ÷ 2 = 500, ශේෂය 0."},
+  {q:"1235 යන සංඛ්‍යාව ඔත්තේ සංඛ්‍යාවක් වීමට හේතුව කුමක්ද?",opts:["(අ) එහි මූල් ඉලක්කම 1 වීම","(ආ) එහි මැද ඉලක්කම් 2 සහ 3 වීම","(අෑ) එහි අවසාන (එකස්ථානයේ) ඉලක්කම 5 වීම"],ans:2,exp:"1235 ඔත්තේ සංඛ්‍යාවක් වන්නේ එකස්ථානයේ 5 (ඔත්තේ ඉලක්කම) ඇති නිසාය."},
+  {q:"පහත සදහන් සංඛ්‍යා අතරින් ඉරට්ටේ සංඛ්‍යාව කුමක්ද?\n(2456, 3789, 4123)",opts:["(අ) 2456","(ආ) 3789","(අෑ) 4123"],ans:0,exp:"2456 - එකස්ථානය 6 (ඉරට්ටේ). 3789 - 9 (ඔත්තේ), 4123 - 3 (ඔත්තේ)."},
+  {q:"පහත සදහන් සංඛ්‍යා අතරින් ඔත්තේ සංඛ්‍යාව කුමක්ද?\n(5550, 7777, 8882)",opts:["(අ) 5550","(ආ) 7777","(අෑ) 8882"],ans:1,exp:"7777 - එකස්ථානය 7 (ඔත්තේ). 5550 - 0 (ඉරට්ටේ), 8882 - 2 (ඉරට්ටේ)."},
+  {q:"999 යන සංඛ්‍යාව අයත් වන්නේ කුමන කාණ්ඩයටද?",opts:["(අ) ඉරට්ටේ සංඛ්‍යා","(ආ) ඔත්තේ සංඛ්‍යා","(අෑ) මේ දෙකම නොවේ"],ans:1,exp:"999 - එකස්ථානය 9 (ඔත්තේ). 999 ÷ 2 = 499 ශේෂය 1. ඔත්තේ."},
+  {q:"4562 යන සංඛ්‍යාව 2න් බෙදූ විට ඉතිරිය කොපමණද?",opts:["(අ) 0","(ආ) 1","(අෑ) 2"],ans:0,exp:"4562 - එකස්ථානය 2 (ඉරට්ටේ). 4562 ÷ 2 = 2281, ශේෂය 0."},
+  // කොටස 04 - Critical thinking (ප්‍ර 31-40)
+  {q:"මල් පැළ 5ක් ඇත. ඒවා දෙක බැගින් යෝඩ (යුගල) කළ විට එකක් ඉතිරි වේ. මල් පැළ 5 යනු,",opts:["(අ) ඉරට්ටේ සංඛ්‍යාවකි","(ආ) ඔත්තේ සංඛ්‍යාවකි","(අෑ) නිවැරදි පිළිතුරක් නැත"],ans:1,exp:"5ක් 2ක් 2ක් ලෙස යෝඩ කළ විට (2+2+1) ශේෂය 1ක් ඉතිරි වේ. ශේෂය 1 ඇති 5, ඔත්තේ සංඛ්‍යාවකි."},
+  {q:"පැන්සල් 8ක් ළමයින් දෙදෙනෙකු අතර සමානව බෙදා දුන් විට ඉතිරියක් නැත. පැන්සල් 8 යනු,",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) ඔත්තේ මෙන්ම ඉරට්ටේ සංඛ්‍යාවකි"],ans:1,exp:"8 ÷ 2 = 4, ශේෂය 0. ඉතිරිය නැති නිසා 8 ඉරට්ටේ. ළමයින් දෙදෙනාට 4 බැගින් ලැබේ."},
+  {q:"ඉරට්ටේ සංඛ්‍යාවකට තවත් 1ක් එකතු කළ විට ලැබෙන පිළිතුර සමවිටම,",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) බිංදුවකි"],ans:0,exp:"ඉරට්ටේ + 1 = ඔත්තේ. උදා: 4+1=5, 8+1=9, 20+1=21. සෑමවිටම ඔත්තේ ලැබේ."},
+  {q:"ඔත්තේ සංඛ්‍යාවකට තවත් 1ක් එකතු කළ විට ලැබෙන පිළිතුර සමවිටම,",opts:["(අ) ඔත්තේ සංඛ්‍යාවකි","(ආ) ඉරට්ටේ සංඛ්‍යාවකි","(අෑ) යෝෂ සංඛ්‍යාවකි"],ans:1,exp:"ඔත්තේ + 1 = ඉරට්ටේ. උදා: 3+1=4, 7+1=8, 11+1=12. සෑමවිටම ඉරට්ටේ ලැබේ."},
+  {q:"11 ට පසුව එන ළඟම ඉරට්ටේ සංඛ්‍යාව කුමක්ද?",opts:["(අ) 10","(ආ) 12","(අෑ) 13"],ans:1,exp:"11 ඔත්තේ. 11+1=12 ඉරට්ටේ. ඊළඟ ඉරට්ටේ සංඛ්‍යාව 12."},
+  {q:"20 ට පෙර ඇති ළඟම ඔත්තේ සංඛ්‍යාව කුමක්ද?",opts:["(අ) 19","(ආ) 21","(අෑ) 18"],ans:0,exp:"20 ඉරට්ටේ. 20-1=19 ඔත්තේ. 20ට ළඟම කලින් ඔත්තේ සංඛ්‍යාව 19."},
+  {q:"2, 5, 4 යන ඉලක්කම් තුනම එක වරක් පමණක් භාවිත කර සෑකසිය හැකි විශාලම ඉරට්ටේ සංඛ්‍යාව කුමක්ද?",opts:["(අ) 542","(ආ) 524","(අෑ) 245"],ans:0,exp:"ඉරට්ටේ නිසා අවසාන ඉලක්කම 2 හෝ 4. විශාලම අගය සඳහා 5 ශතක ලෙස. 542 = 5>4, 2 (ඉරට්ටේ). 542 > 524, ∴ 542."},
+  {q:"3, 8, 1 යන ඉලක්කම් තුනම එක වරක් පමණක් භාවිත කර සෑකසිය හැකි කුඩාම ඔත්තේ සංඛ්‍යාව කුමක්ද?",opts:["(අ) 183","(ආ) 138","(අෑ) 381"],ans:1,exp:"ඔත්තේ නිසා අවසාන ඉලක්කම 1 හෝ 3. කුඩාම නිසා 1 ශතක. 138 (1<1:8, 3 | ශේෂය 1). 138<183, ∴ 138."},
+  {q:"කුරුටු කණ්ඩායමක සිටින කුඩකයින් ගණන 11 කි. එම සංඛ්‍යාව,",opts:["(අ) ඉරට්ටේ සංඛ්‍යාවකි","(ආ) ඔත්තේ සංඛ්‍යාවකි","(අෑ) ප්‍රථමක සංඛ්‍යාවකි"],ans:1,exp:"11 - එකස්ථානය 1 (ඔත්තේ). 11 ÷ 2 = 5 ශේෂය 1. ඔත්තේ සංඛ්‍යාවකි. (ප්‍රාථමිකද, නමුත් ප්‍රශ්නයේ ඔත්තේ/ඉරට්ටේ ගැන)"},
+  {q:"සෙනසුරාදා දීනය දර්ශනයේ දිනය 24 නම්, ඒට පසුදා (ඉරිදා) දිනය කුමන වර්ගයේ සංඛ්‍යාවක්ද?",opts:["(අ) ඉරට්ටේ සංඛ්‍යාවකි","(ආ) ඔත්තේ සංඛ්‍යාවකි","(අෑ) බිංදුවෙන් අවසන් වන සංඛ්‍යාවකි"],ans:1,exp:"24 ඉරට්ටේ. 24+1=25 ඔත්තේ (5 ලින් අවසන්). ඉරිදා (ඊළඟ දිනය) 25, ඔත්තේ සංඛ්‍යාවකි."},
+];
+
+// ====== QUIZ ENGINE ======
+let qIdx=0, qScore=0, qAnswered=0;
+let wrongAnswers=[];
+
+function initQuiz(){
+  qIdx=0;qScore=0;qAnswered=0;wrongAnswers=[];
+  document.getElementById('quiz-main').style.display='block';
+  document.getElementById('score-summary').style.display='none';
+  loadQuestion();
+}
+
+function loadQuestion(){
+  if(qIdx>=questions.length){
+    showSummary();return;
+  }
+  const q=questions[qIdx];
+  document.getElementById('q-counter').textContent=`ප්‍ර. ${qIdx+1} / ${questions.length}`;
+  document.getElementById('q-score-display').textContent=`⭐ ${qScore} / ${qAnswered}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/questions.length)*100}%`;
+  document.getElementById('q-text').innerHTML=q.q.replace(/\n/g,'<br/>');
+  const opts=document.getElementById('q-options');
+  opts.innerHTML='';
+  const letters=['අ','ආ','අෑ'];
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-letter">${letters[i]}</span>${opt}`;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQ(chosen,btn){
+  const q=questions[qIdx];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  qAnswered++;
+  const isCorrect=chosen===q.ans;
+  btn.classList.add(isCorrect?'correct':'wrong');
+  document.querySelectorAll('.opt-btn')[q.ans].classList.add('correct');
+  if(isCorrect){
+    qScore++;
+    playTone(600,0.3);
+    setTimeout(()=>showFeedback(true,q),300);
+  } else {
+    wrongAnswers.push({qNum:qIdx+1,q:q.q,yourAns:q.opts[chosen],correctAns:q.opts[q.ans],exp:q.exp});
+    playTone(200,0.3);
+    setTimeout(()=>showFeedback(false,q),300);
+  }
+}
+
+const praises=[
+  {e:'🌟',t:'සුපිරි!',s:'⭐⭐⭐'},
+  {e:'🎉',t:'ඉතා සුපිරි!',s:'⭐⭐⭐⭐'},
+  {e:'🏆',t:'ඉතා දක්ෂයි!',s:'⭐⭐⭐⭐⭐'},
+  {e:'🦋',t:'අතිශය ලස්සනයි!',s:'⭐⭐⭐⭐'},
+  {e:'💎',t:'දක්ෂ දරුවෙකු!',s:'⭐⭐⭐⭐⭐'},
+];
+const wrongMsgs=[
+  {e:'😊',t:'නිවැරදිව නෙවෙයි',s:'💡'},
+  {e:'🤔',t:'නැවත හිතන්න',s:'📚'},
+  {e:'💪',t:'ඉදිරියේදී හොඳින් ම කරමු',s:'✨'},
+];
+
+function showFeedback(correct,q){
+  const ov=document.getElementById('feedback-overlay');
+  if(correct){
+    const p=praises[Math.floor(Math.random()*praises.length)];
+    document.getElementById('fb-emoji').textContent=p.e;
+    document.getElementById('fb-title').textContent=p.t;
+    document.getElementById('fb-title').style.color='var(--green)';
+    document.getElementById('fb-stars').textContent=p.s;
+    document.getElementById('fb-text').textContent='';
+    confetti();
+  } else {
+    const w=wrongMsgs[Math.floor(Math.random()*wrongMsgs.length)];
+    document.getElementById('fb-emoji').textContent=w.e;
+    document.getElementById('fb-title').textContent=w.t;
+    document.getElementById('fb-title').style.color='var(--pink)';
+    document.getElementById('fb-stars').textContent=w.s;
+    document.getElementById('fb-text').textContent='නිවැරදි පිළිතුර: '+q.opts[q.ans];
+  }
+  ov.classList.add('visible');
+}
+
+function nextQuestion(){
+  document.getElementById('feedback-overlay').classList.remove('visible');
+  qIdx++;
+  loadQuestion();
+}
+
+function showSummary(){
+  document.getElementById('quiz-main').style.display='none';
+  const sum=document.getElementById('score-summary');
+  sum.style.display='block';
+  const pct=Math.round((qScore/questions.length)*100);
+  document.getElementById('final-score-text').textContent=`${qScore}/${questions.length}`;
+  let msg,stars;
+  if(pct>=90){msg='🏆 ඉතා දක්ෂ දරුවෙකු!';stars='⭐⭐⭐⭐⭐';}
+  else if(pct>=70){msg='🎉 හොඳ ප්‍රතිඵලයක්!';stars='⭐⭐⭐⭐';}
+  else if(pct>=50){msg='💪 තව ටිකක් ගුරු කරන්න!';stars='⭐⭐⭐';}
+  else{msg='📚 නැවත ඉගෙන ගනිමු!';stars='⭐⭐';}
+  document.getElementById('final-msg').textContent=msg;
+  document.getElementById('final-stars').textContent=stars;
+  confetti();
+}
+
+function restartQuiz(){initQuiz()}
+
+// ====== EXPLANATIONS ======
+function renderExplanations(){
+  const c=document.getElementById('exp-container');
+  if(wrongAnswers.length===0){
+    c.innerHTML='<div id="exp-empty">🎉 ඔබ සියලු ප්‍රශ්නවලට නිවැරදිව පිළිතුරු දී ඇත!<br/>ප්‍රශ්නාවලිය කරන්න 😊</div>';
+    return;
+  }
+  c.innerHTML=`<p style="font-size:13px;color:var(--gold);margin-bottom:10px;text-align:center">❌ වැරදි: ${wrongAnswers.length}</p>`;
+  wrongAnswers.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='exp-card';
+    card.innerHTML=`
+      <div class="exp-q">📌 ප්‍ර. ${w.qNum}: ${w.q.replace(/\n/g,'<br/>')}</div>
+      <div class="exp-your">❌ ඔබේ පිළිතුර: ${w.yourAns}</div>
+      <div class="exp-ans">✅ නිවැරදි: ${w.correctAns}</div>
+      <div class="exp-why">💡 ${w.exp}</div>
+    `;
+    c.appendChild(card);
+  });
+}
+
+// ====== AUDIO ======
+let audioCtx=null;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function playTone(freq,dur=0.2){
+  try{
+    const ctx=getCtx();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.frequency.value=freq;
+    o.type='sine';
+    g.gain.setValueAtTime(0.15,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+dur);
+    o.start();o.stop(ctx.currentTime+dur);
+  }catch(e){}
+}
+
+// ====== CONFETTI ======
+function confetti(){
+  const colors=['#FFD700','#00E676','#FF4081','#00BCD4','#FF9800','#9C27B0'];
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${20+Math.random()*60}%;top:${30+Math.random()*20}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*0.4}s`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1400);
+  }
+}
+
+// ====== WORKSHEET DOWNLOAD ======
+function downloadWorksheet(){
+  const html=`<!DOCTYPE html><html lang="si"><head><meta charset="UTF-8"/><style>
+    body{font-family:'Noto Sans Sinhala',sans-serif;max-width:700px;margin:0 auto;padding:30px;color:#222;background:#fff}
+    h1{text-align:center;color:#0e4d92;font-size:22px;border-bottom:3px solid #0e4d92;padding-bottom:10px}
+    h2{color:#0e4d92;font-size:16px;margin-top:24px}
+    .q{margin:12px 0;font-size:14px;line-height:1.8}
+    .opts{margin-left:20px;font-size:13px;color:#333}
+    .ans-box{margin-top:6px;border-bottom:1px solid #ccc;height:20px}
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th,td{border:1px solid #ccc;padding:8px;font-size:13px;text-align:left}
+    th{background:#e3f2fd;color:#0e4d92}
+    .section-hdr{background:#f5f5f5;font-weight:bold;text-align:center;font-size:14px;padding:8px}
+    @media print{body{padding:10px}}
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap" rel="stylesheet"/>
+  </head><body>
+  <h1>ඔත්තේ සහ ඉරට්ටේ සංඛ්‍යා - කාර්‍යය පත්‍රිකාව</h1>
+  <p style="text-align:center;font-size:13px;color:#555">3 - 6 ශ්‍රේණි | ගණිතය</p>
+  <p style="font-size:13px">නම: _______________________ ශ්‍රේණිය: _______ දිනය: _______</p>
+
+  <h2>කොටස 01: ඔත්තේ / ඉරට්ටේ සංඛ්‍යා හඳුන්වාදෙන්න</h2>
+  <p style="font-size:13px;background:#e8f5e9;padding:10px;border-radius:6px">
+  📌 <strong>ඔත්තේ සංඛ්‍යා:</strong> 2න් බෙදූ විට ශේෂය 1 | <strong>ඉරට්ටේ සංඛ්‍යා:</strong> 2න් බෙදූ විට ශේෂය 0
+  </p>
+
+  <h2>1 කොටස: හඳුනාගෙන ලියන්න (ප්‍ර. 1-10)</h2>
+  ${questions.slice(0,10).map((q,i)=>`
+  <div class="q"><strong>${i+1}.</strong> ${q.q.replace(/\n/g,'<br/>')}
+  <div class="opts">${q.opts.join(' &nbsp;&nbsp; ')}</div>
+  <div>පිළිතුර: <span class="ans-box" style="display:inline-block;width:120px"></span></div>
+  </div>`).join('')}
+
+  <h2>2 කොටස: වර්ග කිරීම (ප්‍ර. 11-20)</h2>
+  ${questions.slice(10,20).map((q,i)=>`
+  <div class="q"><strong>${i+11}.</strong> ${q.q.replace(/\n/g,'<br/>')}
+  <div class="opts">${q.opts.join(' &nbsp;&nbsp; ')}</div>
+  <div>පිළිතුර: <span class="ans-box" style="display:inline-block;width:120px"></span></div>
+  </div>`).join('')}
+
+  <h2>3 කොටස: විශාල සංඛ්‍යා (ප්‍ර. 21-30)</h2>
+  ${questions.slice(20,30).map((q,i)=>`
+  <div class="q"><strong>${i+21}.</strong> ${q.q.replace(/\n/g,'<br/>')}
+  <div class="opts">${q.opts.join(' &nbsp;&nbsp; ')}</div>
+  <div>පිළිතුර: <span class="ans-box" style="display:inline-block;width:120px"></span></div>
+  </div>`).join('')}
+
+  <h2>4 කොටස: සිතිය යුතු ගැටළු (ප්‍ර. 31-40)</h2>
+  ${questions.slice(30,40).map((q,i)=>`
+  <div class="q"><strong>${i+31}.</strong> ${q.q.replace(/\n/g,'<br/>')}
+  <div class="opts">${q.opts.join(' &nbsp;&nbsp; ')}</div>
+  <div>පිළිතුර: <span class="ans-box" style="display:inline-block;width:120px"></span></div>
+  </div>`).join('')}
+
+  <h2>5 කොටස: පිළිතුරු පත්‍රය (Answer Key)</h2>
+  <table>
+    <tr><th>ප්‍රශ්න අංකය</th><th>නිවැරදි පිළිතුර</th><th>ප්‍රශ්න අංකය</th><th>නිවැරදි පිළිතුර</th></tr>
+    ${questions.map((q,i)=>i%2===0?`<tr><td>${i+1}</td><td>${['අ','ආ','අෑ'][q.ans]}</td><td>${questions[i+1]?i+2:''}</td><td>${questions[i+1]?['අ','ආ','අෑ'][questions[i+1].ans]:''}</td></tr>`:'').filter(Boolean).join('')}
+  </table>
+
+  <p style="margin-top:20px;font-size:11px;color:#888;text-align:center">
+  නවතම පාඩම් සඳහා WhatsApp කණ්ඩායමට එකතු වන්න: https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee
+  </p>
+  </body></html>`;
+
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='ottey_irattey_worksheet.html';
+  a.click();
+}
+
+// ====== INIT ======
+initQuiz();
+</script>
+</body>
+</html>
