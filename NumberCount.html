@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#0d1b3e"/>
+<title>ගණිතය - එකතු කිරීම හා අඩු කිරීම 🔢</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg1:#0d1b3e;--bg2:#1a2f6e;--bg3:#0e4d92;
+  --gold:#FFD700;--green:#00E676;--pink:#FF4081;--orange:#FF9800;--cyan:#00BCD4;--purple:#9C27B0;
+  --font:'Noto Sans Sinhala',sans-serif;
+}
+html,body{height:100%;background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);background-attachment:fixed;font-family:var(--font);color:#fff;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;}
+::-webkit-scrollbar{display:none}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:90px}
+body{user-select:none;-webkit-user-select:none}
+
+/* WhatsApp Banner */
+#wa-banner{background:linear-gradient(135deg,#25D366,#128C7E);padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.4);position:sticky;top:0;z-index:100;text-decoration:none;}
+#wa-banner .wa-icon{font-size:22px}
+#wa-banner .wa-text{flex:1}
+#wa-banner .wa-title{font-size:12px;font-weight:700;color:#fff}
+#wa-banner .wa-sub{font-size:10px;color:rgba(255,255,255,0.85)}
+#wa-banner .wa-btn{background:rgba(255,255,255,0.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+
+/* Visit Counter */
+#visit-toggle{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);padding:7px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+#visit-toggle span{font-size:12px;color:var(--gold);font-weight:700}
+#visit-count-val{font-size:18px;font-weight:900;color:var(--gold)}
+
+/* Header */
+#header{padding:12px 16px 6px;text-align:center;animation:slideIn 0.5s ease}
+#header .h-icon{font-size:38px;animation:bounce 2s ease-in-out infinite;display:inline-block}
+#header h1{font-size:20px;font-weight:900;color:var(--gold);margin-top:4px;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+#header p{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px}
+
+/* Bottom Nav - 5 tabs */
+#bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(5,10,30,0.96);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.13);display:flex;justify-content:space-around;padding:6px 0 10px;z-index:99;}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px;flex:1}
+.nav-btn .nav-icon{font-size:17px;transition:all 0.3s}
+.nav-btn .nav-label{font-size:8px;color:rgba(255,255,255,0.45);font-weight:400;font-family:var(--font);transition:all 0.3s}
+.nav-btn.active .nav-icon{filter:drop-shadow(0 0 6px #FFD700);transform:scale(1.18)}
+.nav-btn.active .nav-label{color:var(--gold);font-weight:800}
+
+/* Sections */
+#content{padding:0 14px 12px}
+.section{display:none;animation:slideIn 0.35s ease}
+.section.active{display:block}
+.section-title{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:12px;text-align:center}
+
+/* Animations */
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(150px) rotate(720deg);opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes numPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+@keyframes emojiIn{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+@keyframes emojiAdd{0%{transform:scale(0) translateY(20px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes emojiRemove{0%{transform:scale(1);opacity:1}100%{transform:scale(0) translateY(-20px);opacity:0}}
+@keyframes resultPop{0%{transform:scale(0.3);opacity:0}70%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+
+/* ======= INTRO TAB ======= */
+.intro-card{background:rgba(255,255,255,0.07);border-radius:18px;padding:14px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.13);}
+.intro-card h3{font-size:15px;font-weight:900;color:var(--cyan);margin-bottom:8px}
+
+/* Number Grid */
+#num-grid-container{background:rgba(255,255,255,0.07);border-radius:20px;padding:14px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.15);}
+#num-grid-container h3{font-size:14px;font-weight:900;color:var(--orange);margin-bottom:10px;text-align:center}
+.num-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-bottom:10px;}
+.num-cell{background:rgba(255,255,255,0.12);border-radius:6px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid rgba(255,255,255,0.2);color:#fff;}
+.num-cell:active{transform:scale(0.9)}
+.num-cell.selected{transform:scale(1.3);z-index:2;box-shadow:0 0 14px rgba(255,215,0,0.8);border-color:var(--gold);background:rgba(255,215,0,0.35);color:var(--gold);}
+.num-cell.row-highlight{background:rgba(0,188,212,0.22);border-color:rgba(0,188,212,0.55);color:#fff;}
+.num-cell.col-highlight{background:rgba(0,230,118,0.18);border-color:rgba(0,230,118,0.5);color:#fff;}
+.num-cell.row-highlight.col-highlight{background:rgba(255,152,0,0.28);border-color:rgba(255,152,0,0.7);}
+#num-info-box{background:rgba(255,255,255,0.08);border:2px solid var(--gold);border-radius:16px;padding:14px;text-align:center;min-height:80px;transition:all 0.3s;}
+#num-info-big{font-size:42px;font-weight:900;color:var(--gold);display:block;animation:numPop 0.4s ease;line-height:1.1}
+#num-info-si{font-size:16px;font-weight:900;color:var(--cyan);display:block;margin-top:4px}
+#num-info-en{font-size:13px;font-weight:700;color:rgba(255,255,255,0.75);display:block;margin-top:2px}
+
+/* start btn */
+.start-quiz-btn{background:linear-gradient(135deg,var(--gold),var(--orange));border:none;border-radius:16px;padding:12px 20px;font-size:15px;font-weight:900;color:#000;cursor:pointer;font-family:var(--font);width:100%;margin:10px 0;}
+
+/* ======= ADDITION / SUBTRACTION DEMO TABS ======= */
+.op-demo-card{background:rgba(255,255,255,0.07);border-radius:20px;padding:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.15);}
+.op-demo-card h3{font-size:15px;font-weight:900;margin-bottom:12px;text-align:center}
+.op-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:14px}
+.op-num-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.op-num-label{font-size:11px;color:rgba(255,255,255,0.6)}
+.op-num-display{background:rgba(255,215,0,0.15);border:2px solid var(--gold);border-radius:14px;padding:8px 20px;font-size:28px;font-weight:900;color:var(--gold);min-width:70px;text-align:center;}
+.op-btn{background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);color:#fff;font-size:22px;font-weight:900;width:44px;height:44px;border-radius:12px;cursor:pointer;font-family:var(--font);transition:all 0.2s;}
+.op-btn:active{transform:scale(0.88)}
+.op-sign{font-size:32px;font-weight:900;padding:0 4px}
+.op-equals{font-size:28px;font-weight:900;color:rgba(255,255,255,0.7);padding:0 4px}
+.op-result-box{background:rgba(0,230,118,0.15);border:2px solid var(--green);border-radius:14px;padding:8px 20px;font-size:28px;font-weight:900;color:var(--green);min-width:70px;text-align:center;}
+.op-result-box.sub{background:rgba(255,64,129,0.15);border-color:var(--pink);color:var(--pink);}
+
+/* Emoji animation area */
+.emoji-area{background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;margin-bottom:12px;min-height:80px;border:1px dashed rgba(255,255,255,0.2);}
+.emoji-area-title{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;text-align:center}
+.emoji-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:40px;align-items:center;}
+.em-item{font-size:22px;animation:emojiIn 0.3s ease forwards;display:inline-block;}
+.em-item.removing{animation:emojiRemove 0.3s ease forwards;}
+
+/* Explanation text */
+.op-explain{background:rgba(255,215,0,0.1);border-radius:12px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--gold);text-align:center;line-height:1.7;margin-top:8px;}
+
+/* ======= DRAG TAB ======= */
+.drag-zone{background:rgba(255,255,255,0.07);border-radius:16px;padding:12px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.13);}
+.drag-zone h3{font-size:14px;font-weight:900;color:var(--green);margin-bottom:8px;text-align:center}
+.drag-question-display{background:rgba(255,215,0,0.12);border:2px solid var(--gold);border-radius:14px;padding:12px 16px;text-align:center;font-size:22px;font-weight:900;color:var(--gold);margin-bottom:12px;letter-spacing:2px;}
+.drag-numbers{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
+.drag-num{background:linear-gradient(135deg,var(--cyan),#0097A7);border-radius:14px;padding:10px 18px;cursor:pointer;font-size:20px;font-weight:900;color:#fff;transition:all 0.2s;min-width:54px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.drag-num:active{transform:scale(0.92)}
+.drag-num.selected{background:linear-gradient(135deg,var(--gold),var(--orange));transform:scale(1.12);box-shadow:0 6px 20px rgba(255,215,0,0.5);}
+.drop-answer-box{min-height:60px;border:3px dashed rgba(255,255,255,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;transition:all 0.3s;margin-bottom:10px;background:rgba(255,255,255,0.05);}
+.drop-answer-box.filled-correct{border-color:var(--green);background:rgba(0,230,118,0.2);color:var(--green);}
+.drop-answer-box.filled-wrong{border-color:var(--pink);background:rgba(255,64,129,0.2);color:var(--pink);animation:shake 0.4s;}
+#drag-feedback{text-align:center;font-size:14px;font-weight:900;min-height:24px;margin-bottom:8px}
+.drag-ctrl-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.drag-ctrl-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:12px;padding:8px 16px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:var(--font);}
+.drag-progress{font-size:12px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:8px;}
+
+/* ======= QUIZ SECTION ======= */
+.quiz-header{background:rgba(255,255,255,0.07);border-radius:16px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.quiz-header .q-num{font-size:13px;color:rgba(255,255,255,0.7);font-weight:700}
+.quiz-header .q-score{font-size:15px;color:var(--gold);font-weight:900}
+.progress-bar{height:6px;background:rgba(255,255,255,0.15);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:3px;transition:width 0.4s ease}
+.question-card{background:rgba(255,255,255,0.08);border-radius:18px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.13);animation:fadeIn 0.3s ease;}
+.question-card .q-text{font-size:15px;line-height:1.8;color:#fff;margin-bottom:10px;font-weight:700}
+.math-expr{font-size:28px;font-weight:900;color:var(--gold);display:block;text-align:center;margin-bottom:12px;text-shadow:0 0 10px rgba(255,215,0,0.4);}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt-btn{background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);border-radius:14px;padding:12px 16px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;font-family:var(--font);text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:10px;}
+.opt-btn:active{transform:scale(0.97)}
+.opt-btn.correct{background:rgba(0,230,118,0.2);border-color:var(--green);color:var(--green)}
+.opt-btn.wrong{background:rgba(255,64,129,0.2);border-color:var(--pink);color:var(--pink)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;font-weight:900;}
+.quiz-section-header{background:rgba(0,188,212,0.15);border-radius:12px;padding:8px 14px;margin:12px 0 8px;border-left:4px solid var(--cyan);}
+.quiz-section-header h4{font-size:14px;font-weight:900;color:var(--cyan)}
+.quiz-section-header p{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+
+/* Feedback */
+#feedback-overlay{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(5,10,30,0.97);border-radius:24px;padding:20px 24px;text-align:center;z-index:200;display:none;border:2px solid var(--gold);min-width:260px;max-width:360px;animation:popIn 0.3s ease;}
+#feedback-overlay.visible{display:block}
+#fb-emoji{font-size:50px;margin-bottom:6px}
+#fb-title{font-size:20px;font-weight:900;margin-bottom:4px}
+#fb-text{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px}
+#fb-next{background:linear-gradient(135deg,var(--gold),var(--orange));border:none;border-radius:14px;padding:10px 24px;font-size:14px;font-weight:900;color:#000;cursor:pointer;font-family:var(--font);}
+.stars-row{display:flex;justify-content:center;gap:4px;margin-bottom:8px;font-size:26px}
+
+/* Score Summary */
+.retry-btn{background:linear-gradient(135deg,var(--cyan),var(--bg3));border:none;border-radius:16px;padding:12px 28px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;font-family:var(--font);margin-top:12px;}
+
+/* Explanation Tab */
+.exp-card{background:rgba(255,255,255,0.07);border-radius:16px;padding:14px;margin-bottom:10px;border-left:4px solid var(--orange);}
+.exp-card .exp-q{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:6px}
+.exp-card .exp-a{font-size:14px;font-weight:900;color:var(--green);margin-bottom:6px}
+.exp-card .exp-a.wrong-a{color:var(--pink)}
+.exp-card .exp-why{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7}
+
+/* Confetti */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:999;animation:confettiFall 1s ease-out forwards;}
+
+/* Worksheet modal */
+#ws-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:300;display:none;align-items:center;justify-content:center;}
+#ws-modal.open{display:flex}
+#ws-inner{background:#1a2f6e;border-radius:20px;padding:20px;max-width:390px;width:90%;max-height:85vh;overflow-y:auto;border:2px solid var(--gold);}
+#ws-inner h3{font-size:16px;font-weight:900;color:var(--gold);margin-bottom:14px;text-align:center}
+.ws-btn{background:linear-gradient(135deg,var(--green),#00897B);border:none;border-radius:14px;padding:11px;width:100%;font-size:14px;font-weight:900;color:#000;cursor:pointer;font-family:var(--font);margin-top:10px;}
+.ws-close{background:rgba(255,64,129,0.2);border:1px solid var(--pink);border-radius:14px;padding:10px;width:100%;font-size:13px;font-weight:700;color:var(--pink);cursor:pointer;font-family:var(--font);margin-top:8px;}
+#download-btn{background:linear-gradient(135deg,var(--purple),#7B1FA2);border:none;border-radius:16px;padding:12px 20px;width:100%;font-size:14px;font-weight:900;color:#fff;cursor:pointer;font-family:var(--font);margin:12px 0;display:flex;align-items:center;justify-content:center;gap:8px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- WhatsApp Banner -->
+  <a id="wa-banner" href="https://chat.whatsapp.com/CHmhJYlLEkC9ofy6p4uMee?mode=gi_t" target="_blank">
+    <span class="wa-icon">💬</span>
+    <div class="wa-text">
+      <div class="wa-title">නවතම පාඩම් සඳහා</div>
+      <div class="wa-sub">WhatsApp සමූහයට සම්බන්ධ වන්න</div>
+    </div>
+    <span class="wa-btn">Join කරන්න</span>
+  </a>
+
+  <!-- Visit Counter -->
+  <div id="visit-toggle" onclick="toggleVisit()">
+    <span>📊 මෙම යෙදුම භාවිත කළ වාර ගණන</span>
+    <span id="visit-count-val">0</span>
+  </div>
+
+  <!-- Header -->
+  <div id="header">
+    <div class="h-icon">🔢</div>
+    <h1>ගණිතය - 1 සිට 100</h1>
+    <p>ශ්‍රේණිය 1 - 3 | එකතු කිරීම හා අඩු කිරීම</p>
+  </div>
+
+  <div id="content">
+
+    <!-- TAB 1: NUMBERS -->
+    <div class="section active" id="sec-intro">
+      <p class="section-title">🔢 සංඛ්‍යා හඳුනා ගනිමු</p>
+      <div id="num-grid-container">
+        <h3>🎯 සංඛ්‍යා වගුව (1 - 100) — ඕනෑම  සංඛ්‍යාවක් තෝරන්න!</h3>
+        <div class="num-grid" id="number-grid"></div>
+        <div id="num-info-box">
+          <span id="num-info-big">?</span>
+          <span id="num-info-si">ඉහත සංඛ්‍යාවක් ඔබන්න 🔊</span>
+          <span id="num-info-en"></span>
+        </div>
+      </div>
+      <button class="start-quiz-btn" onclick="goToTab('add')">➕ එකතු කිරීම ඉගෙනගනිමු →</button>
+    </div>
+
+    <!-- TAB 2: ADDITION DEMO -->
+    <div class="section" id="sec-add">
+      <p class="section-title">➕ එකතු කිරීම</p>
+      <div class="op-demo-card">
+        <h3 style="color:var(--green)">🍎 සංඛ්‍යා දෙකක් එකතු කරමු!</h3>
+        <div class="op-controls">
+          <div class="op-num-wrap">
+            <span class="op-num-label">පළමු සංඛ්‍යාව</span>
+            <button class="op-btn" onclick="changeAddNum(1,1)">+</button>
+            <div class="op-num-display" id="add-n1">5</div>
+            <button class="op-btn" onclick="changeAddNum(1,-1)">−</button>
+          </div>
+          <span class="op-sign" style="color:var(--green)">+</span>
+          <div class="op-num-wrap">
+            <span class="op-num-label">දෙවැනි සංඛ්‍යාව</span>
+            <button class="op-btn" onclick="changeAddNum(2,1)">+</button>
+            <div class="op-num-display" id="add-n2">3</div>
+            <button class="op-btn" onclick="changeAddNum(2,-1)">−</button>
+          </div>
+          <span class="op-equals">=</span>
+          <div class="op-num-wrap">
+            <span class="op-num-label">පිළිතුර</span>
+            <div class="op-result-box" id="add-result">8</div>
+          </div>
+        </div>
+        <div class="emoji-area">
+          <div class="emoji-area-title">🍎 දෘශ්‍ය ගණන් කිරීම</div>
+          <div class="emoji-row" id="add-emoji-row"></div>
+        </div>
+        <div class="op-explain" id="add-explain"></div>
+      </div>
+      <button class="start-quiz-btn" onclick="goToTab('sub')">➖ අඩු කිරීම ඉගෙනගනිමු →</button>
+    </div>
+
+    <!-- TAB 3: SUBTRACTION DEMO -->
+    <div class="section" id="sec-sub">
+      <p class="section-title">➖ අඩු කිරීම</p>
+      <div class="op-demo-card">
+        <h3 style="color:var(--pink)">🍊 සංඛ්‍යාවක් අඩු කරමු!</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:10px">දහය (10) ෙන් කොටසක් අඩු කිරීම</p>
+        <div class="op-controls">
+          <div class="op-num-wrap">
+            <span class="op-num-label">ලොකු සංඛ්‍යාව</span>
+            <div class="op-num-display" style="border-color:var(--pink);color:var(--pink)">10</div>
+          </div>
+          <span class="op-sign" style="color:var(--pink)">−</span>
+          <div class="op-num-wrap">
+            <span class="op-num-label">අඩු කිරීම</span>
+            <button class="op-btn" onclick="changeSubNum(1)">+</button>
+            <div class="op-num-display" id="sub-n2">3</div>
+            <button class="op-btn" onclick="changeSubNum(-1)">−</button>
+          </div>
+          <span class="op-equals">=</span>
+          <div class="op-num-wrap">
+            <span class="op-num-label">ඉතිරිය</span>
+            <div class="op-result-box sub" id="sub-result">7</div>
+          </div>
+        </div>
+        <div class="emoji-area">
+          <div class="emoji-area-title">🍊 දෘශ්‍ය ගණන් කිරීම</div>
+          <div class="emoji-row" id="sub-emoji-row"></div>
+        </div>
+        <div class="op-explain" id="sub-explain"></div>
+      </div>
+      <button class="start-quiz-btn" onclick="goToTab('drag')">🎯 ගැලපීමේ ක්‍රීඩාවට යන්න →</button>
+    </div>
+
+    <!-- TAB 4: DRAG & DROP -->
+    <div class="section" id="sec-drag">
+      <p class="section-title">🎯 ගැලපීමේ ක්‍රීඩාව</p>
+      <div class="drag-zone">
+        <h3>📌 නිවැරදි පිළිතුර ඔබා තෝරන්න!</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:10px">ගැටලුව කියවා නිවැරදි අංකය ඔබා පිළිතුරු කොටුවට ගෙන යන්න</p>
+        <div class="drag-progress" id="drag-progress">ගැටලුව 1 / 20</div>
+        <div class="drag-question-display" id="drag-q-display">20 + 10 = ?</div>
+        <div class="drag-numbers" id="drag-choices"></div>
+        <div class="drop-answer-box" id="drop-box">?</div>
+        <div id="drag-feedback"></div>
+        <div class="drag-ctrl-row">
+          <button class="drag-ctrl-btn" onclick="clearDragAnswer()">🗑️ හිස් කරන්න</button>
+          <button class="drag-ctrl-btn" onclick="checkDragAnswer()">✅ බලන්න</button>
+          <button class="drag-ctrl-btn" onclick="nextDragQ()">➡️ ඊළඟ</button>
+        </div>
+      </div>
+      <button class="start-quiz-btn" onclick="goToTab('quiz')">📝 MCQ ප්‍රශ්නවලට යන්න →</button>
+    </div>
+
+    <!-- TAB 5: QUIZ -->
+    <div class="section" id="sec-quiz">
+      <p class="section-title">📝 බහුවරණ ප්‍රශ්නාවලිය</p>
+      <div id="quiz-area"></div>
+    </div>
+
+    <!-- TAB 6: EXPLANATIONS -->
+    <div class="section" id="sec-exp">
+      <p class="section-title">💡 පිළිතුරු පැහැදිලි කිරීම</p>
+      <div id="exp-area">
+        <div class="intro-card">
+          <p style="font-size:13px;color:rgba(255,255,255,0.7);text-align:center">ප්‍රශ්නාවලිය සම්පූර්ණ කළ පසු, වැරදි<br>පිළිතුරු සඳහා පැහැදිලි කිරීම් මෙහි පෙන්වේ.</p>
+        </div>
+      </div>
+      <button id="download-btn" onclick="openWS()">📥 කාර්‍ය පත්‍රිකාව බාගන්න</button>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Bottom Nav - 6 tabs -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" onclick="goToTab('intro')">
+      <span class="nav-icon">🔢</span>
+      <span class="nav-label">සංඛ්‍යා</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('add')">
+      <span class="nav-icon">➕</span>
+      <span class="nav-label">එකතු</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('sub')">
+      <span class="nav-icon">➖</span>
+      <span class="nav-label">අඩු</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('drag')">
+      <span class="nav-icon">🎯</span>
+      <span class="nav-label">ගැලපීම</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('quiz')">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">ප්‍රශ්න</span>
+    </button>
+    <button class="nav-btn" onclick="goToTab('exp')">
+      <span class="nav-icon">💡</span>
+      <span class="nav-label">පැහැදිලිය</span>
+    </button>
+  </nav>
+</div>
+
+<!-- Feedback Overlay -->
+<div id="feedback-overlay">
+  <div id="fb-emoji">⭐</div>
+  <div class="stars-row" id="fb-stars"></div>
+  <div id="fb-title"></div>
+  <div id="fb-text"></div>
+  <button id="fb-next" onclick="nextQuestion()">ඊළඟ ප්‍රශ්නය →</button>
+</div>
+
+<!-- Worksheet Modal -->
+<div id="ws-modal">
+  <div id="ws-inner">
+    <h3>📄 කාර්‍ය පත්‍රිකාව</h3>
+    <p style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:14px;text-align:center">
+      ගණිතය - 1 සිට 100 | ශ්‍රේණිය 1-3<br>
+      <span style="font-size:11px;color:rgba(255,255,255,0.5)">ප්‍රශ්න 40 | පිළිතුරු අවසාන පිටුවේ</span>
+    </p>
+    <button class="ws-btn" onclick="downloadWorksheet()">⬇️ HTML ගොනුව ලෙස බාගන්න</button>
+    <button class="ws-close" onclick="closeWS()">✕ වසා දමන්න</button>
+  </div>
+</div>
+
+<script>
+// ========== COPY PROTECTION ==========
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&['s','u','c','p','a','i'].includes(e.key.toLowerCase()))e.preventDefault();
+  if(e.key==='F12'||e.keyCode===123)e.preventDefault();
+});
+
+// ========== VISIT COUNTER ==========
+let visits=parseInt(localStorage.getItem('ganitha_v2_visits')||'0')+1;
+localStorage.setItem('ganitha_v2_visits',visits);
+document.getElementById('visit-count-val').textContent=visits;
+let visitVisible=true;
+function toggleVisit(){
+  visitVisible=!visitVisible;
+  document.getElementById('visit-count-val').style.display=visitVisible?'':'none';
+}
+
+// ========== SINHALA NUMBER NAMES ==========
+const siNames={
+  1:'එක',2:'දෙක',3:'තුන',4:'හතර',5:'පහ',6:'හය',7:'හත',8:'අට',9:'නවය',10:'දහය',
+  11:'එකොළොස',12:'දොළොස',13:'දහතුන',14:'දහහතර',15:'පහළොව',16:'දහසය',17:'දහහත',18:'දහඅට',19:'දහනවය',20:'විස්ස',
+  21:'එකවිස්ස',22:'දෙවිස්ස',23:'තෙවිස්ස',24:'හතරවිස්ස',25:'පස්විස්ස',26:'හවිස්ස',27:'සත්විස්ස',28:'අටවිස්ස',29:'නවවිස්ස',30:'තිස',
+  31:'එකතිස',32:'දෙතිස',33:'තෙතිස',34:'හතිස',35:'පස්තිස',36:'හයතිස',37:'සත්තිස',38:'අටතිස',39:'නවතිස',40:'හතළිස',
+  41:'එකහතළිස',42:'දෙහතළිස',43:'තෙහතළිස',44:'හතරහතළිස',45:'පහළොස්හතළිස',46:'හයහතළිස',47:'හත්හතළිස',48:'අටහතළිස',49:'නවහතළිස',50:'පනස',
+  51:'එකපනස',52:'දෙපනස',53:'තෙපනස',54:'හතරපනස',55:'පස්පනස',56:'හයපනස',57:'සත්පනස',58:'අටපනස',59:'නවපනස',60:'හැට',
+  61:'එකහැට',62:'දෙහැට',63:'තෙහැට',64:'හතරහැට',65:'පහළොස්හැට',66:'හයහැට',67:'සත්හැට',68:'අටහැට',69:'නවහැට',70:'හැත්තෑව',
+  71:'එකහැත්තෑව',72:'දෙහැත්තෑව',73:'තෙහැත්තෑව',74:'හතරහැත්තෑව',75:'පහළොස්හැත්තෑව',76:'හයහැත්තෑව',77:'සත්හැත්තෑව',78:'අටහැත්තෑව',79:'නවහැත්තෑව',80:'අසූව',
+  81:'එකඅසූව',82:'දෙඅසූව',83:'තෙඅසූව',84:'හතරඅසූව',85:'පහළොස්අසූව',86:'හයඅසූව',87:'සත්අසූව',88:'අටඅසූව',89:'නවඅසූව',90:'අනූව',
+  91:'එකඅනූව',92:'දෙඅනූව',93:'තෙඅනූව',94:'හතරඅනූව',95:'පහළොස්අනූව',96:'හයඅනූව',97:'සත්අනූව',98:'අටඅනූව',99:'නවඅනූව',100:'සිය'
+};
+const enNames={
+  1:'One',2:'Two',3:'Three',4:'Four',5:'Five',6:'Six',7:'Seven',8:'Eight',9:'Nine',10:'Ten',
+  11:'Eleven',12:'Twelve',13:'Thirteen',14:'Fourteen',15:'Fifteen',16:'Sixteen',17:'Seventeen',18:'Eighteen',19:'Nineteen',20:'Twenty',
+  21:'Twenty-One',22:'Twenty-Two',23:'Twenty-Three',24:'Twenty-Four',25:'Twenty-Five',26:'Twenty-Six',27:'Twenty-Seven',28:'Twenty-Eight',29:'Twenty-Nine',30:'Thirty',
+  31:'Thirty-One',32:'Thirty-Two',33:'Thirty-Three',34:'Thirty-Four',35:'Thirty-Five',36:'Thirty-Six',37:'Thirty-Seven',38:'Thirty-Eight',39:'Thirty-Nine',40:'Forty',
+  41:'Forty-One',42:'Forty-Two',43:'Forty-Three',44:'Forty-Four',45:'Forty-Five',46:'Forty-Six',47:'Forty-Seven',48:'Forty-Eight',49:'Forty-Nine',50:'Fifty',
+  51:'Fifty-One',52:'Fifty-Two',53:'Fifty-Three',54:'Fifty-Four',55:'Fifty-Five',56:'Fifty-Six',57:'Fifty-Seven',58:'Fifty-Eight',59:'Fifty-Nine',60:'Sixty',
+  61:'Sixty-One',62:'Sixty-Two',63:'Sixty-Three',64:'Sixty-Four',65:'Sixty-Five',66:'Sixty-Six',67:'Sixty-Seven',68:'Sixty-Eight',69:'Sixty-Nine',70:'Seventy',
+  71:'Seventy-One',72:'Seventy-Two',73:'Seventy-Three',74:'Seventy-Four',75:'Seventy-Five',76:'Seventy-Six',77:'Seventy-Seven',78:'Seventy-Eight',79:'Seventy-Nine',80:'Eighty',
+  81:'Eighty-One',82:'Eighty-Two',83:'Eighty-Three',84:'Eighty-Four',85:'Eighty-Five',86:'Eighty-Six',87:'Eighty-Seven',88:'Eighty-Eight',89:'Eighty-Nine',90:'Ninety',
+  91:'Ninety-One',92:'Ninety-Two',93:'Ninety-Three',94:'Ninety-Four',95:'Ninety-Five',96:'Ninety-Six',97:'Ninety-Seven',98:'Ninety-Eight',99:'Ninety-Nine',100:'One Hundred'
+};
+
+// ========== NAVIGATION ==========
+const tabMap={intro:'sec-intro',add:'sec-add',sub:'sec-sub',drag:'sec-drag',quiz:'sec-quiz',exp:'sec-exp'};
+const navBtns=document.querySelectorAll('.nav-btn');
+const tabOrder=['intro','add','sub','drag','quiz','exp'];
+function goToTab(tab){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(tabMap[tab]).classList.add('active');
+  navBtns.forEach((b,i)=>{b.classList.toggle('active',tabOrder[i]===tab);});
+  if(tab==='quiz'&&!quizStarted)initQuiz();
+  if(tab==='drag'&&!dragStarted)initDrag();
+  if(tab==='add')renderAddDemo();
+  if(tab==='sub')renderSubDemo();
+  window.scrollTo(0,0);
+}
+
+// ========== NUMBER GRID ==========
+function buildNumberGrid(){
+  const grid=document.getElementById('number-grid');
+  grid.innerHTML='';
+  for(let i=1;i<=100;i++){
+    const cell=document.createElement('div');
+    cell.className='num-cell';
+    cell.textContent=i;
+    cell.onclick=()=>selectNumber(i,cell);
+    grid.appendChild(cell);
+  }
+}
+function selectNumber(n,cell){
+  // Clear all highlights
+  document.querySelectorAll('.num-cell').forEach(c=>{
+    c.classList.remove('selected','row-highlight','col-highlight');
+  });
+
+  // Determine row and column of clicked cell (1-based index)
+  const row=Math.ceil(n/10);   // 1..10
+  const col=((n-1)%10)+1;      // 1..10
+
+  // Apply row and column highlights to all cells
+  document.querySelectorAll('.num-cell').forEach(c=>{
+    const num=parseInt(c.textContent);
+    const r=Math.ceil(num/10);
+    const cl=((num-1)%10)+1;
+    if(r===row) c.classList.add('row-highlight');
+    if(cl===col) c.classList.add('col-highlight');
+  });
+
+  // Selected cell on top
+  cell.classList.add('selected');
+  cell.classList.remove('row-highlight','col-highlight');
+
+  playTone(300+n*3,0.08);
+  document.getElementById('num-info-big').textContent=n;
+
+  // 1–10: show Sinhala name + English name; 11–100: English only
+  if(n<=10){
+    document.getElementById('num-info-si').textContent=siNames[n]||'';
+    document.getElementById('num-info-en').textContent=enNames[n]||'';
+  } else {
+    document.getElementById('num-info-si').textContent='';
+    document.getElementById('num-info-en').textContent=enNames[n]||'';
+  }
+  document.getElementById('num-info-box').style.borderColor='var(--gold)';
+
+  // Speak the English name using Web Speech API
+  speakNumber(enNames[n]||String(n));
+}
+
+function speakNumber(text){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(text);
+  utt.lang='en-US';
+  utt.rate=0.85;
+  utt.pitch=1.1;
+  utt.volume=1;
+  window.speechSynthesis.speak(utt);
+}
+
+// ========== ADDITION DEMO ==========
+let addN1=5, addN2=3;
+const addEmojis=['🍎','🍊','🍋','🍇','🍓','🌸','⭐','🎈','🐱','🦋'];
+function changeAddNum(which,delta){
+  if(which===1){
+    addN1=Math.max(1,Math.min(10,addN1+delta));
+    document.getElementById('add-n1').textContent=addN1;
+  } else {
+    addN2=Math.max(1,Math.min(10,addN2+delta));
+    document.getElementById('add-n2').textContent=addN2;
+  }
+  renderAddDemo();
+  playTone(440,0.08);
+}
+function renderAddDemo(){
+  const total=addN1+addN2;
+  document.getElementById('add-n1').textContent=addN1;
+  document.getElementById('add-n2').textContent=addN2;
+  document.getElementById('add-result').textContent=total;
+  const row=document.getElementById('add-emoji-row');
+  row.innerHTML='';
+  const e1=addEmojis[0];
+  const e2=addEmojis[2];
+  for(let i=0;i<addN1;i++){
+    const sp=document.createElement('span');
+    sp.className='em-item';
+    sp.textContent=e1;
+    sp.style.animationDelay=(i*0.06)+'s';
+    row.appendChild(sp);
+  }
+  const plus=document.createElement('span');
+  plus.style.cssText='font-size:20px;font-weight:900;color:var(--green);margin:0 4px;align-self:center';
+  plus.textContent='➕';
+  row.appendChild(plus);
+  for(let i=0;i<addN2;i++){
+    const sp=document.createElement('span');
+    sp.className='em-item';
+    sp.textContent=e2;
+    sp.style.animationDelay=((addN1+i)*0.06)+'s';
+    row.appendChild(sp);
+  }
+  const si1=siNames[addN1]||addN1;
+  const si2=siNames[addN2]||addN2;
+  const siT=siNames[total]||total;
+  document.getElementById('add-explain').innerHTML=`${si1}ට (${addN1}) ${si2}ක් (${addN2}) එකතු කළ විට <strong style="color:var(--green);font-size:18px">${siT} (${total})</strong> ක් වෙයි.`;
+}
+
+// ========== SUBTRACTION DEMO ==========
+let subN2=3;
+function changeSubNum(delta){
+  subN2=Math.max(1,Math.min(10,subN2+delta));
+  document.getElementById('sub-n2').textContent=subN2;
+  renderSubDemo();
+  playTone(380,0.08);
+}
+function renderSubDemo(){
+  const bigN=10;
+  const remain=bigN-subN2;
+  document.getElementById('sub-n2').textContent=subN2;
+  document.getElementById('sub-result').textContent=remain;
+  const row=document.getElementById('sub-emoji-row');
+  row.innerHTML='';
+  const e='🍊';
+  for(let i=0;i<bigN;i++){
+    const sp=document.createElement('span');
+    sp.className='em-item';
+    if(i>=remain){
+      sp.style.opacity='0.25';
+      sp.style.filter='grayscale(1)';
+      sp.style.textDecoration='line-through';
+    }
+    sp.textContent=e;
+    sp.style.animationDelay=(i*0.06)+'s';
+    row.appendChild(sp);
+  }
+  const si2=siNames[subN2]||subN2;
+  const siR=siNames[remain]||remain;
+  document.getElementById('sub-explain').innerHTML=`දහයෙන් (10) ${si2}ක් (${subN2}) අඩු කළ විට <strong style="color:var(--pink);font-size:18px">${siR} (${remain})</strong> ක් ඉතිරි වෙයි.`;
+}
+
+// ========== DRAG & DROP DATA ==========
+const dragQuestions=[
+  {q:'20 + 10 = ?',ans:30,choices:[25,30,35]},
+  {q:'50 - 20 = ?',ans:30,choices:[20,30,40]},
+  {q:'40 + 5 = ?',ans:45,choices:[44,45,50]},
+  {q:'80 - 10 = ?',ans:70,choices:[60,70,80]},
+  {q:'60 + 30 = ?',ans:90,choices:[80,85,90]},
+  {q:'95 - 5 = ?',ans:90,choices:[90,85,95]},
+  {q:'33 + 7 = ?',ans:40,choices:[37,40,43]},
+  {q:'100 - 60 = ?',ans:40,choices:[30,40,50]},
+  {q:'25 + 25 = ?',ans:50,choices:[45,50,55]},
+  {q:'70 - 25 = ?',ans:45,choices:[45,40,55]},
+  {q:'15 + 5 = ?',ans:20,choices:[18,20,25]},
+  {q:'30 + 7 = ?',ans:37,choices:[35,37,40]},
+  {q:'50 + 20 = ?',ans:70,choices:[60,70,80]},
+  {q:'45 + 5 = ?',ans:50,choices:[48,50,55]},
+  {q:'80 + 10 = ?',ans:90,choices:[85,90,95]},
+  {q:'15 - 5 = ?',ans:10,choices:[8,10,12]},
+  {q:'20 - 4 = ?',ans:16,choices:[14,16,18]},
+  {q:'40 - 20 = ?',ans:20,choices:[10,20,30]},
+  {q:'60 - 5 = ?',ans:55,choices:[50,55,58]},
+  {q:'48 - 8 = ?',ans:40,choices:[38,40,42]},
+];
+let dragIdx=0,dragSelected=null,dragStarted=false,dragScore=0;
+function initDrag(){dragStarted=true;dragIdx=0;dragScore=0;renderDragQ();}
+function renderDragQ(){
+  if(dragIdx>=dragQuestions.length){dragIdx=0;dragScore=0;}
+  const q=dragQuestions[dragIdx];
+  document.getElementById('drag-progress').textContent=`ගැටලුව ${dragIdx+1} / ${dragQuestions.length} | ✅ ${dragScore}`;
+  document.getElementById('drag-q-display').textContent=q.q;
+  document.getElementById('drag-feedback').innerHTML='';
+  const box=document.getElementById('drop-box');
+  box.textContent='?';
+  box.className='drop-answer-box';
+  dragSelected=null;
+  const shuffled=[...q.choices].sort(()=>Math.random()-0.5);
+  const choicesDiv=document.getElementById('drag-choices');
+  choicesDiv.innerHTML='';
+  shuffled.forEach(n=>{
+    const btn=document.createElement('div');
+    btn.className='drag-num';
+    btn.textContent=n;
+    btn.dataset.val=n;
+    btn.onclick=()=>selectDragNum(btn,n);
+    choicesDiv.appendChild(btn);
+  });
+}
+function selectDragNum(btn,val){
+  document.querySelectorAll('.drag-num').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  dragSelected=val;
+  const box=document.getElementById('drop-box');
+  box.textContent=val;
+  box.className='drop-answer-box';
+  playTone(500,0.08);
+}
+function checkDragAnswer(){
+  if(dragSelected===null){
+    document.getElementById('drag-feedback').innerHTML='<span style="color:var(--gold)">⚠️ කරුණාකර අංකයක් තෝරන්න</span>';
+    return;
+  }
+  const q=dragQuestions[dragIdx];
+  const box=document.getElementById('drop-box');
+  if(parseInt(dragSelected)===q.ans){
+    box.className='drop-answer-box filled-correct';
+    document.getElementById('drag-feedback').innerHTML='<span style="color:var(--green);font-size:18px">✅ සුපිරි! නිවැරදියි! 🌟</span>';
+    dragScore++;
+    playTone(660,0.15);confetti();
+  } else {
+    box.className='drop-answer-box filled-wrong';
+    document.getElementById('drag-feedback').innerHTML=`<span style="color:var(--pink)">❌ වැරදියි! නිවැරදි: <strong style="color:var(--gold)">${q.ans}</strong></span>`;
+    playTone(220,0.1);
+  }
+}
+function clearDragAnswer(){
+  dragSelected=null;
+  document.getElementById('drop-box').textContent='?';
+  document.getElementById('drop-box').className='drop-answer-box';
+  document.getElementById('drag-feedback').innerHTML='';
+  document.querySelectorAll('.drag-num').forEach(b=>b.classList.remove('selected'));
+}
+function nextDragQ(){dragIdx=(dragIdx+1)%dragQuestions.length;renderDragQ();}
+
+// ========== ALL 40 QUIZ QUESTIONS ==========
+const allQuestions=[
+  // SECTION 1: එකතු කිරීම (Q1-20)
+  {s:'කොටස 1: එකතු කිරීම',q:'රතු බැලූන් 5ක් සහ නිල් බැලූන් 4ක් එකතු කළ විට කීයද?',math:'5 + 4 = ?',opts:['8','9','10'],ans:1,exp:'පහට හතරක් එකතු කළ විට නවය (9) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'ගසක කුරුල්ලන් 8 දෙනෙක් සිටියහ. තවත් 2 දෙනෙක් ආහ. මුළු ගණන?',math:'8 + 2 = ?',opts:['10','12','9'],ans:0,exp:'අටට දෙකක් එකතු කළ විට දහය (10) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'10 + 5 = ?',math:'10 + 5 = ?',opts:['14','15','16'],ans:1,exp:'දහයට පහක් එකතු කළ විට පහළොව (15) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'චොකලට් 12ක් සහ 6ක් එකතු කළ විට?',math:'12 + 6 = ?',opts:['18','16','20'],ans:0,exp:'දොළොසට හයක් එකතු කළ විට දහඅට (18) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'20 + 10 = ?',math:'20 + 10 = ?',opts:['25','30','35'],ans:1,exp:'විස්සට දහයක් එකතු කළ විට තිස (30) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'මල් 15ක් සහ 5ක් එකතු කළ විට?',math:'15 + 5 = ?',opts:['18','20','25'],ans:1,exp:'පහළොවට පහක් එකතු කළ විට විස්ස (20) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'30 + 7 = ?',math:'30 + 7 = ?',opts:['35','36','37'],ans:2,exp:'තිසට හතක් එකතු කළ විට සත්තිස (37) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'බෝල 25ක් සහ 4ක් එකතු කළ විට?',math:'25 + 4 = ?',opts:['28','29','30'],ans:1,exp:'පස්විස්සට හතරක් එකතු කළ විට නවවිස්ස (29) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'40 + 5 = ?',math:'40 + 5 = ?',opts:['45','40','50'],ans:0,exp:'හතළිසට පහක් එකතු කළ විට හතිස්පස (45) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'රෝස මල් 11ක් සහ සුදු මල් 11ක් එකතු කරන්න.',math:'11 + 11 = ?',opts:['20','22','24'],ans:1,exp:'එකොළොසට එකොළොසක් එකතු කළ විට දෙවිස්ස (22) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'50 + 20 = ?',math:'50 + 20 = ?',opts:['60','70','80'],ans:1,exp:'පනසට විස්සක් එකතු කළ විට හැත්තෑව (70) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'බනිස් 22ක් සහ 8ක් එකතු කළ විට?',math:'22 + 8 = ?',opts:['30','28','32'],ans:0,exp:'දෙවිස්සට අටක් එකතු කළ විට තිස (30) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'60 + 9 = ?',math:'60 + 9 = ?',opts:['68','69','70'],ans:1,exp:'හැටට නවයක් එකතු කළ විට එකහැට (69) ක් වෙයි. (හැට නවය = 69)'},
+  {s:'කොටස 1: එකතු කිරීම',q:'අඹ 30ක් සහ පේර 30ක් එකතු කරන්න.',math:'30 + 30 = ?',opts:['50','60','65'],ans:1,exp:'තිසට තිසක් එකතු කළ විට හැට (60) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'70 + 15 = ?',math:'70 + 15 = ?',opts:['80','85','90'],ans:1,exp:'හැත්තෑවට පහළොවක් එකතු කළ විට අසූ පහ (85) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'පෑන් 45ක් සහ 5ක් එකතු කරන්න.',math:'45 + 5 = ?',opts:['50','48','55'],ans:0,exp:'හතිස්පහට පහක් එකතු කළ විට පනස (50) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'80 + 10 = ?',math:'80 + 10 = ?',opts:['85','90','95'],ans:1,exp:'අසූවට දහයක් එකතු කළ විට අනූව (90) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'ජාම් 33ක් සහ 7ක් එකතු කළ විට?',math:'33 + 7 = ?',opts:['40','38','42'],ans:0,exp:'තෙතිසට හතක් එකතු කළ විට හතළිස (40) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'90 + 5 = ?',math:'90 + 5 = ?',opts:['92','94','95'],ans:2,exp:'අනූවට පහක් එකතු කළ විට අනූ පහ (95) ක් වෙයි.'},
+  {s:'කොටස 1: එකතු කිරීම',q:'පොත් 50ක් සහ 25ක් එකතු කරන්න.',math:'50 + 25 = ?',opts:['70','75','80'],ans:1,exp:'පනසට පස්විස්සක් එකතු කළ විට හැත්තෑ පහ (75) ක් වෙයි.'},
+
+  // SECTION 2: අඩු කිරීම (Q21-40)
+  {s:'කොටස 2: අඩු කිරීම',q:'බැලූන් 10න් 3ක් පිපිරුණා. ඉතිරිය?',math:'10 - 3 = ?',opts:['6','7','8'],ans:1,exp:'දහයෙන් තුනක් අඩු කළ විට හත (7) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'15 - 5 = ?',math:'15 - 5 = ?',opts:['10','8','12'],ans:0,exp:'පහළොවෙන් පහක් අඩු කළ විට දහය (10) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'පෑන්සල් 20කින් 4ක් නැති විය. ඉතිරිය?',math:'20 - 4 = ?',opts:['14','16','15'],ans:1,exp:'විස්සෙන් හතරක් අඩු කළ විට දහසය (16) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'25 - 5 = ?',math:'25 - 5 = ?',opts:['20','15','18'],ans:0,exp:'පස්විස්සෙන් පහක් අඩු කළ විට විස්ස (20) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'ඇපල් 30කින් 10ක් වැටුණා. ඉතිරිය?',math:'30 - 10 = ?',opts:['15','25','20'],ans:2,exp:'තිසෙන් දහයක් අඩු කළ විට විස්ස (20) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'40 - 20 = ?',math:'40 - 20 = ?',opts:['10','20','30'],ans:1,exp:'හතළිසෙන් විස්සක් අඩු කළ විට විස්ස (20) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'කැන්ඩි 50ෙන් 10ක් දුන්නෙමි. ඉතිරිය?',math:'50 - 10 = ?',opts:['30','40','45'],ans:1,exp:'පනසෙන් දහයක් අඩු කළ විට හතළිස (40) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'60 - 5 = ?',math:'60 - 5 = ?',opts:['50','55','58'],ans:1,exp:'හැටෙන් පහක් අඩු කළ විට පස්පනස (55) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'ගොල් 45කින් 5ක් ගිය. ඉතිරිය?',math:'45 - 5 = ?',opts:['40','35','38'],ans:0,exp:'හතිස්පහෙන් පහක් අඩු කළ විට හතළිස (40) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'70 - 10 = ?',math:'70 - 10 = ?',opts:['50','55','60'],ans:2,exp:'හැත්තෑවෙන් දහයක් අඩු කළ විට හැට (60) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'චොකලට් 80කින් 20ක් කෑවෙමි. ඉතිරිය?',math:'80 - 20 = ?',opts:['50','60','70'],ans:1,exp:'අසූවෙන් විස්සක් අඩු කළ විට හැට (60) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'90 - 30 = ?',math:'90 - 30 = ?',opts:['50','60','70'],ans:1,exp:'අනූවෙන් තිසක් අඩු කළ විට හැට (60) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'මල් 35කින් 5ක් පරවී ගියේය. ඉතිරිය?',math:'35 - 5 = ?',opts:['25','30','32'],ans:1,exp:'පස්තිසෙන් පහක් අඩු කළ විට තිස (30) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'100 - 50 = ?',math:'100 - 50 = ?',opts:['40','50','60'],ans:1,exp:'සියෙන් (100) පනසක් (50) අඩු කළ විට පනස (50) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'බිත්තර 22කින් 2ක් කැඩිණා. ඉතිරිය?',math:'22 - 2 = ?',opts:['20','18','21'],ans:0,exp:'දෙවිස්සෙන් දෙකක් අඩු කළ විට විස්ස (20) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'55 - 5 = ?',math:'55 - 5 = ?',opts:['45','50','52'],ans:1,exp:'පස්පනසෙන් පහක් අඩු කළ විට පනස (50) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'කාර් 60කින් 10ක් ගිය. ඉතිරිය?',math:'60 - 10 = ?',opts:['40','45','50'],ans:2,exp:'හැටෙන් දහයක් අඩු කළ විට පනස (50) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'48 - 8 = ?',math:'48 - 8 = ?',opts:['30','38','40'],ans:2,exp:'අටහතළිසෙන් අටක් අඩු කළ විට හතළිස (40) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'පෑන්සල් 75කින් 5ක් කැඩිණා. ඉතිරිය?',math:'75 - 5 = ?',opts:['70','65','72'],ans:0,exp:'හැත්තෑ පහෙන් පහක් අඩු කළ විට හැත්තෑව (70) ක් ඉතිරි වෙයි.'},
+  {s:'කොටස 2: අඩු කිරීම',q:'99 - 9 = ?',math:'99 - 9 = ?',opts:['80','90','95'],ans:1,exp:'නවඅනූවෙන් නවයක් අඩු කළ විට අනූව (90) ක් ඉතිරි වෙයි.'},
+];
+
+// ========== QUIZ STATE ==========
+let quizStarted=false,currentQ=0,score=0,userAnswers=[],quizActive=false;
+function initQuiz(){
+  quizStarted=true;quizActive=true;
+  currentQ=0;score=0;userAnswers=[];
+  renderQuiz();
+}
+function renderQuiz(){
+  const area=document.getElementById('quiz-area');
+  if(currentQ>=allQuestions.length){showSummary();return;}
+  const q=allQuestions[currentQ];
+  const pct=Math.round((currentQ/allQuestions.length)*100);
+  let sectionHeader='';
+  const prevSection=currentQ>0?allQuestions[currentQ-1].s:'';
+  if(q.s!==prevSection){
+    const col=q.s.includes('එකතු')?'#00BCD4':'#FF4081';
+    sectionHeader=`<div class="quiz-section-header" style="border-color:${col}"><h4 style="color:${col}">🔷 ${q.s}</h4><p>ශ්‍රේණිය 1-3 ගණිතය</p></div>`;
+  }
+  const letters=['අ','ආ','ඇ'];
+  const optsHTML=q.opts.map((o,i)=>`<button class="opt-btn" onclick="selectAnswer(${i})"><span class="opt-letter">${letters[i]}</span> ${o}</button>`).join('');
+  area.innerHTML=`
+    ${sectionHeader}
+    <div class="quiz-header">
+      <span class="q-num">ප්‍රශ්නය ${currentQ+1} / ${allQuestions.length}</span>
+      <span class="q-score">⭐ ${score}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="question-card">
+      <div class="q-text">${q.q}</div>
+      <div class="math-expr">${q.math}</div>
+      <div class="options">${optsHTML}</div>
+    </div>`;
+}
+function selectAnswer(idx){
+  if(!quizActive)return;
+  const q=allQuestions[currentQ];
+  userAnswers.push({q:currentQ,chosen:idx,correct:q.ans});
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');});
+  if(idx===q.ans){score++;showFeedback(true,q);}else showFeedback(false,q);
+}
+const correctPhrases=['සුපිරි! 🎉','ඉතා සුපිරි! ✨','ඉතා දක්ෂයි! 🌟','නියමයි! 👏','බොහොම හොඳයි! 💫','අපූරුයි! 🏆','ශ්‍රේෂ්ඨයි! 🥇'];
+function showFeedback(correct,q){
+  const ov=document.getElementById('feedback-overlay');
+  ov.classList.add('visible');
+  document.getElementById('fb-emoji').textContent=correct?'🌟':'💭';
+  document.getElementById('fb-title').textContent=correct?correctPhrases[Math.floor(Math.random()*correctPhrases.length)]:'නිවැරදි නොවේ';
+  document.getElementById('fb-title').style.color=correct?'var(--green)':'var(--pink)';
+  const stars=correct?(score%10===0?5:(score%5===0?4:3)):0;
+  document.getElementById('fb-stars').innerHTML=correct?'⭐'.repeat(stars):'';
+  document.getElementById('fb-text').textContent=correct?'✅ නිවැරදි! '+q.exp:'❌ '+q.exp;
+  if(correct){confetti();playTone(660,0.15);}else playTone(220,0.1);
+}
+function nextQuestion(){
+  document.getElementById('feedback-overlay').classList.remove('visible');
+  currentQ++;renderQuiz();
+}
+function showSummary(){
+  const pct=Math.round((score/allQuestions.length)*100);
+  let msg='',emoji='';
+  if(pct>=90){msg='ඉතා දක්ෂ ශිෂ්‍යයෙකු! 🏆';emoji='🥇';}
+  else if(pct>=70){msg='ඉතා හොඳ ප්‍රතිඵලයකි! 🌟';emoji='🥈';}
+  else if(pct>=50){msg='හොඳ ප්‍රයත්නයකි! 💪';emoji='🥉';}
+  else{msg='තවත් ප්‍රයත්නයක් කරන්න! 📚';emoji='📚';}
+  document.getElementById('quiz-area').innerHTML=`
+    <div style="text-align:center;animation:slideIn 0.4s ease">
+      <div style="font-size:60px">${emoji}</div>
+      <div style="font-size:60px;font-weight:900;color:var(--gold)">${score}/${allQuestions.length}</div>
+      <div style="font-size:16px;font-weight:700;margin:8px 0;color:var(--gold)">${msg}</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.7);margin:6px 0">ලකුණු: ${pct}%</div>
+      <button class="retry-btn" onclick="initQuiz()">🔄 නැවත උත්සාහ කරන්න</button>
+      <button class="retry-btn" style="background:linear-gradient(135deg,var(--purple),#7B1FA2);margin-top:8px" onclick="showExplanations()">💡 පිළිතුරු බලන්න</button>
+    </div>`;
+  bigConfetti();buildExplanations();
+}
+function showExplanations(){goToTab('exp');}
+function buildExplanations(){
+  const wrong=userAnswers.filter(a=>a.chosen!==a.correct);
+  const area=document.getElementById('exp-area');
+  if(wrong.length===0){
+    area.innerHTML='<div class="intro-card"><p style="font-size:16px;color:var(--green);font-weight:900;text-align:center">🎉 සියලු ප්‍රශ්නවලට නිවැරදි පිළිතුරු! ශ්‍රේෂ්ඨයි!</p></div>';
+    return;
+  }
+  const letters=['අ','ආ','ඇ'];
+  area.innerHTML=`<p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:12px">⚠️ වැරදූ ප්‍රශ්න ${wrong.length}ක් සඳහා පිළිතුරු:</p>`+
+    wrong.map(a=>{
+      const q=allQuestions[a.q];
+      return `<div class="exp-card">
+        <div class="exp-q">📌 ප්‍රශ්නය ${a.q+1}: ${q.q}</div>
+        <div style="font-size:22px;font-weight:900;color:var(--gold);text-align:center;margin:6px 0">${q.math}</div>
+        <div class="exp-a">✅ නිවැරදි: ${letters[q.ans]}) ${q.opts[q.ans]}</div>
+        <div class="exp-a wrong-a">❌ ඔබ: ${letters[a.chosen]}) ${q.opts[a.chosen]}</div>
+        <div class="exp-why">💡 ${q.exp}</div>
+      </div>`;
+    }).join('');
+}
+
+// ========== SOUND ==========
+let audioCtx;
+function playTone(freq,vol){
+  try{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='sine';o.frequency.value=freq;
+    g.gain.value=vol;g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.3);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start();o.stop(audioCtx.currentTime+0.3);
+  }catch(e){}
+}
+
+// ========== CONFETTI ==========
+function confetti(){
+  const colors=['#FFD700','#00E676','#FF4081','#00BCD4','#FF9800','#CDDC39'];
+  for(let i=0;i<15;i++){
+    const c=document.createElement('div');
+    c.className='confetti-piece';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.left=Math.random()*100+'vw';
+    c.style.top='20vh';
+    c.style.animationDelay=Math.random()*0.3+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+}
+function bigConfetti(){for(let i=0;i<5;i++)setTimeout(confetti,i*200);}
+
+// ========== WORKSHEET ==========
+function openWS(){document.getElementById('ws-modal').classList.add('open')}
+function closeWS(){document.getElementById('ws-modal').classList.remove('open')}
+function downloadWorksheet(){
+  const letters=['අ','ආ','ඇ'];
+  const questionsHTML=allQuestions.map((q,i)=>`
+    <div style="margin-bottom:16px;padding:12px;border:1px solid #ccc;border-radius:8px;page-break-inside:avoid">
+      <p style="font-weight:bold;margin-bottom:6px;font-size:14px">${i+1}. ${q.q}</p>
+      <p style="font-size:24px;font-weight:900;color:${i<20?'#1565c0':'#c62828'};text-align:center;margin:8px 0">${q.math}</p>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-left:12px">
+        ${q.opts.map((o,j)=>`<span>${letters[j]}) ${o}</span>`).join('')}
+      </div>
+    </div>`).join('');
+
+  const answersHTML=allQuestions.map((q,i)=>`
+    <tr style="background:${i%2===0?'#f9f9f9':'#fff'}">
+      <td style="padding:6px 10px;font-weight:bold">${i+1}</td>
+      <td style="padding:6px 10px">${q.math.replace('= ?','')}</td>
+      <td style="padding:6px 10px;color:green;font-weight:bold">${letters[q.ans]}) ${q.opts[q.ans]}</td>
+      <td style="padding:6px 10px;font-size:12px;color:#555">${q.exp}</td>
+    </tr>`).join('');
+
+  const html=`<!DOCTYPE html><html lang="si"><head><meta charset="UTF-8"/>
+  <title>ගණිතය - කාර්‍ය පත්‍රිකාව</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body{font-family:'Noto Sans Sinhala',sans-serif;max-width:720px;margin:0 auto;padding:24px;background:#fff;color:#111;font-size:14px}
+    h1{text-align:center;color:#0d1b3e;font-size:22px;margin-bottom:4px}
+    h2{font-size:17px;color:#1565c0;border-bottom:2px solid #1565c0;padding-bottom:4px;margin:20px 0 12px}
+    h2.sub{color:#c62828;border-color:#c62828}
+    .ans-table{width:100%;border-collapse:collapse;margin-top:8px}
+    .ans-table th{background:#0d1b3e;color:#fff;padding:8px 10px;text-align:left;font-size:13px}
+    .ans-table td{border-bottom:1px solid #ddd}
+    @media print{.no-print{display:none}.page-break{page-break-before:always}}
+  </style></head><body>
+  <h1>📚 ගණිතය - 1 සිට 100</h1>
+  <p style="text-align:center;color:#666;margin-bottom:6px">ශ්‍රේණිය 1 - 3 | ප්‍රශ්න 40 | එකතු කිරීම හා අඩු කිරීම</p>
+  <p style="text-align:center;color:#888;font-size:12px;margin-bottom:20px">නම: ______________________ | ශ්‍රේණිය: _________ | දිනය: _________</p>
+
+  <h2>🔵 I කොටස: එකතු කිරීම (ප්‍රශ්න 1 - 20)</h2>
+  ${allQuestions.slice(0,20).map((q,i)=>`
+    <div style="margin-bottom:14px;padding:10px;border:1px solid #ddd;border-radius:6px">
+      <p style="font-weight:bold;margin-bottom:4px">${i+1}. ${q.q}</p>
+      <p style="font-size:22px;font-weight:900;color:#1565c0;text-align:center;margin:6px 0">${q.math}</p>
+      <div style="display:flex;gap:24px;margin-left:12px">${q.opts.map((o,j)=>`<span>${letters[j]}) ${o}</span>`).join('')}</div>
+    </div>`).join('')}
+
+  <h2 class="sub">🔴 II කොටස: අඩු කිරීම (ප්‍රශ්න 21 - 40)</h2>
+  ${allQuestions.slice(20).map((q,i)=>`
+    <div style="margin-bottom:14px;padding:10px;border:1px solid #ddd;border-radius:6px">
+      <p style="font-weight:bold;margin-bottom:4px">${i+21}. ${q.q}</p>
+      <p style="font-size:22px;font-weight:900;color:#c62828;text-align:center;margin:6px 0">${q.math}</p>
+      <div style="display:flex;gap:24px;margin-left:12px">${q.opts.map((o,j)=>`<span>${letters[j]}) ${o}</span>`).join('')}</div>
+    </div>`).join('')}
+
+  <div class="page-break"></div>
+  <h1 style="margin-top:30px">📋 නිවැරදි පිළිතුරු — Answer Key</h1>
+  <p style="text-align:center;color:#666;margin-bottom:16px">ගණිතය - 1 සිට 100 | ශ්‍රේණිය 1 - 3</p>
+  <table class="ans-table">
+    <thead><tr><th>#</th><th>ගැටලුව</th><th>නිවැරදි පිළිතුර</th><th>පැහැදිලි කිරීම</th></tr></thead>
+    <tbody>${answersHTML}</tbody>
+  </table>
+  </body></html>`;
+
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='ganitha_karya_patrika.html';
+  a.click();closeWS();
+}
+
+// ========== INIT ==========
+buildNumberGrid();
+renderAddDemo();
+renderSubDemo();
+</script>
+</body>
+</html>
